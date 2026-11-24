@@ -1,0 +1,221 @@
+@model StudentRegistrationViewModel
+@{
+    ViewData["Title"] = "P.U | Purbanchal University Student Registration";
+    var faculties = ViewBag.Faculties as List<Faculty> ?? new List<Faculty>();
+    var programs = ViewBag.Programs as List<ProgramModel> ?? new List<ProgramModel>();
+    var colleges = ViewBag.Colleges as List<College> ?? new List<College>();
+    var academicYears = ViewBag.AcademicYears as List<AcademicYear> ?? new List<AcademicYear>();
+    var semesters = ViewBag.Semesters as List<Semester> ?? new List<Semester>();
+}
+
+<div class="py-4 text-white" style="background: linear-gradient(135deg, #003980 0%, #15222b 100%);">
+    <div class="container text-center">
+        <img src="~/images/pulogo.png" alt="Purbanchal University" style="max-height: 58px;" class="mb-2" />
+        <h2 class="fw-bold mb-1">PURBANCHAL UNIVERSITY</h2>
+        <p class="mb-0 text-warning">Student Registration Portal &bull; entrance.puexam.edu.np</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm border rounded-3">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-clipboard-list me-2"></i> Registration Application Form</h5>
+                    <small class="text-muted">Please fill in accurate details as per your educational transcripts and identity certificates.</small>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Register" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 mb-4"></div>
+
+                        <!-- 1. Personal Information Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                                <i class="fa-solid fa-id-card me-2 text-danger"></i> 1. Personal Information
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="FullName" class="form-label small fw-bold">Full Name (in BLOCK letters) *</label>
+                                    <input asp-for="FullName" class="form-control" placeholder="e.g. AARAV SHARMA" required />
+                                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label asp-for="DateOfBirth" class="form-label small fw-bold">Date of Birth *</label>
+                                    <input asp-for="DateOfBirth" type="date" class="form-control" required />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label asp-for="Gender" class="form-label small fw-bold">Gender *</label>
+                                    <select asp-for="Gender" class="form-select" required>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Email" class="form-label small fw-bold">Email Address *</label>
+                                    <input asp-for="Email" type="email" class="form-control" placeholder="e.g. aarav.sharma@gmail.com" required />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="MobileNumber" class="form-label small fw-bold">Mobile Number *</label>
+                                    <input asp-for="MobileNumber" class="form-control" placeholder="e.g. +977-9846123456" required />
+                                    <span asp-validation-for="MobileNumber" class="text-danger small"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label asp-for="Address" class="form-label small fw-bold">Permanent Residential Address *</label>
+                                    <input asp-for="Address" class="form-control" placeholder="Municipality, Ward No, District, Province" required />
+                                    <span asp-validation-for="Address" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Academic Affiliation Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                                <i class="fa-solid fa-graduation-cap me-2 text-warning"></i> 2. College & Academic Program
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="CollegeId" class="form-label small fw-bold">Admitted College / Campus *</label>
+                                    <select asp-for="CollegeId" class="form-select" required>
+                                        <option value="">-- Select College --</option>
+                                        @foreach (var c in colleges)
+                                        {
+                                            <option value="@c.CollegeId">@c.CollegeName (@c.CollegeCode)</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="CollegeId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="FacultyId" class="form-label small fw-bold">Faculty *</label>
+                                    <select asp-for="FacultyId" class="form-select" id="facultySelect" required>
+                                        <option value="">-- Select Faculty --</option>
+                                        @foreach (var f in faculties)
+                                        {
+                                            <option value="@f.FacultyId">@f.FacultyName (@f.FacultyCode)</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="FacultyId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="ProgramId" class="form-label small fw-bold">Academic Degree Program *</label>
+                                    <select asp-for="ProgramId" class="form-select" id="programSelect" required>
+                                        <option value="">-- Select Program --</option>
+                                        @foreach (var p in programs)
+                                        {
+                                            <option value="@p.ProgramId" data-faculty="@p.FacultyId">@p.ProgramName (@p.ProgramCode)</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProgramId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label asp-for="AcademicYearId" class="form-label small fw-bold">Academic Session *</label>
+                                    <select asp-for="AcademicYearId" class="form-select" required>
+                                        @foreach (var ay in academicYears)
+                                        {
+                                            <option value="@ay.AcademicYearId" selected="@ay.IsCurrent">@ay.YearName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="AcademicYearId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label asp-for="CurrentSemesterId" class="form-label small fw-bold">Semester *</label>
+                                    <select asp-for="CurrentSemesterId" class="form-select" required>
+                                        @foreach (var s in semesters)
+                                        {
+                                            <option value="@s.SemesterId">@s.SemesterName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="CurrentSemesterId" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="PreviousQualification" class="form-label small fw-bold">Previous Qualification (Degree, Institute, Percentage / CGPA)</label>
+                                    <input asp-for="PreviousQualification" class="form-control" placeholder="e.g. +2 Science (NEB), 82.5%, ABC Higher Secondary School" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Document Upload Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                                <i class="fa-solid fa-cloud-arrow-up me-2 text-info"></i> 3. Document Attachments
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="PhotoFile" class="form-label small fw-bold">Passport Size Photograph (JPG/PNG)</label>
+                                    <input asp-for="PhotoFile" type="file" accept="image/*" class="form-control" />
+                                    <small class="text-muted">Clear formal photograph with plain background</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="IdentityDocumentFile" class="form-label small fw-bold">Citizenship / National ID / Passport (PDF or Image)</label>
+                                    <input asp-for="IdentityDocumentFile" type="file" class="form-control" />
+                                    <small class="text-muted">Proof of citizenship or valid identification document</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Security Password Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                                <i class="fa-solid fa-lock me-2 text-success"></i> 4. Student Portal Password Setup
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Password" class="form-label small fw-bold">Portal Password (minimum 6 characters) *</label>
+                                    <input asp-for="Password" class="form-control" required />
+                                    <span asp-validation-for="Password" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="ConfirmPassword" class="form-label small fw-bold">Confirm Password *</label>
+                                    <input asp-for="ConfirmPassword" class="form-control" required />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="termsCheck" required />
+                            <label class="form-check-label small text-muted" for="termsCheck">
+                                I hereby declare that the particulars furnished above are true and correct to the best of my knowledge. I agree to abide by the rules and regulations of Apex University.
+                            </label>
+                        </div>
+
+                        <div class="text-end">
+                            <a asp-action="Login" class="btn btn-outline-secondary px-4 me-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
+                                <i class="fa-solid fa-paper-plane me-1"></i> Submit Registration
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Filter program dropdown based on selected faculty
+        $('#facultySelect').change(function() {
+            var selectedFaculty = $(this).val();
+            $('#programSelect option').each(function() {
+                var fac = $(this).data('faculty');
+                if (!fac || fac == selectedFaculty) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    </script>
+}

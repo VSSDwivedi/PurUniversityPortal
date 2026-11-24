@@ -1,0 +1,77 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Admin Login - Purbanchal University";
+    ViewData["IsInnerPage"] = true;
+}
+
+<style>
+    .ui-state-error{
+        padding-left:10px; display:none;
+    }
+    header#header {
+        background: rgba(21, 34, 43, 0.85);
+        padding: 10px 0;
+    }
+    .section-title {
+        margin-top: 1%;
+    }
+    .login-form-wrapper {
+        background-color: #003980 !important;
+    }
+</style>
+
+<main id="main">
+    <section id="contact" class="contact">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Admin Login</h2>
+            </div>
+
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-8">
+                    <div class="mb-4 d-flex align-items-center gap-3">
+                        <img src="~/images/college_access.png" height="120" style="max-height: 120px;" alt="College Access">
+                        <div>
+                            <h1 class="py-2 fw-bold text-dark mb-0">Welcome to College Login</h1>
+                            <p class="text-muted mb-0">Official Examination Management & Verification Portal</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-light rounded border mb-4">
+                        <h6 class="fw-bold text-primary mb-2"><i class="fa fa-info-circle me-1"></i> Authorized Institutional Access</h6>
+                        <p class="small text-muted mb-2">
+                            Constituent campuses and affiliated colleges access this portal for internal marks entry, student registration verification, and examination application approval.
+                        </p>
+                        <p class="small text-muted mb-0">
+                            <strong>Students:</strong> Sign in with your Registration Number (e.g. <code>024-1-01-00001-2024</code>) or Username to view exam results, admit cards, and apply for examinations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <article class="login-form-wrapper p-4 bg-primary text-light border rounded shadow">
+                        <h3 class="mb-4 text-light fw-bold">Login</h3>
+                        <form class="pb-2" action="/college-auth-new" method="post">
+                            @Html.AntiForgeryToken()
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger p-2 small mb-3">
+                                    @Html.ValidationSummary(true, "")
+                                </div>
+                            }
+
+                            <div class="mb-3">
+                                <label for="collegeId" class="form-label text-white">ID / Username / Reg No</label>
+                                <input type="text" class="form-control" name="loginId" id="collegeId" placeholder="Enter Login ID" required value="@Model?.LoginIdentifier">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label text-white">Password</label>
+                                <input type="password" class="form-control" name="loginPwd" id="exampleInputPassword1" placeholder="Enter Password" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning fw-bolder w-100 shadow-sm py-2">Submit</button>
+                        </form>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

@@ -1,0 +1,479 @@
+@{
+    ViewData["Title"] = "PU | Purbanchal University | Best University | Top University | Education For All";
+    var notices = ViewBag.Notices as List<Notice> ?? new List<Notice>();
+}
+
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+    <div class="hero-container" data-aos="fade-up" data-aos-delay="150">
+        <h1>Purbanchal University </h1>
+        <h2>Office Of The Examination Management,Biratnagar</h2>
+        <div class="d-flex">
+            <a href="https://www.youtube.com/watch?v=Eyge_d8ws9k" class="glightbox btn-watch-video">
+                <i class="bi bi-play-circle"></i><span>Watch Video</span>
+            </a>
+        </div>
+    </div>
+</section><!-- End Hero -->
+
+<!-- ======= Dual Notice Marquee Sliders ======= -->
+<section class="notice-slider" style="padding-top:0px;">
+    <div class="container">
+        <!-- Results Marquee -->
+        <article class="shadow text-center text-lg-start mb-2">
+            <div class="row align-items-center">
+                <div class="col-lg-11 my-3 my-lg-0">
+                    <marquee onmouseover="this.stop();" onmouseout="this.start();" width="100%" direction="left">
+                        &raquo; <a href="/result-event-new/922">(2083.07.20): BPH - VIII Sem</a>
+                        &raquo; <a href="/result-event-new/919">(2083.07.19): BBA - I Sem</a>
+                        &raquo; <a href="/result-event-new/917">(2083.07.19): B.E.(CIVIL / COMPUTER) - V SEM</a>
+                        &raquo; <a href="/result-event-new/916">(2083.07.18): BHM - III Sem / MHHM - I Sem</a>
+                        &raquo; <a href="/result-event-new/915">(2083.07.17): BE (Electrical, Geomatic, ECA, E&amp;C, Biomedical), B. Arch - V Sem / BScMLT - VIII Sem</a>
+                    </marquee>
+                </div>
+                <div class="col-lg-1 text-sm-end">
+                    <a href="/result-event-new/all" class="btn btn-primary btn-sm btn-block" style="width: 100%;">Results</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Exam Notices Marquee -->
+        <article class="shadow text-center text-lg-start">
+            <div class="row align-items-center">
+                <div class="col-lg-11 my-3 my-lg-0">
+                    <marquee onmouseover="this.stop();" onmouseout="this.start();" width="100%" direction="left">
+                        &raquo; <a href="/exam-event-new/924">(2083.08.07): EMBA - I, II, III, IV Sem (Spring / Fall)</a>
+                        &raquo; <a href="/exam-event-new/923">(2083.08.03): LLB - I/ II/ III &amp; BALLB - IV/ V Year</a>
+                        &raquo; <a href="/exam-event-new/921">(2083.07.20): Master - III Sem and Bachelor - VIII Sem (Faculty S &amp; T)</a>
+                        &raquo; <a href="/exam-event-new/920">(2083.07.20): BMT, BSW, BID - II, IV, VI Sem</a>
+                        &raquo; <a href="/exam-event-new/918">(2083.07.19): BE (Civil / Computer / ECA / Electrical / Geomatic / Biomedical) B.Arch. - VIII Sem</a>
+                    </marquee>
+                </div>
+                <div class="col-lg-1 text-lg-end">
+                    <a href="/exam-event-new/all" class="btn btn-sm btn-primary btn-block" style="width: 100%; border-top: 1px solid #00a1ff;"> Exam </a>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<main id="main">
+    <!-- ======= Notice Board Section ======= -->
+    <section id="notices" class="notices" style="padding-bottom:0px;">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Notice</h2>
+            </div>
+
+            <ul class="notice-nav nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section active" id="all-notice" data-bs-toggle="tab" data-bs-target="#all-notice-pane" type="button" role="tab" aria-controls="all-notice-pane" data-type="all-notice" aria-selected="true"> ALL </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section" id="exam-registration" data-bs-toggle="tab" data-bs-target="#exam-registration-pane" type="button" role="tab" aria-controls="exam-registration-pane" data-type="exam-registration" aria-selected="false">REGISTRATION</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section" id="exam-form" data-bs-toggle="tab" data-bs-target="#exam-form-pane" type="button" role="tab" aria-controls="exam-form-pane" data-type="exam-form" aria-selected="false">EXAM FORM</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section" id="exam-routine" data-bs-toggle="tab" data-bs-target="#exam-routine-pane" type="button" role="tab" aria-controls="exam-routine-pane" data-type="exam-routine" aria-selected="false">EXAM ROUTINE</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section" id="exam-center" data-bs-toggle="tab" data-bs-target="#exam-center-pane" type="button" role="tab" aria-controls="exam-center-pane" data-type="exam-center" aria-selected="false">EXAM CENTER</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section" id="internal" data-bs-toggle="tab" data-bs-target="#internal-pane" type="button" role="tab" aria-controls="internal-pane" data-type="internal" aria-selected="false">INTERNAL</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section" id="result" data-bs-toggle="tab" data-bs-target="#result-pane" type="button" role="tab" aria-controls="result-pane" data-type="result" aria-selected="false">RESULT</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link notice-tab-section" id="retotaling" data-bs-toggle="tab" data-bs-target="#retotaling-pane" type="button" role="tab" aria-controls="retotaling-pane" data-type="retotaling" aria-selected="false">RETOTALING </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="all-notice-pane" role="tabpanel" aria-labelledby="all-notice" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="all-notice-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices)
+                    </ol>
+                </div>
+
+                <div class="tab-pane fade" id="exam-registration-pane" role="tabpanel" aria-labelledby="exam-registration" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="exam-registration-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices.Where(x => x.CategoryName == "REGISTRATION" || x.Title.Contains("Registration", StringComparison.OrdinalIgnoreCase)).ToList())
+                    </ol>
+                </div>
+
+                <div class="tab-pane fade" id="exam-form-pane" role="tabpanel" aria-labelledby="exam-form" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="exam-form-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices.Where(x => x.CategoryName == "EXAM FORM" || x.Title.Contains("Form", StringComparison.OrdinalIgnoreCase)).ToList())
+                    </ol>
+                </div>
+
+                <div class="tab-pane fade" id="exam-routine-pane" role="tabpanel" aria-labelledby="exam-routine" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="exam-routine-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices.Where(x => x.CategoryName == "EXAM ROUTINE" || x.Title.Contains("Routine", StringComparison.OrdinalIgnoreCase)).ToList())
+                    </ol>
+                </div>
+
+                <div class="tab-pane fade" id="exam-center-pane" role="tabpanel" aria-labelledby="exam-center" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="exam-center-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices.Where(x => x.CategoryName == "EXAM CENTER" || x.Title.Contains("Center", StringComparison.OrdinalIgnoreCase)).ToList())
+                    </ol>
+                </div>
+
+                <div class="tab-pane fade" id="internal-pane" role="tabpanel" aria-labelledby="internal" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="internal-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices.Where(x => x.CategoryName == "INTERNAL" || x.Title.Contains("Internal", StringComparison.OrdinalIgnoreCase)).ToList())
+                    </ol>
+                </div>
+
+                <div class="tab-pane fade" id="result-pane" role="tabpanel" aria-labelledby="result" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="result-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices.Where(x => x.CategoryName == "RESULT" || x.Title.Contains("Result", StringComparison.OrdinalIgnoreCase)).ToList())
+                    </ol>
+                </div>
+
+                <div class="tab-pane fade" id="retotaling-pane" role="tabpanel" aria-labelledby="retotaling" tabindex="0">
+                    <ol class="list-group list-group-numbered" id="retotaling-list">
+                        @await Html.PartialAsync("_NoticeListItems", notices.Where(x => x.CategoryName == "RETOTALING" || x.Title.Contains("Retotaling", StringComparison.OrdinalIgnoreCase)).ToList())
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>About Us</h2>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <p class="lead">
+                        Purbanchal University was established in 1993 (2050 B.S.) by an Act of Parliament as a public, autonomous institution with the mandate to conduct academic programs aligned with national socio-economic requirements.
+                    </p>
+                    <p>
+                        The <strong>Office of the Examination Management (OEM)</strong> situated in Biratnagar operates with supreme administrative confidentiality and technological rigor. It administers all institutional examinations across 7 faculties, supervises curriculum assessment standards, coordinates with affiliated constituent campuses, and ensures secure result processing and issuance of official credentials.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <img src="/assets/img/college-logo.png" alt="Purbanchal University" class="img-fluid" style="max-height: 150px;">
+                    <h5 class="fw-bold text-primary mt-2">PURBANCHAL UNIVERSITY</h5>
+                    <small class="text-muted">Biratnagar, Nepal &bull; puexam.edu.np</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Our Programs Section (All 7 Faculties) ======= -->
+    <section id="services" class="services section-bg">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Our Programs</h2>
+            </div>
+
+            <div class="row" data-aos="fade-up" data-aos-delay="200">
+                <!-- 1. Medical And Allied Sciences -->
+                <div class="col-md-6 mt-md-0 mb-4">
+                    <div class="program-list icon-box h-100">
+                        <i class="fa-sharp fa-solid fa-flask"></i>
+                        <h4><a href="#services">Medical And Allied Sciences </a></h4>
+                        <ul class="program-data-item">
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Bachelor </li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF PUBLIC HEALTH (BPH)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF SCIENCE IN MEDICAL LABORATORY TECHNOLOGY (B.SC. MLT)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF MEDICINE &amp; BACHELOR OF SURGERY (M.B.B.S.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN PHARMACY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF SCIENCE IN NURSING (BSN)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> POST BASIC BACHELOR OF NURSING SCIENCE (PBNS)</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER IN PUBLIC HEALTH (M.P.H.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER IN PHARMACY</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2. Education -->
+                <div class="col-md-6 mt-md-0 mb-4">
+                    <div class="program-list icon-box h-100">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                        <h4><a href="#services">Education </a></h4>
+                        <ul class="program-data-item">
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Bachelor </li>
+                            <li class="list-item f-14" style="font-size:13px;"> ONE YEAR BACHELOR OF EDUCATION</li>
+                            <li class="list-item f-14" style="font-size:13px;"> ONE YEAR BACHELOR OF EDUCATION (DISTANCE MODE)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF EDUCATION (B.ED.)</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF EDUCATION (M.ED.)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 3. Science And Technology -->
+                <div class="col-md-6 mt-md-0 mb-4">
+                    <div class="program-list icon-box h-100">
+                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                        <h4><a href="#services">Science And Technology </a></h4>
+                        <ul class="program-data-item">
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Bachelor </li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF DAIRY TECHNOLOGY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF COMPUTER APPLICATION (BCA)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF SCIENCE (HONOURS) IN AGRICULTURE </li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF TECHNOLOGY IN BIOTECHNOLOGY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF COMPUTER APPLICATION AND INFORMATION TECHNOLOGY (BCA-IT)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF FOOD TECHNOLOGY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF SCIENCE IN BIOTECHNOLOGY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF VETERINARY SCIENCE &amp; ANIMAL HUSBANDRY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF TECHNOLOGY IN ARTIFICIAL INTELLIGENCE</li>
+                            <li class="list-item f-14" style="font-size:13px;"> B.SC. FORESTRY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF SCIENCE IN FOOD, NUTRITION &amp; DIETETICS</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF INFORMATION TECHNOLOGY (B.I.T.)</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF COMPUTER APPLICATION (M.C.A.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN DAIRY TECHNOLOGY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN MEAT TECHNOLOGY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN AGRICULTURE (AGRI-BUSINESS MANAGEMENT)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> POST GRADUATE DIPLOMA IN COMPUTER APPLICATION</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF COMPUTER APPLICATION AND INFORMATION TECHNOLOGY (MCA-IT)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> POST GRADUATE DIPLOMA IN COMPUTER APPLICATION AND INFORMATION TECHNOLOGY (PGDCA-IT)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> M. SC. IN NUTRITION AND DIETETICS</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF INFORMATION TECHNOLOGY (MIT)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 4. Management -->
+                <div class="col-md-6 mt-md-0 mb-4">
+                    <div class="program-list icon-box h-100">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                        <h4><a href="#services">Management </a></h4>
+                        <ul class="program-data-item">
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Bachelor </li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF TRAVEL AND TOURISM STUDIES (BTTS)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF BUSINESS STUDIES (B. B. S.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF BUSINESS ADMINISTRATION</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF HOTEL MANAGEMENT (BHM)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF FASHION DESIGN AND MANAGEMENT (BFDM)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF HOSPITALITY &amp; CATERING MANAGEMENT (BHCM)</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF TOURISM STUDIES (M.T.S.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF PUBLIC ADMINISTRATION (M.P.A.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF HOTEL AND HOSPITALITY MANAGEMENT (M.H.H.M.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> EXECUTIVE MASTER OF BUSINESS ADMINISTRATION</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF BUSINESS ADMINISTRATION (EXECUTIVE)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF BUSINESS ADMINISTRATION (M.B.A.)</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master of Philosophy (M.Phil.) </li>
+                            <li class="list-item f-14" style="font-size:13px;"> M. PHIL. IN MANAGEMENT</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Doctor of Philosophy (Ph.D.) </li>
+                            <li class="list-item f-14" style="font-size:13px;"> PH. D. IN MANAGEMENT</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 5. Law -->
+                <div class="col-md-6 mt-md-0 mb-4">
+                    <div class="program-list icon-box h-100">
+                        <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                        <h4><a href="#services">Law </a></h4>
+                        <ul class="program-data-item">
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Bachelor </li>
+                            <li class="list-item f-14" style="font-size:13px;"> LL.B.</li>
+                            <li class="list-item f-14" style="font-size:13px;"> B.A. LL.B.</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master </li>
+                            <li class="list-item f-14" style="font-size:13px;"> LEGISUM LATERUM MASTEROM (LL.M.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER DEGREE IN HUMAN RIGHTS</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER DEGREE IN CONFLICT &amp; INTERNATIONAL HUMANITARIAN LAW</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 6. Arts -->
+                <div class="col-md-6 mt-md-0 mb-4">
+                    <div class="program-list icon-box h-100">
+                        <i class="fa fa-microphone" aria-hidden="true"></i>
+                        <h4><a href="#services">Arts </a></h4>
+                        <ul class="program-data-item">
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Bachelor </li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN MEDIA TECHNOLOGY (BMT)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF ARTS IN ENGLISH WITH HONOURS</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF ARTS (B. A.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN MASS COMMUNICATION &amp; JOURNALISM (B. J. M. C.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF SOCIAL WORK (B.S.W.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF INTERIOR DESIGN (B.I.D.)</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF ARTS IN SOCIOLOGY/ANTHROPOLOGY</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF ARTS IN MASS COMMUNICATION &amp; JOURNALISM </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN POPULATION &amp; RURAL DEVELOPMENT</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER IN DEVELOPMENT COMMUNICATION</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTERS OF ARTS IN ENGLISH</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTERS IN MEDIA TECHNOLOGY </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER IN SOCIAL WORK (M.S.W.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER IN DEVELOPMENT STUDIES (MDEVS)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 7. Engineering -->
+                <div class="col-md-6 mt-md-0 mb-4">
+                    <div class="program-list icon-box h-100">
+                        <i class="fa fa-cogs" aria-hidden="true"></i>
+                        <h4><a href="#services">Engineering </a></h4>
+                        <ul class="program-data-item">
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Bachelor </li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN COMPUTER ENGINEERING</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN CIVIL ENGINEERING</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN ELECTRONICS COMMUNICATION &amp; AUTOMATION ENGINEERING</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN ARCHITECTURE (B. ARCH.)</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR OF GEOMATIC ENGINEERING</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN BIOMEDICAL ENGINEERING</li>
+                            <li class="list-item f-14" style="font-size:13px;"> BACHELOR IN ELECTRICAL ENGINEERING</li>
+                            <li class="leval-name" style="font-weight:bold; list-style-type: none; text-decoration: underline;"> Master </li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN ELECTRICAL POWER ENGINEERING</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN CONSTRUCTION MANAGEMENT</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF ENGINEERING IN EARTHQUAKE</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN INFORMATION SYSTEM ENGINEERING</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN ENGINEERING MANAGEMENT</li>
+                            <li class="list-item f-14" style="font-size:13px;"> MASTER OF SCIENCE IN URBAN DESIGN &amp; CONSERVATION</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials">
+        <div class="container" data-aos="zoom-in">
+            <div class="section-title text-white">
+                <h2 class="text-white">Leadership Messages</h2>
+            </div>
+            <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="testimonial-item p-4 text-center">
+                            <h3>Vice Chancellor</h3>
+                            <h4>Purbanchal University</h4>
+                            <p class="mt-3">
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                Purbanchal University continues to expand dynamic academic disciplines across Nepal, preparing competent professionals in engineering, medicine, sciences, management, and arts with national and international standard accreditations.
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testimonial-item p-4 text-center">
+                            <h3>Examination Controller</h3>
+                            <h4>Office of Examination Management, Biratnagar</h4>
+                            <p class="mt-3">
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                We uphold strict confidentiality, computerized result processing, online student portal access, and verified provisional transcripts through puexam.edu.np.
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Contact</h2>
+                <p>Contact Us</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="info-box">
+                                <i class="bx bx-map"></i>
+                                <h3>Contact Details</h3>
+                                <p>Office Of The Examination Management Biratnagar, Puspalal Chowk, Nepal </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box mt-4">
+                                <i class="bx bx-envelope"></i>
+                                <h3>Email Us</h3>
+                                <p>puoemgt@puexam.edu.np</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box mt-4">
+                                <i class="bx bx-phone-call"></i>
+                                <h3>Call Us</h3>
+                                <p>+977-21-465240 , 590937</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <form action="/contact-us" method="post" role="form" id="contactUsForm" class="phpemailform">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-md-6 form-group mt-3 mt-md-0">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <textarea class="form-control" name="message" rows="3" placeholder="Message" required></textarea>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-md btn-primary px-4 py-2" id="submitContactus">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Notice tabs AJAX
+            $(document).off('click', '.notice-tab-section');
+            $(".notice-tab-section").click(function () {
+                var category = $(this).data('type');
+                var posturl = '/home/getNoticeGroupBy/' + category + '?limit=10&off=0';
+                $.post(posturl, {}, function (response) {
+                    $('#' + category + '-list').html(response);
+                });
+            });
+
+            // Contact Us AJAX
+            $("#contactUsForm").on('submit', function (e) {
+                e.preventDefault();
+                var form = $(this);
+                $.post(form.attr('action'), form.serialize(), function (res) {
+                    Swal.fire({
+                        icon: res.type || 'success',
+                        title: 'Success',
+                        text: res.message || 'Your inquiry has been submitted.'
+                    });
+                    form[0].reset();
+                }).fail(function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred. Please try again.'
+                    });
+                });
+            });
+        });
+    </script>
+}

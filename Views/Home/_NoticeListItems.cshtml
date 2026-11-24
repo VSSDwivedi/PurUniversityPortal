@@ -1,0 +1,28 @@
+@model List<UniversityExamSystem.Models.Notice>
+
+@if (Model != null && Model.Any())
+{
+    @foreach (var n in Model)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-start" 
+            data-href="@(string.IsNullOrEmpty(n.AttachmentUrl) ? "/public/notice/emba_i_ii_iii_iv_2026_1795407433.pdf" : n.AttachmentUrl)" 
+            data-title="@n.Title" 
+            data-content="@n.Description" 
+            style="cursor: pointer;">
+            <div class="ms-2 me-auto text-dark">
+                <div class="fw-bold text-dark">@n.Title</div>
+                @if (!string.IsNullOrEmpty(n.Description))
+                {
+                    <div class="small text-muted mt-1">@n.Description</div>
+                }
+            </div>
+            <span class="badge bg-primary rounded-pill">@(n.CategoryName ?? "Notice")</span>
+        </li>
+    }
+}
+else
+{
+    <li class="list-group-item text-center py-4 text-muted">
+        <i class="fa fa-info-circle me-1"></i> No notices available in this category currently.
+    </li>
+}

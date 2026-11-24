@@ -1,0 +1,168 @@
+@model Student
+@{
+    ViewData["Title"] = "Student Profile";
+    Layout = "_StudentLayout";
+    var docs = ViewBag.Documents as List<StudentDocument> ?? new List<StudentDocument>();
+}
+
+<div class="row g-4">
+    <!-- Profile Card Column -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm border p-4 text-center">
+            <div class="mx-auto mb-3" style="width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 4px solid #f1f5f9;">
+                @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                {
+                    <img src="@Model.PhotoUrl" alt="Student Photo" class="w-100 h-100 object-fit-cover" />
+                }
+                else
+                {
+                    <div class="w-100 h-100 bg-secondary text-white d-flex align-items-center justify-content-center fs-1">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                }
+            </div>
+
+            <h4 class="fw-bold text-primary mb-1">@Model.FullName</h4>
+            <div class="text-danger fw-semibold small mb-2">Student ID: @Model.StudentUniqueId</div>
+            <div>
+                <span class="badge @(Model.RegistrationStatus == "Approved" ? "bg-success" : "bg-warning text-dark") px-3 py-2">
+                    Registration: @Model.RegistrationStatus
+                </span>
+            </div>
+
+            <hr/>
+
+            <div class="text-start small">
+                <div class="mb-2"><strong>Registration No:</strong> <span class="text-primary fw-bold">@(Model.RegistrationNumber ?? "Pending Approval")</span></div>
+                <div class="mb-2"><strong>Roll Number:</strong> <span class="text-danger fw-bold">@(Model.RollNumber ?? "Not Allocated")</span></div>
+                <div class="mb-2"><strong>College:</strong> @Model.CollegeName</div>
+                <div class="mb-2"><strong>Faculty:</strong> @Model.FacultyName</div>
+                <div class="mb-2"><strong>Program:</strong> @Model.ProgramName</div>
+                <div class="mb-2"><strong>Semester:</strong> @Model.CurrentSemester</div>
+                <div><strong>Enrolled Session:</strong> @Model.AcademicYear</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Contact Information & Documents -->
+    <div class="col-lg-8">
+        <div class="custom-card shadow-sm mb-4">
+            <div class="card-header-custom">
+                <h5><i class="fa-solid fa-user-pen text-primary"></i> Personal & Contact Information</h5>
+            </div>
+            <div class="p-4">
+                <form asp-action="UpdateProfile" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">FULL NAME</label>
+                            <input type="text" class="form-control" value="@Model.FullName" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">DATE OF BIRTH</label>
+                            <input type="text" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">GENDER</label>
+                            <input type="text" class="form-control" value="@Model.Gender" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">EMAIL ADDRESS</label>
+                            <input type="text" class="form-control" value="@Model.Email" disabled />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">MOBILE NUMBER *</label>
+                            <input type="text" name="mobileNumber" class="form-control" value="@Model.MobileNumber" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted">PREVIOUS QUALIFICATION</label>
+                            <input type="text" class="form-control" value="@Model.PreviousQualification" disabled />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">PERMANENT ADDRESS *</label>
+                            <input type="text" name="address" class="form-control" value="@Model.Address" required />
+                        </div>
+                        <div class="col-12 text-end mt-3">
+                            <button type="submit" class="btn btn-primary fw-bold px-4">
+                                <i class="fa-solid fa-floppy-disk me-1"></i> Save Contact Updates
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Student Documents -->
+        <div class="custom-card shadow-sm">
+            <div class="card-header-custom">
+                <h5><i class="fa-solid fa-folder-closed text-warning"></i> Uploaded Documents</h5>
+            </div>
+            <div class="p-4">
+                @if (docs.Any() || !string.IsNullOrEmpty(Model.IdentityDocumentUrl))
+                {
+                    <ul class="list-group list-group-flush">
+                        @if (!string.IsNullOrEmpty(Model.IdentityDocumentUrl))
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-0">
+                                <div>
+                                    <i class="fa-solid fa-file-pdf text-danger me-2"></i>
+                                    <strong>Identity Document / Citizenship</strong>
+                                </div>
+                                <a href="@Model.IdentityDocumentUrl" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa-solid fa-eye me-1"></i> View Document
+                                </a>
+                            </li>
+                        }
+                        @foreach (var d in docs)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-0">
+                                <div>
+                                    <i class="fa-solid fa-file-lines text-primary me-2"></i>
+                                    <strong>@d.DocumentType</strong>: @d.DocumentName
+                                    <small class="text-muted">(@(d.FileSizeKB ?? 0) KB &bull; @d.UploadedDate.ToString("MMM dd, yyyy"))</small>
+                                </div>
+                                <a href="@d.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa-solid fa-eye me-1"></i> View
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted small mb-0">No supplemental documents uploaded.</p>
+                }
+            </div>
+        </div>
+
+        <div class="custom-card shadow-sm mt-4">
+            <div class="card-header-custom">
+                <h5><i class="fa-solid fa-key text-primary"></i> Change Password</h5>
+            </div>
+            <div class="p-4">
+                <form asp-controller="Account" asp-action="ChangePassword" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">CURRENT PASSWORD *</label>
+                            <input type="password" name="currentPassword" class="form-control" autocomplete="current-password" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">NEW PASSWORD *</label>
+                            <input type="password" name="newPassword" class="form-control" minlength="8" autocomplete="new-password" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">CONFIRM PASSWORD *</label>
+                            <input type="password" name="confirmPassword" class="form-control" minlength="8" autocomplete="new-password" required />
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-primary fw-bold px-4">
+                                <i class="fa-solid fa-lock me-1"></i> Update Password
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

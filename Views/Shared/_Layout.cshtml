@@ -1,0 +1,382 @@
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>@(ViewData["Title"] ?? "PU | Purbanchal University | Best University | Top University | Education For All")</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/college-logo.png" rel="icon">
+    <link href="/assets/img/college-logo.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <style>
+        label.error {
+            font-size: 11px;
+            height: 0px;
+            color: red;
+            clear: both;
+            width: 100%;
+        }
+        .header-inner-pages header#header,
+        header#header.header-inner-pages {
+            background: rgba(21, 34, 43, 0.95) !important;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+        }
+        header#header.fixed-top {
+            transition: all 0.5s;
+            z-index: 997;
+            padding: 15px 0;
+        }
+        .popup-slider-img {
+            max-height: 80vh;
+            object-fit: contain;
+            background: #fff;
+        }
+        #modalNotice .modal-dialog {
+            max-width: 900px;
+        }
+        .gradesheet-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .gradesheet-table th, .gradesheet-table td {
+            border: 1px solid #111;
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+        .gradesheet-table th {
+            background: #f1f4f9;
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="@(ViewData["BodyClass"] ?? "")">
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top @(ViewData["IsInnerPage"] as bool? == true ? "header-inner-pages header-scrolled" : "hide-nav-header")">
+        <div id="topMenu" class="container d-flex align-items-center justify-content-between">
+            <a href="/" class="logo">
+                <img src="/assets/img/pulogo.png" alt="Purbanchal University" class="img-fluid">
+            </a>
+
+            <nav id="navbar" class="navbar">
+                <ul id="navMenu">
+                    <li><a class="nav-link scrollto" href="/#about">About</a></li>
+                    <li><a class="nav-link scrollto" href="/#services">Programs</a></li>
+                    <li><a class="nav-link scrollto" href="/#testimonials">Message</a></li>
+                    <li class="dropdown"><a href="#"><span>Exam</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="/exam-schedule-new">Exams Schedule</a></li>
+                            <li><a href="https://entrance.puexam.edu.np/examregistration/" target="_blank">Exam Form</a></li>
+                            <li><a href="https://entrance.puexam.edu.np" target="_blank">Exam Card</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#"><span>Results</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="/find-results_new">Find Result</a></li>
+                            <li><a href="/college-login-new">College Login</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
+                    <li><a class="nav-link scrollto" href="/#notices">Notice</a></li>
+                    <li><a class="nav-link scrollto" href="/downloads-new">Downloads</a></li>
+                    <li><a class="nav-link scrollto" href="/download/pu_nagarik_wada_1790751488.pdf" target="_blank">Citizen Charter</a></li>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="dropdown"><a href="#" class="text-warning"><span><i class="fa fa-user me-1"></i> @User.Identity.Name</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul>
+                                @if (User.IsInRole("Super Admin") || User.IsInRole("Admin") || User.IsInRole("Examination Controller"))
+                                {
+                                    <li><a asp-controller="Admin" asp-action="Index"><i class="fa fa-gauge me-2 text-primary"></i> Admin Panel</a></li>
+                                }
+                                @if (User.IsInRole("Student"))
+                                {
+                                    <li><a asp-controller="Student" asp-action="Index"><i class="fa fa-user-graduate me-2 text-success"></i> Student Portal</a></li>
+                                    <li><a asp-controller="Student" asp-action="ApplyExam"><i class="fa fa-file-pen me-2 text-info"></i> Exam Form</a></li>
+                                    <li><a asp-controller="Student" asp-action="AdmitCard"><i class="fa fa-id-card me-2 text-warning"></i> Admit Card</a></li>
+                                }
+                                @if (User.IsInRole("College Admin"))
+                                {
+                                    <li><a asp-controller="College" asp-action="Index"><i class="fa fa-building me-2 text-info"></i> College Panel</a></li>
+                                }
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post" class="px-3 py-1">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-link text-danger p-0 text-decoration-none">
+                                            <i class="fa fa-sign-out me-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="d-none d-xl-inline-block">
+                            <a href="/college-login-new" class="btn btn-sm btn-outline-warning py-1 px-2 text-warning ms-2" style="font-size: 12px; border-radius: 4px;">Login</a>
+                        </li>
+                    }
+                </ul>
+            </nav><!-- .navbar -->
+        </div>
+    </header><!-- End Header -->
+
+    <div class="clearfix"></div>
+
+    <div id="breadcrumb">
+        <span class="nav-bar-button float-right nav-logo"><img src="/assets/img/pulogo.png" alt="" class="img-fluid"></span>
+        <span class="nav-bar-button float-right nav-open"><i class="fa fa-bars" aria-hidden="true"></i></span>
+        <span class="nav-bar-button float-right nav-close"><i class="fa fa-times" aria-hidden="true"></i></span>
+    </div>
+
+    @RenderBody()
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-info">
+                            <h3>More Enquiry</h3>
+                            <p>Reception: +977-21-465240, 590937</p>
+                            <p>Administration: +977-21-465242</p>
+                            <p>Account: +977-21-465503</p>
+                            <p>Registration: +977-21-464502</p>
+                            <p>Engineering: +977-21-464964</p>
+                            <p>Management / Law: +977-21-464965</p>
+                            <p>Arts / Education / S & T: +977-21-464338</p>
+                            <p>Medical and Allied Sciences: +977-21-464339</p>
+
+                            <div class="social-links mt-3">
+                                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i><a href="/#about">About</a></li>
+                            <li><i class="bx bx-chevron-right"></i><a href="/#services">Programs</a></li>
+                            <li><i class="bx bx-chevron-right"></i><a href="/#testimonials">Message</a></li>
+                            <li><i class="bx bx-chevron-right"></i><a href="/downloads-new">Downloads</a></li>
+                            <li><i class="bx bx-chevron-right"></i><a href="/exam-schedule-new">Exams Schedule</a></li>
+                            <li><i class="bx bx-chevron-right"></i><a href="https://entrance.puexam.edu.np" target="_blank">Exam Form</a></li>
+                            <li><i class="bx bx-chevron-right"></i><a href="https://entrance.puexam.edu.np" target="_blank">Exam Card</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>New Programs</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Bachelor in AI</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Bachelor in Data Science</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Bachelor in Cyber Security</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="#">Bachelor in IoT</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 footer-newsletter">
+                        <iframe class="college-google-map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2524.8781121203533!2d87.2903417376076!3d26.49705956645814!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef7415ff8ddb95%3A0xcebfd34916021dc4!2sPurbanchal%20University%20Office%20Of%20The%20Examination%20Management!5e0!3m2!1sen!2snp!4v1718279097965!5m2!1sen!2snp" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                &copy; Copyright <strong><span>Purbanchal University</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                Designed by <a href="#">Midas Education Pvt Ltd</a>
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Notice PDF Modal -->
+    <div class="modal fade" id="noticeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="min-height: 550px;">
+                <div class="modal-header">
+                    <div class="modal-title fs-5 title fw-bold" id="noticeTitle"></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="content-data mb-3" id="contentDetail"></div>
+                    <object id="noticeObject" data="" type="application/pdf" width="100%" height="575">
+                        <p class="text-center py-4">
+                            Your browser does not support embedded PDF viewing.
+                            <a id="noticeFrame" href="" target="_blank" class="btn btn-primary"><i class="fa fa-download me-1"></i> Click here to download or open the PDF file</a>
+                        </p>
+                    </object>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notice Popup Slider Modal (Only shows on homepage or when trigger available) -->
+    @if (ViewData["ShowNoticeModal"] as bool? == true)
+    {
+        <div class="modal fade" id="modalNotice" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow-lg position-relative" style="background: transparent;">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3 bg-danger" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1050; border-radius: 50%; padding: 8px;"></button>
+
+                    <div class="home-popup-slider swiper shadow rounded overflow-hidden">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/image_023_1793879214.jpg" class="img-fluid popup-slider-img w-100" alt="Office sareko">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/internal_notice_2083_1790573053.jpg" class="img-fluid popup-slider-img w-100" alt="Internal Marks Entry">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/exam_notice_2026_05_24_1788947426.jpg" class="img-fluid popup-slider-img w-100" alt="Exam Notice">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/postpond_exam_notice_iii_updated_1788340384.jpg" class="img-fluid popup-slider-img w-100" alt="Postponed Exam Notice">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/withheld_notice_1787833427.jpg" class="img-fluid popup-slider-img w-100" alt="Notice About Affiliation Fee">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/regd_law_master_level_2026_1784871891.jpg" class="img-fluid popup-slider-img w-100" alt="Regd Master Law">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/affiliation_collection_letter_1784028015.jpg" class="img-fluid popup-slider-img w-100" alt="Affiliation Fee Paying Letter">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/regd_master_arts_mgmt_2026_1781850556.jpg" class="img-fluid popup-slider-img w-100" alt="Regd Master Arts Mgmt">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/redg_june4_1780574138.jpg" class="img-fluid popup-slider-img w-100" alt="Master's Level 2026">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/final_1778668436.jpg" class="img-fluid popup-slider-img w-100" alt="Registration Medical">
+                            </div>
+                            <div class="swiper-slide text-center">
+                                <img src="/public/image/slider/ktm_office_location_change_notice_i_1744356619.jpg" class="img-fluid popup-slider-img w-100" alt="KTM Office Location Change">
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Vendor Scripts -->
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/assets/js/nepali.datepicker.v2.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+    <!-- Global puexam Interactive Handlers -->
+    <script>
+        $(document).ready(function() {
+            // Mobile Nav
+            $(document).off('click', '.nav-open');
+            $(".nav-open").click(function () {
+                $(this).hide();
+                $('#header').removeClass('hide-nav-header');
+                $('#header').addClass('show-nav-header');
+                $('.nav-close').show();
+            });
+
+            $(document).off('click', '.nav-close');
+            $(".nav-close").click(function () {
+                $(this).hide();
+                $('#header').removeClass('show-nav-header');
+                $('#header').addClass('hide-nav-header');
+                $('.nav-open').show();
+            });
+
+            // Notice PDF Modal Trigger
+            $(document).on('click', '[data-href]', function() {
+                var href = $(this).data('href');
+                var title = $(this).data('title');
+                var content = $(this).data('content') || '';
+                if (href) {
+                    $('#noticeTitle').text(title || 'Notice');
+                    $('#contentDetail').html(content);
+                    $('#noticeObject').attr('data', href);
+                    $('#noticeFrame').attr('href', href);
+                    var modal = new bootstrap.Modal(document.getElementById('noticeModal'));
+                    modal.show();
+                }
+            });
+
+            // Popup Notice Slider
+            if ($('#modalNotice').length && !sessionStorage.getItem('puexam_popup_dismissed')) {
+                var noticeSwiper = new Swiper('.home-popup-slider', {
+                    speed: 600,
+                    loop: true,
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev'
+                    }
+                });
+                $('#modalNotice').modal('show');
+                $('#modalNotice .btn-close').click(function() {
+                    sessionStorage.setItem('puexam_popup_dismissed', 'true');
+                });
+            }
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

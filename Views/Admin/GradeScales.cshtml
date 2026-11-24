@@ -1,0 +1,170 @@
+@model List<GradeScale>
+@{
+    ViewData["Title"] = "Configurable Grading System";
+    Layout = "_AdminLayout";
+}
+
+<div class="custom-card shadow-sm mb-4">
+    <div class="card-header-custom">
+        <h5><i class="fa-solid fa-sliders text-primary"></i> University Grading Scale Configuration</h5>
+        <button class="btn btn-primary btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#addScaleModal">
+            <i class="fa-solid fa-plus me-1"></i> Add Grade Boundary
+        </button>
+    </div>
+
+    <div class="p-3 bg-light border-bottom small text-muted">
+        <i class="fa-solid fa-circle-info text-primary me-1"></i>
+        Grading scales are dynamically evaluated during marks entry, SGPA computation, and result publication. Grade points and letter boundaries configured below apply university-wide across undergraduate and graduate programs.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Program Level</th>
+                    <th>Percentage Range</th>
+                    <th>Letter Grade</th>
+                    <th>Grade Point</th>
+                    <th>Qualitative Description</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var g in Model)
+                {
+                    <tr>
+                        <td><span class="badge bg-secondary">@g.ProgramLevel</span></td>
+                        <td class="fw-bold">@g.MinPercentage.ToString("F1")% – @g.MaxPercentage.ToString("F1")%</td>
+                        <td>
+                            <span class="badge @(g.Grade == "F" ? "bg-danger" : "bg-success") fs-6 px-3">
+                                @g.Grade
+                            </span>
+                        </td>
+                        <td><strong class="text-primary fs-6">@g.GradePoint.ToString("F2")</strong></td>
+                        <td>@g.Description</td>
+                        <td>
+                            <span class="badge @(g.IsActive ? "bg-success" : "bg-danger")">
+                                @(g.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal-@g.GradeScaleId">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Edit Grade Boundary Modal -->
+                    <div class="modal fade" id="editModal-@g.GradeScaleId" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content text-start">
+                                <form asp-action="EditGradeScale" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="GradeScaleId" value="@g.GradeScaleId" />
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-bold">Edit Grade Scale Boundary (@g.Grade)</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-bold">Program Level</label>
+                                            <select name="ProgramLevel" class="form-select">
+                                                <option value="All" selected="@(g.ProgramLevel == "All")">All Programs</option>
+                                                <option value="Bachelor" selected="@(g.ProgramLevel == "Bachelor")">Bachelor</option>
+                                                <option value="Master" selected="@(g.ProgramLevel == "Master")">Master</option>
+                                            </select>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold">Min Percentage *</label>
+                                                <input type="number" step="0.01" name="MinPercentage" value="@g.MinPercentage" class="form-control" required />
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold">Max Percentage *</label>
+                                                <input type="number" step="0.01" name="MaxPercentage" value="@g.MaxPercentage" class="form-control" required />
+                                            </div>
+                                        </div>
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold">Letter Grade *</label>
+                                                <input type="text" name="Grade" value="@g.Grade" class="form-control" required />
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label small fw-bold">Grade Point (0.0 - 4.0) *</label>
+                                                <input type="number" step="0.01" name="GradePoint" value="@g.GradePoint" class="form-control" required />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-bold">Description *</label>
+                                            <input type="text" name="Description" value="@g.Description" class="form-control" required />
+                                        </div>
+                                        <input type="hidden" name="IsActive" value="true" />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary btn-sm fw-bold">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Grade Scale Modal -->
+<div class="modal fade" id="addScaleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content text-start">
+            <form asp-action="AddGradeScale" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Add New Grade Boundary</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Program Level</label>
+                        <select name="ProgramLevel" class="form-select">
+                            <option value="All">All Programs</option>
+                            <option value="Bachelor">Bachelor</option>
+                            <option value="Master">Master</option>
+                        </select>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Min Percentage *</label>
+                            <input type="number" step="0.01" name="MinPercentage" class="form-control" placeholder="e.g. 75.0" required />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Max Percentage *</label>
+                            <input type="number" step="0.01" name="MaxPercentage" class="form-control" placeholder="e.g. 79.99" required />
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Letter Grade *</label>
+                            <input type="text" name="Grade" class="form-control" placeholder="e.g. B+" required />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Grade Point *</label>
+                            <input type="number" step="0.01" name="GradePoint" class="form-control" placeholder="e.g. 3.3" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Qualitative Description *</label>
+                        <input type="text" name="Description" class="form-control" placeholder="e.g. Very Good" required />
+                    </div>
+                    <input type="hidden" name="IsActive" value="true" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm fw-bold">Create Grade Boundary</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

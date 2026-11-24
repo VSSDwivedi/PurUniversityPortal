@@ -1,0 +1,80 @@
+@model Dictionary<string, string>
+@{
+    ViewData["Title"] = "Purbanchal University System Settings";
+    Layout = "_AdminLayout";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-gear text-primary me-2"></i> Purbanchal University OEM Configuration</h5>
+                <span class="badge bg-primary">puexam.edu.np Settings</span>
+            </div>
+
+            <div class="p-4 p-md-5">
+                <form asp-action="SaveSettings" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">1. University & Examination Office Identity</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">University Legal Name *</label>
+                            <input type="text" name="UniversityName" value="@(Model.GetValueOrDefault("UniversityName", "Purbanchal University"))" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Office / Branch Title *</label>
+                            <input type="text" name="OfficeName" value="@(Model.GetValueOrDefault("OfficeName", "Office of the Examination Management"))" class="form-control" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Office Address *</label>
+                            <input type="text" name="UniversityAddress" value="@(Model.GetValueOrDefault("UniversityAddress", "Puspalal Chowk, Biratnagar, Morang, Nepal"))" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">2. Official Contact Channels</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">General Support Email</label>
+                            <input type="email" name="ContactEmail" value="@(Model.GetValueOrDefault("ContactEmail", "puoemgt@puexam.edu.np"))" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">General Reception Telephone</label>
+                            <input type="text" name="ContactPhone" value="@(Model.GetValueOrDefault("ContactPhone", "+977-21-465240, 590937"))" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Examination Office Email *</label>
+                            <input type="email" name="ExamOfficeEmail" value="@(Model.GetValueOrDefault("ExamOfficeEmail", "puoemgt@puexam.edu.np"))" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Examination Controller Direct Telephone *</label>
+                            <input type="text" name="ExamOfficePhone" value="@(Model.GetValueOrDefault("ExamOfficePhone", "+977-21-465240"))" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">3. Examination Controller Authority (Printed on Official Documents)</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Controller of Examinations Name *</label>
+                            <input type="text" name="ControllerSignatureName" value="@(Model.GetValueOrDefault("ControllerSignatureName", "Prof. Dr. Suryanath Adhikari"))" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Official Designation *</label>
+                            <input type="text" name="ControllerDesignation" value="@(Model.GetValueOrDefault("ControllerDesignation", "Controller of Examinations"))" class="form-control" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Website Portal URL *</label>
+                            <input type="url" name="WebsiteUrl" value="@(Model.GetValueOrDefault("WebsiteUrl", "https://www.puexam.edu.np"))" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class="text-end border-top pt-3">
+                        <button type="submit" class="btn btn-primary fw-bold px-4">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Save Configuration Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

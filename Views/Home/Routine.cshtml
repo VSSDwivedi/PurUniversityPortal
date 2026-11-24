@@ -1,0 +1,219 @@
+@{
+    ViewData["Title"] = "Purbanchal University Exam Schedules";
+    ViewData["IsInnerPage"] = true;
+    var exams = ViewBag.Exams as List<Examination> ?? new List<Examination>();
+    var faculties = ViewBag.Faculties as List<Faculty> ?? new List<Faculty>();
+    var programs = ViewBag.Programs as List<ProgramModel> ?? new List<ProgramModel>();
+    var semesters = ViewBag.Semesters as List<Semester> ?? new List<Semester>();
+    int? selFaculty = ViewBag.SelectedFacultyId;
+    int? selProgram = ViewBag.SelectedProgramId;
+    int? selSem = ViewBag.SelectedSemesterId;
+}
+
+<div class="py-4 text-white" style="background: linear-gradient(135deg, #003980 0%, #121d24 100%);">
+    <div class="container">
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-calendar-days text-warning me-2"></i> Purbanchal University Exam Schedules</h2>
+        <p class="mb-0 text-white-50">Filter routines by Faculty, Program, and Semester/Year &bull; puexam.edu.np/exam-schedule-new</p>
+    </div>
+</div>
+
+<div class="container py-4">
+    <!-- Filter Form replicating puexam.edu.np/exam-schedule-new -->
+    <div class="card border-0 shadow-sm p-4 mb-4 bg-white border-top border-4 border-warning">
+        <div class="section-title mb-3">
+            <p class="text-uppercase text-muted fw-bold small mb-1">Exam Schedules</p>
+            <h3 class="fw-bold text-primary">Search Examination Schedules</h3>
+        </div>
+        <form method="get" asp-action="Routine">
+            <div class="row g-3">
+                <div class="col-lg-3 col-md-6">
+                    <div class="form-floating">
+                        <select name="facultyId" id="faculty" class="form-select">
+                            <option value="">Select Faculty</option>
+                            @foreach (var f in faculties)
+                            {
+                                <option value="@f.FacultyId" selected="@(selFaculty == f.FacultyId ? "selected" : null)">@f.FacultyName</option>
+                            }
+                        </select>
+                        <label for="faculty">FACULTY</label>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="form-floating">
+                        <select name="programId" id="program" class="form-select">
+                            <option value="">Select Program</option>
+                            @foreach (var p in programs)
+                            {
+                                <option value="@p.ProgramId" data-faculty="@p.FacultyId" selected="@(selProgram == p.ProgramId ? "selected" : null)">@p.ProgramName</option>
+                            }
+                        </select>
+                        <label for="program">PROGRAM</label>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="form-floating">
+                        <select name="semesterYearId" id="semesterYearId" class="form-select">
+                            <option value="">Semester/Year</option>
+                            @foreach (var s in semesters)
+                            {
+                                <option value="@s.SemesterId" selected="@(selSem == s.SemesterId ? "selected" : null)">@s.SemesterName</option>
+                            }
+                        </select>
+                        <label for="semesterYearId">SEMESTER / YEAR</label>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <button type="submit" class="btn btn-warning h-100 w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search Schedule
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Active Schedules Table -->
+    <div class="card border-0 shadow-sm mb-4 bg-white overflow-hidden">
+        <div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-clock text-primary me-2"></i> Active Examination Sessions</h5>
+            <span class="badge bg-primary">Academic Year 2026/2083</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Examination Title</th>
+                        <th>Type</th>
+                        <th>Session</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Shift / Time</th>
+                        <th>Center</th>
+                        <th class="text-end">Routine File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ex in exams)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-primary">@ex.ExamName</div>
+                                <span class="badge bg-secondary">@ex.ExamCode</span>
+                            </td>
+                            <td><span class="badge bg-info text-dark">@ex.ExamType</span></td>
+                            <td>@ex.AcademicYearName &bull; @ex.SemesterName</td>
+                            <td><i class="fa-regular fa-calendar-check text-success me-1"></i> @ex.StartDate.ToString("MMM dd, yyyy")</td>
+                            <td><i class="fa-regular fa-calendar-xmark text-danger me-1"></i> @ex.EndDate.ToString("MMM dd, yyyy")</td>
+                            <td><span class="badge bg-light text-dark border">07:00 AM - 10:00 AM (Morning)</span></td>
+                            <td>@(ex.DefaultCenterName ?? "Allocated Exam Centers")</td>
+                            <td class="text-end">
+                                <a href="/files/notices/Routine_Spring_2026.pdf" target="_blank" class="btn btn-sm btn-outline-danger fw-bold">
+                                    <i class="fa-solid fa-file-pdf me-1"></i> Routine PDF
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Day-wise Routine Matrix -->
+    <div class="card border-0 shadow-sm bg-white overflow-hidden">
+        <div class="p-3 bg-light border-bottom">
+            <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-table-list text-primary me-2"></i> Purbanchal University Semester Day-Wise Routine Timetable</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mb-0 text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th width="12%">Date</th>
+                        <th width="10%">Day</th>
+                        <th width="12%">Program</th>
+                        <th width="10%">Course Code</th>
+                        <th class="text-start">Course Title</th>
+                        <th width="15%">Exam Shift / Time</th>
+                        <th width="16%">Allocated Center</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>2026-04-15</strong></td>
+                        <td>Wednesday</td>
+                        <td><span class="badge bg-primary">BE-CMP / CIVIL</span></td>
+                        <td class="fw-bold">MTH111</td>
+                        <td class="text-start">Engineering Mathematics I</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-17</strong></td>
+                        <td>Friday</td>
+                        <td><span class="badge bg-primary">BE-CMP / CIVIL</span></td>
+                        <td class="fw-bold">PHY112</td>
+                        <td class="text-start">Physics for Engineers</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-19</strong></td>
+                        <td>Sunday</td>
+                        <td><span class="badge bg-primary">BE-CMP</span></td>
+                        <td class="fw-bold">CMP113</td>
+                        <td class="text-start">Computer Programming (C)</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-21</strong></td>
+                        <td>Tuesday</td>
+                        <td><span class="badge bg-primary">BE-CMP / ELE</span></td>
+                        <td class="fw-bold">ELE114</td>
+                        <td class="text-start">Basic Electrical Engineering</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-23</strong></td>
+                        <td>Thursday</td>
+                        <td><span class="badge bg-success">BBA</span></td>
+                        <td class="fw-bold">MGT111</td>
+                        <td class="text-start">Principles of Management</td>
+                        <td>01:00 PM &ndash; 04:00 PM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-25</strong></td>
+                        <td>Saturday</td>
+                        <td><span class="badge bg-success">BBA</span></td>
+                        <td class="fw-bold">ACC113</td>
+                        <td class="text-start">Financial Accounting I</td>
+                        <td>01:00 PM &ndash; 04:00 PM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#faculty').on('change', function() {
+                var facId = $(this).val();
+                if (facId) {
+                    $('#program option').each(function() {
+                        var pFac = $(this).data('faculty');
+                        if (!pFac || pFac == facId) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                } else {
+                    $('#program option').show();
+                }
+            });
+        });
+    </script>
+}

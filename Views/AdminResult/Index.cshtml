@@ -1,0 +1,73 @@
+@model List<Examination>
+@{
+    ViewData["Title"] = "Result Processing & Publication";
+    Layout = "_AdminLayout";
+}
+
+<div class="custom-card shadow-sm mb-4">
+    <div class="card-header-custom">
+        <h5><i class="fa-solid fa-square-poll-vertical text-primary"></i> University Examination Result Processing</h5>
+    </div>
+
+    <div class="p-3 bg-light border-bottom small text-muted">
+        <i class="fa-solid fa-shield-halved text-danger me-1"></i>
+        <strong>Confidentiality Protocol:</strong> Results remain strictly confidential and internal until the Examination Controller clicks "Publish Results". Students cannot view marks, SGPA, or grade sheets until official publication.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Exam Code</th>
+                    <th>Examination Title</th>
+                    <th>Academic Session</th>
+                    <th>Examinees</th>
+                    <th>Processing State</th>
+                    <th>Publication State</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ex in Model)
+                {
+                    <tr>
+                        <td><strong class="text-primary">@ex.ExamCode</strong></td>
+                        <td>
+                            <div class="fw-bold text-dark">@ex.ExamName</div>
+                            <small class="text-muted">Type: @ex.ExamType</small>
+                        </td>
+                        <td>@ex.AcademicYearName &bull; @ex.SemesterName</td>
+                        <td><span class="badge bg-secondary">@ex.TotalApplicants</span></td>
+                        <td>
+                            <span class="badge @(ex.Status == "ResultPublished" || ex.Status == "ResultProcessed" ? "bg-success" : "bg-warning text-dark")">
+                                @ex.Status
+                            </span>
+                        </td>
+                        <td>
+                            @if (ex.Status == "ResultPublished")
+                            {
+                                <span class="badge bg-success px-3 py-1"><i class="fa-solid fa-globe me-1"></i> Published to Students</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary px-3 py-1"><i class="fa-solid fa-lock me-1"></i> Confidential / Unpublished</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <form asp-action="Process" method="post" class="d-inline" onsubmit="return confirm('Calculate weighted grade points, SGPA, CGPA, and pass/fail status for all examinees in this session?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="examId" value="@ex.ExaminationId" />
+                                <button type="submit" class="btn btn-sm btn-primary fw-bold me-1">
+                                    <i class="fa-solid fa-calculator me-1"></i> Process Results
+                                </button>
+                            </form>
+                            <a asp-action="ViewLedger" asp-route-examId="@ex.ExaminationId" class="btn btn-sm btn-outline-success fw-bold">
+                                <i class="fa-solid fa-table me-1"></i> View Ledger
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

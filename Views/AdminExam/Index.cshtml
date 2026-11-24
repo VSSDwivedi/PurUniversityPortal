@@ -1,0 +1,76 @@
+@model List<Examination>
+@{
+    ViewData["Title"] = "Examination Sessions";
+    Layout = "_AdminLayout";
+}
+
+<div class="custom-card shadow-sm mb-4">
+    <div class="card-header-custom">
+        <h5><i class="fa-solid fa-calendar-check text-primary"></i> University Examination Sessions</h5>
+        <div class="d-flex gap-2">
+            <a asp-action="Centers" class="btn btn-outline-secondary btn-sm fw-bold">
+                <i class="fa-solid fa-building-flag me-1"></i> Exam Centers
+            </a>
+            <a asp-action="Create" class="btn btn-primary btn-sm fw-bold">
+                <i class="fa-solid fa-plus me-1"></i> Create Examination Session
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Exam Code</th>
+                    <th>Examination Title</th>
+                    <th>Academic Session</th>
+                    <th>Exam Period</th>
+                    <th>Application Deadline</th>
+                    <th>Fee</th>
+                    <th>Applicants</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ex in Model)
+                {
+                    <tr>
+                        <td><strong class="text-primary">@ex.ExamCode</strong></td>
+                        <td>
+                            <div class="fw-bold text-dark">@ex.ExamName</div>
+                            <small class="text-muted">Type: @ex.ExamType</small>
+                        </td>
+                        <td>@ex.AcademicYearName &bull; @ex.SemesterName</td>
+                        <td>
+                            <div>@ex.StartDate.ToString("MMM dd") - @ex.EndDate.ToString("MMM dd, yyyy")</div>
+                        </td>
+                        <td>
+                            <span class="badge bg-warning text-dark">@ex.ApplicationDeadline.ToString("MMM dd, yyyy")</span>
+                        </td>
+                        <td class="fw-bold text-success">NPR @ex.FeeAmount.ToString("N0")</td>
+                        <td>
+                            <span class="badge bg-secondary fs-6">@ex.TotalApplicants</span>
+                        </td>
+                        <td>
+                            <span class="badge @(ex.Status == "Ongoing" ? "bg-primary" : ex.Status == "ResultPublished" ? "bg-success" : ex.Status == "Upcoming" ? "bg-warning text-dark" : "bg-dark") px-2 py-1">
+                                @ex.Status
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Applications" asp-route-examId="@ex.ExaminationId" class="btn btn-sm btn-outline-primary fw-bold me-1">
+                                <i class="fa-solid fa-id-card me-1"></i> Applications
+                            </a>
+                            <a asp-controller="AdminMarks" asp-action="Index" asp-route-examId="@ex.ExaminationId" class="btn btn-sm btn-outline-warning text-dark fw-bold me-1">
+                                <i class="fa-solid fa-marker me-1"></i> Marks
+                            </a>
+                            <a asp-controller="AdminResult" asp-action="ViewLedger" asp-route-examId="@ex.ExaminationId" class="btn btn-sm btn-outline-success fw-bold">
+                                <i class="fa-solid fa-square-poll-vertical me-1"></i> Results
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

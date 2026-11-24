@@ -1,0 +1,103 @@
+@model List<ExaminationApplication>
+@{
+    ViewData["Title"] = "My Examination Applications";
+    Layout = "_StudentLayout";
+}
+
+<div class="custom-card shadow-sm">
+    <div class="card-header-custom">
+        <h5><i class="fa-solid fa-clock-rotate-left text-primary"></i> Examination Applications History</h5>
+        <a asp-action="ApplyExam" class="btn btn-primary btn-sm fw-bold">
+            <i class="fa-solid fa-file-pen me-1"></i> New Application
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Application No</th>
+                    <th>Examination Title</th>
+                    <th>Category</th>
+                    <th>Semester</th>
+                    <th>Submission Date</th>
+                    <th>Fee Paid</th>
+                    <th>Assigned Roll No</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var a in Model)
+                    {
+                        <tr>
+                            <td><strong class="text-primary">@a.ApplicationNumber</strong></td>
+                            <td>
+                                <div class="fw-bold text-dark">@a.ExamName</div>
+                                <small class="text-muted">College: @a.CollegeName</small>
+                            </td>
+                            <td><span class="badge bg-secondary">@a.ExamType</span></td>
+                            <td>@a.SemesterName</td>
+                            <td>@a.SubmissionDate.ToString("MMM dd, yyyy")</td>
+                            <td class="fw-bold text-success">NPR @a.FeePaid.ToString("N0")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(a.AssignedRollNumber))
+                                {
+                                    <span class="badge bg-danger fs-6">@a.AssignedRollNumber</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">Pending Allocation</span>
+                                }
+                            </td>
+                            <td>
+                                @if (a.Status == "Approved")
+                                {
+                                    <span class="badge bg-success px-3 py-2"><i class="fa-solid fa-check me-1"></i> Approved</span>
+                                }
+                                else if (a.Status == "Pending")
+                                {
+                                    <span class="badge bg-warning text-dark px-3 py-2"><i class="fa-solid fa-hourglass-half me-1"></i> Under Review</span>
+                                }
+                                else if (a.Status == "CorrectionRequired")
+                                {
+                                    <span class="badge bg-info text-dark px-3 py-2"><i class="fa-solid fa-pen me-1"></i> Correction</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger px-3 py-2"><i class="fa-solid fa-xmark me-1"></i> @a.Status</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                @if (a.Status == "Approved")
+                                {
+                                    <a asp-action="AdmitCard" asp-route-examId="@a.ExaminationId" class="btn btn-sm btn-warning fw-bold">
+                                        <i class="fa-solid fa-id-card me-1"></i> View Admit Card
+                                    </a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-outline-secondary" disabled>
+                                        <i class="fa-solid fa-lock me-1"></i> Admit Card Locked
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-inbox fa-3x mb-2 text-secondary"></i>
+                            <p>No examination applications submitted yet.</p>
+                            <a asp-action="ApplyExam" class="btn btn-primary btn-sm fw-bold">Apply for Upcoming Examination</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

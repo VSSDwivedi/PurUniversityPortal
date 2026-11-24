@@ -1,0 +1,95 @@
+@model List<ExaminationApplication>
+@{
+    ViewData["Title"] = "College Examination Applications";
+    Layout = "_AdminLayout";
+    var college = ViewBag.College as College;
+    var exams = ViewBag.Examinations as List<Examination> ?? new List<Examination>();
+}
+
+<div class="custom-card shadow-sm">
+    <div class="card-header-custom">
+        <h5><i class="fa-solid fa-file-invoice text-primary"></i> Examination Applications &bull; @(college?.CollegeName ?? "College")</h5>
+        <a asp-action="AdmitCards" class="btn btn-warning btn-sm fw-bold">
+            <i class="fa-solid fa-id-card me-1"></i> View College Admit Cards
+        </a>
+    </div>
+
+    <!-- Filter Form -->
+    <div class="p-3 bg-light border-bottom">
+        <form method="get" class="row g-2 align-items-center">
+            <div class="col-md-5">
+                <select name="examId" class="form-select form-select-sm">
+                    <option value="">-- All Examinations --</option>
+                    @foreach (var ex in exams)
+                    {
+                        <option value="@ex.ExaminationId" selected="@(ViewBag.SelectedExam == ex.ExaminationId)">@ex.ExamName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="">-- All Statuses --</option>
+                    <option value="Approved" selected="@(ViewBag.SelectedStatus == "Approved")">Approved</option>
+                    <option value="Pending" selected="@(ViewBag.SelectedStatus == "Pending")">Pending</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold"><i class="fa-solid fa-filter me-1"></i> Filter</button>
+                <a asp-action="Applications" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-rotate-left"></i></a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>App Number</th>
+                    <th>Student Name</th>
+                    <th>Reg No</th>
+                    <th>Examination</th>
+                    <th>Program & Semester</th>
+                    <th>Roll Number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var a in Model)
+                    {
+                        <tr>
+                            <td><strong class="text-primary">@a.ApplicationNumber</strong></td>
+                            <td class="fw-bold text-dark">@a.StudentName</td>
+                            <td>@(a.RegistrationNumber ?? "Pending")</td>
+                            <td>@a.ExamName</td>
+                            <td>@a.ProgramName &bull; @a.SemesterName</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(a.AssignedRollNumber))
+                                {
+                                    <span class="badge bg-danger fs-6">@a.AssignedRollNumber</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">Pending Allocation</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge @(a.Status == "Approved" ? "bg-success" : a.Status == "Pending" ? "bg-warning text-dark" : "bg-danger") px-3 py-1">
+                                    @a.Status
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-muted">No examination applications found for this selection.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

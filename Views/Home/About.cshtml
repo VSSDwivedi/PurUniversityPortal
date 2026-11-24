@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "About Us";
+    ViewData["IsInnerPage"] = true;
+    var faculties = ViewBag.Faculties as List<Faculty> ?? new List<Faculty>();
+}
+
+<div class="py-5 text-white" style="background: linear-gradient(135deg, #003980 0%, #121d24 100%);">
+    <div class="container text-center">
+        <h1 class="fw-bold mb-2">About Office of the Examination Management</h1>
+        <p class="lead mb-0 text-warning">Purbanchal University &bull; Biratnagar, Nepal &bull; puexam.edu.np</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <h3 class="fw-bold text-primary mb-3">Welcome from the Office of Examination Management</h3>
+            <p class="lead text-muted">
+                The Office of the Examination Management (OEM) at Purbanchal University is entrusted with the sacred institutional mandate of administering fair, standard, confidential, and secure academic assessments for students enrolled across our constituent schools and numerous affiliated colleges throughout Nepal.
+            </p>
+            <p>
+                Established under the Purbanchal University Act 2050 B.S. (1993), our office continuously modernizes examination procedures through comprehensive end-to-end automation. Through our official examination portal <strong>puexam.edu.np</strong>, students and affiliated colleges can access online exam registration, verify semester fee status, download digital admit cards, view exam schedules, check semester marks, and print authentic provisional grade sheets.
+            </p>
+
+            <h4 class="fw-bold text-primary mt-5 mb-3">Our Core Mandates</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-danger">
+                        <h6 class="fw-bold text-danger"><i class="fa-solid fa-lock me-2"></i> Confidentiality & Security</h6>
+                        <p class="small text-muted mb-0">Strict confidential protocols for paper setting, confidential coding, moderation, and digital marks custody.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-primary">
+                        <h6 class="fw-bold text-primary"><i class="fa-solid fa-calendar-check me-2"></i> Adherence to Timetables</h6>
+                        <p class="small text-muted mb-0">Unwavering dedication to published examination routines, semester calendars, and timely result release.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-success">
+                        <h6 class="fw-bold text-success"><i class="fa-solid fa-laptop-code me-2"></i> Digitized Portal Services</h6>
+                        <p class="small text-muted mb-0">Empowering examinees with 24/7 web access to registration tracking, admit card generation, and marks breakdown.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-warning">
+                        <h6 class="fw-bold text-warning"><i class="fa-solid fa-scale-balanced me-2"></i> Transparent Evaluation</h6>
+                        <p class="small text-muted mb-0">Standardized marking schemes according to Purbanchal University 4.0 grading guidelines and swift retotaling support.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="fw-bold text-primary mt-5 mb-3">The Seven Academic Faculties of Purbanchal University</h4>
+            <div class="table-responsive bg-white rounded border shadow-sm">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Faculty Code</th>
+                            <th>Faculty Name</th>
+                            <th>Dean / Leadership</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (faculties.Any())
+                        {
+                            @foreach (var f in faculties)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-primary">@f.FacultyCode</span></td>
+                                    <td class="fw-bold">@f.FacultyName</td>
+                                    <td>@f.DeanName</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="4" class="text-center py-3">No faculties recorded.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm p-4 text-center bg-white mb-4 border-top border-4 border-primary">
+                <img src="~/images/college-logo.png" alt="Purbanchal University" class="img-fluid mx-auto mb-3" style="max-height: 120px;" />
+                <h5 class="fw-bold text-primary mb-1">PURBANCHAL UNIVERSITY</h5>
+                <p class="small text-muted mb-3">Office of the Examination Management</p>
+                <div class="text-start small">
+                    <div class="mb-2"><i class="fa-solid fa-location-dot text-danger me-2"></i> Puspalal Chowk, Biratnagar, Morang</div>
+                    <div class="mb-2"><i class="fa-solid fa-phone text-warning me-2"></i> +977-21-465240, 590937</div>
+                    <div class="mb-2"><i class="fa-solid fa-envelope text-primary me-2"></i> puoemgt@puexam.edu.np</div>
+                    <div><i class="fa-solid fa-globe text-info me-2"></i> www.puexam.edu.np</div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm p-4 bg-light">
+                <h6 class="fw-bold text-primary mb-3">Quick Navigation</h6>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><a asp-controller="Results" asp-action="Index"><i class="fa-solid fa-angle-right me-2 text-warning"></i> Find Examination Results</a></li>
+                    <li class="mb-2"><a asp-controller="Home" asp-action="Routine"><i class="fa-solid fa-angle-right me-2 text-warning"></i> Examination Schedules</a></li>
+                    <li class="mb-2"><a asp-controller="Student" asp-action="ApplyExam"><i class="fa-solid fa-angle-right me-2 text-warning"></i> Exam Form Fill-up</a></li>
+                    <li class="mb-2"><a asp-controller="Student" asp-action="AdmitCard"><i class="fa-solid fa-angle-right me-2 text-warning"></i> Download Admit Card</a></li>
+                    <li><a asp-controller="Account" asp-action="Register"><i class="fa-solid fa-angle-right me-2 text-warning"></i> Online Student Registration</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

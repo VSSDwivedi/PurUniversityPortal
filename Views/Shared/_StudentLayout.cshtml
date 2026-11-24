@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Student Portal | Purbanchal University</title>
+    
+    <!-- Favicons -->
+    <link href="~/images/college-logo.png" rel="icon" type="image/png" />
+    <link href="~/images/college-logo.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Quicksand:wght@400;500;600;700&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 & Font Awesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Main puexam.edu.np Site Styles -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-light">
+    <div class="dashboard-wrapper">
+        <!-- Student Sidebar -->
+        <aside class="dashboard-sidebar no-print">
+            <div class="sidebar-brand">
+                <img src="~/images/pulogo.png" alt="Purbanchal University" style="max-height: 44px;" />
+                <div class="overflow-hidden">
+                    <span class="d-block text-white fw-bold small text-truncate">PURBANCHAL UNIVERSITY</span>
+                    <small class="text-warning fw-semibold" style="font-size: 11px;">Student Portal & Entrance</small>
+                </div>
+            </div>
+
+            <div class="p-3 bg-black bg-opacity-25 border-bottom border-secondary d-flex align-items-center gap-2">
+                <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; font-weight: bold;">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div class="overflow-hidden text-truncate">
+                    <div class="fw-bold text-white small text-truncate">@User.Identity?.Name</div>
+                    <small class="text-white-50" style="font-size: 11px;">Purbanchal Student</small>
+                </div>
+            </div>
+
+            <ul class="nav flex-column py-2">
+                <li class="nav-item">
+                    <a asp-controller="Student" asp-action="Index" class="nav-link">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Student Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Student" asp-action="Profile" class="nav-link">
+                        <i class="fa-solid fa-id-badge"></i>
+                        <span>My Academic Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Student" asp-action="ApplyExam" class="nav-link">
+                        <i class="fa-solid fa-file-pen"></i>
+                        <span>Apply Exam Form</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Student" asp-action="MyApplications" class="nav-link">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>My Applications</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Student" asp-action="AdmitCard" class="nav-link">
+                        <i class="fa-solid fa-id-card"></i>
+                        <span>Exam Card / Admit Card</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Student" asp-action="Results" class="nav-link">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Grade Sheets & Results</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Routine" class="nav-link">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Exam Routine / Schedule</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Notices" class="nav-link">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>University Notices</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="p-3 border-top border-secondary mt-auto">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-light w-100 mb-2">
+                    <i class="fa-solid fa-globe me-1"></i> puexam.edu.np Home
+                </a>
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm btn-danger w-100">
+                        <i class="fa-solid fa-right-from-bracket me-1"></i> Sign Out
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="dashboard-content">
+            <!-- Topbar in Dashboard -->
+            <div class="d-flex justify-content-between align-items-center mb-4 no-print bg-white p-3 rounded-3 shadow-sm border">
+                <div>
+                    <h4 class="fw-bold mb-0 text-primary">@ViewData["Title"]</h4>
+                    <small class="text-muted">Purbanchal University &bull; Office of the Examination Management</small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a asp-controller="Student" asp-action="AdmitCard" class="btn btn-warning btn-sm fw-bold">
+                        <i class="fa-solid fa-id-card me-1"></i> Exam Card
+                    </a>
+                    <a asp-controller="Results" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                        <i class="fa-solid fa-square-poll-vertical me-1"></i> Find Result
+                    </a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                        <i class="fa-solid fa-house me-1"></i> Public Portal
+                    </a>
+                </div>
+            </div>
+
+            <!-- Global Alerts -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["InfoMessage"] != null)
+            {
+                <div class="alert alert-info alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fa-solid fa-circle-info me-2"></i> @TempData["InfoMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

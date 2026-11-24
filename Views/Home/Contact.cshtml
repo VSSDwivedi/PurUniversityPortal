@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = "Contact Us";
+    ViewData["IsInnerPage"] = true;
+}
+
+<div class="py-4 text-white" style="background: linear-gradient(135deg, #003980 0%, #121d24 100%);">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-headset text-warning me-2"></i> Contact Examination Office</h2>
+        <p class="mb-0 text-white-50">Purbanchal University Office of the Examination Management &bull; Biratnagar, Nepal</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Contact Details Column -->
+        <div class="col-lg-5">
+            <div class="bg-white p-4 shadow-sm rounded border border-top border-4 border-primary h-100">
+                <h4 class="fw-bold text-primary mb-4">Official Contact Points</h4>
+                
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <div class="rounded-circle p-3 bg-primary bg-opacity-10 text-primary fs-5">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Physical Location</h6>
+                        <p class="text-muted small mb-0">Office of the Examination Management<br/>Puspalal Chowk, Biratnagar, Morang, Nepal</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <div class="rounded-circle p-3 bg-danger bg-opacity-10 text-danger fs-5">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Phone & Inquiries</h6>
+                        <p class="text-muted small mb-0">
+                            Reception: +977-21-465240, 590937<br/>
+                            Administration: +977-21-465242<br/>
+                            Account: +977-21-465503<br/>
+                            Registration: +977-21-464502<br/>
+                            Engineering Branch: +977-21-464964<br/>
+                            Management / Law: +977-21-464965<br/>
+                            Arts / Education / S&T: +977-21-464338<br/>
+                            Medical Sciences: +977-21-464339
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <div class="rounded-circle p-3 bg-success bg-opacity-10 text-success fs-5">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Electronic Mail</h6>
+                        <p class="text-muted small mb-0">
+                            General: puoemgt@puexam.edu.np<br/>
+                            Controller: controller@puexam.edu.np<br/>
+                            Support: entrance.support@pufoe.edu.np
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-circle p-3 bg-warning bg-opacity-10 text-warning fs-5">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Office Hours</h6>
+                        <p class="text-muted small mb-0">
+                            Sunday &ndash; Friday: 10:00 AM &ndash; 05:00 PM (Summer)<br/>
+                            Sunday &ndash; Friday: 10:00 AM &ndash; 04:00 PM (Winter)<br/>
+                            Saturday & Public Holidays: Closed
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form Column -->
+        <div class="col-lg-7">
+            <div class="bg-white p-4 shadow-sm rounded border">
+                <h4 class="fw-bold text-primary mb-3">Online Query Submission</h4>
+                <p class="text-muted small mb-4">Please submit your queries regarding exams, registrations, mark sheets or syllabus.</p>
+
+                <form asp-controller="Home" asp-action="Contact" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Full Name *</label>
+                            <input type="text" name="fullName" class="form-control" placeholder="Enter Full Name" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Email Address *</label>
+                            <input type="email" name="email" class="form-control" placeholder="Enter Email" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Subject *</label>
+                            <input type="text" name="subject" class="form-control" placeholder="Inquiry Subject" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Detailed Message *</label>
+                            <textarea name="message" class="form-control" rows="5" placeholder="Please elaborate your query with roll number / registration number if applicable..." required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary fw-bold px-4">
+                                <i class="fa-solid fa-paper-plane me-1"></i> Send Query to OEM
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Map -->
+            <div class="mt-4 rounded shadow-sm overflow-hidden border">
+                <iframe class="w-100" height="260" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2524.8781121203533!2d87.2903417376076!3d26.49705956645814!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef7415ff8ddb95%3A0xcebfd34916021dc4!2sPurbanchal%20University%20Office%20Of%20The%20Examination%20Management!5e0!3m2!1sen!2snp!4v1718279097965!5m2!1sen!2snp" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

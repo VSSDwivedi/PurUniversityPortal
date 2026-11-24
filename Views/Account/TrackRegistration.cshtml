@@ -1,0 +1,93 @@
+@model Student?
+@{
+    ViewData["Title"] = "Track Registration Status";
+    string? query = ViewBag.Query;
+    bool searched = ViewBag.Searched == true;
+}
+
+<div class="bg-primary text-white py-4" style="background: linear-gradient(135deg, #0b2545 0%, #133b5c 100%);">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-magnifying-glass text-warning me-2"></i> Track Student Registration</h2>
+        <p class="mb-0 text-white-50">Real-time status check using Application Number, Student ID, or Registered Email.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border p-4 mb-4">
+                <form asp-action="TrackRegistration" method="get">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-light"><i class="fa-solid fa-id-badge text-primary"></i></span>
+                        <input type="text" name="query" value="@query" class="form-control" placeholder="Enter Application No (e.g. REG2024000101) or Student ID" required />
+                        <button type="submit" class="btn btn-warning fw-bold px-4">
+                            <i class="fa-solid fa-search me-1"></i> Track
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            @if (searched)
+            {
+                if (Model != null)
+                {
+                    <div class="card shadow-sm border overflow-hidden">
+                        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold mb-0 text-primary">Student Registration Record</h5>
+                            <span class="badge @(Model.RegistrationStatus == "Approved" ? "bg-success" : Model.RegistrationStatus == "Pending" ? "bg-warning text-dark" : "bg-danger") px-3 py-2 fs-6">
+                                @Model.RegistrationStatus
+                            </span>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <small class="text-muted d-block">STUDENT FULL NAME</small>
+                                    <span class="fw-bold fs-5 text-dark">@Model.FullName</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted d-block">STUDENT UNIQUE ID</small>
+                                    <span class="fw-bold text-primary">@Model.StudentUniqueId</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted d-block">OFFICIAL REGISTRATION NUMBER</small>
+                                    <span class="fw-bold text-danger">@(string.IsNullOrEmpty(Model.RegistrationNumber) ? "Pending Approval (Will be generated upon college verification)" : Model.RegistrationNumber)</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted d-block">APPLICATION NUMBER</small>
+                                    <span class="fw-bold text-secondary">@(Model.ApplicationNumber ?? "N/A")</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted d-block">COLLEGE / CAMPUS</small>
+                                    <span class="fw-semibold text-dark">@Model.CollegeName</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted d-block">PROGRAM & SEMESTER</small>
+                                    <span class="fw-semibold text-dark">@Model.ProgramName &bull; @Model.CurrentSemester</span>
+                                </div>
+                                <div class="col-12 border-top pt-3">
+                                    <small class="text-muted d-block">VERIFICATION REMARKS</small>
+                                    <span class="text-muted">@(Model.VerificationRemarks ?? "Your application is currently under verification by the college administration and central university examination controller.")</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-light p-3 text-end">
+                            <a asp-action="Login" class="btn btn-primary btn-sm fw-bold">
+                                <i class="fa-solid fa-right-to-bracket me-1"></i> Proceed to Login
+                            </a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning text-center p-4 shadow-sm">
+                        <i class="fa-solid fa-circle-exclamation fa-3x text-warning mb-2"></i>
+                        <h5 class="fw-bold">No Registration Record Found</h5>
+                        <p class="mb-0 text-muted">We could not find any student registration matching '<strong>@query</strong>'. Please check for typographical errors or contact your college admissions office.</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,220 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Executive Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<!-- Top 4 Primary KPI Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-3 col-sm-6">
+        <div class="kpi-card blue">
+            <div>
+                <div class="kpi-value">@Model.TotalStudents</div>
+                <div class="kpi-title">Total Enrolled Students</div>
+                <small class="text-white-50">@Model.RegisteredStudents Verified &bull; @Model.PendingRegistrations Pending</small>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-user-graduate"></i></div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6">
+        <div class="kpi-card green">
+            <div>
+                <div class="kpi-value">@Model.TotalColleges</div>
+                <div class="kpi-title">Affiliated Colleges</div>
+                <small class="text-white-50">@Model.TotalFaculties Faculties &bull; @Model.TotalPrograms Programs</small>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-building-columns"></i></div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6">
+        <div class="kpi-card orange">
+            <div>
+                <div class="kpi-value">@Model.TotalApplications</div>
+                <div class="kpi-title">Exam Applications</div>
+                <small class="text-white-50">@Model.ApprovedApplications Approved &bull; @Model.AdmitCardsGenerated Admit Cards</small>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-file-invoice"></i></div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6">
+        <div class="kpi-card purple">
+            <div>
+                <div class="kpi-value">@Model.ResultsPublished</div>
+                <div class="kpi-title">Published Results</div>
+                <small class="text-white-50">@Model.TotalExaminations Total Exam Sessions</small>
+            </div>
+            <div class="kpi-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
+        </div>
+    </div>
+</div>
+
+<!-- Secondary KPI Row -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-6">
+        <div class="bg-white p-3 rounded-3 border shadow-sm text-center">
+            <div class="fs-4 fw-bold text-primary">@Model.TotalSubjects</div>
+            <div class="small fw-semibold text-muted text-uppercase">Curriculum Subjects</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="bg-white p-3 rounded-3 border shadow-sm text-center">
+            <div class="fs-4 fw-bold text-success">@Model.RegisteredStudents</div>
+            <div class="small fw-semibold text-muted text-uppercase">Approved Students</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="bg-white p-3 rounded-3 border shadow-sm text-center">
+            <div class="fs-4 fw-bold text-warning">@Model.PendingRegistrations</div>
+            <div class="small fw-semibold text-muted text-uppercase">Pending Verifications</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="bg-white p-3 rounded-3 border shadow-sm text-center">
+            <div class="fs-4 fw-bold text-danger">@Model.AdmitCardsGenerated</div>
+            <div class="small fw-semibold text-muted text-uppercase">Admit Cards Active</div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Graphical Analytics Row -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="custom-card shadow-sm h-100">
+            <div class="card-header-custom">
+                <h5><i class="fa-solid fa-chart-bar text-primary"></i> Student Distribution by College</h5>
+            </div>
+            <div class="p-3">
+                <canvas id="collegeChart" height="110"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="custom-card shadow-sm h-100">
+            <div class="card-header-custom">
+                <h5><i class="fa-solid fa-chart-pie text-success"></i> Enrollment by Degree</h5>
+            </div>
+            <div class="p-3">
+                <canvas id="programChart" height="230"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Applications & Pending Registrations Grid -->
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="custom-card shadow-sm h-100">
+            <div class="card-header-custom">
+                <h5><i class="fa-solid fa-clock-rotate-left text-primary"></i> Recent Examination Applications</h5>
+                <a asp-controller="AdminExam" asp-action="Applications" class="btn btn-sm btn-outline-primary fw-bold">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Candidate</th>
+                            <th>College</th>
+                            <th>Semester</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var app in Model.RecentApplications)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="fw-bold text-dark">@app.StudentName</div>
+                                    <small class="text-muted">@app.ApplicationNumber</small>
+                                </td>
+                                <td>@app.CollegeName</td>
+                                <td>@app.SemesterName</td>
+                                <td>
+                                    <span class="badge @(app.Status == "Approved" ? "bg-success" : app.Status == "Pending" ? "bg-warning text-dark" : "bg-danger")">
+                                        @app.Status
+                                    </span>
+                                </td>
+                                <td>
+                                    <a asp-controller="AdminExam" asp-action="Applications" asp-route-examId="@app.ExaminationId" class="btn btn-sm btn-outline-secondary py-0">Review</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="custom-card shadow-sm h-100">
+            <div class="card-header-custom">
+                <h5><i class="fa-solid fa-user-plus text-warning"></i> Recent Student Enrollments</h5>
+                <a asp-controller="AdminStudent" asp-action="Index" class="btn btn-sm btn-outline-primary fw-bold">View Master</a>
+            </div>
+            <div class="list-group list-group-flush">
+                @foreach (var st in Model.RecentStudents)
+                {
+                    <div class="list-group-item d-flex justify-content-between align-items-center py-2">
+                        <div>
+                            <div class="fw-bold text-dark">@st.FullName</div>
+                            <small class="text-muted">@st.ProgramName &bull; @st.CollegeName</small>
+                        </div>
+                        <span class="badge @(st.RegistrationStatus == "Approved" ? "bg-success" : "bg-warning text-dark")">
+                            @st.RegistrationStatus
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // College Chart
+        var collegeCtx = document.getElementById('collegeChart').getContext('2d');
+        var collegeChart = new Chart(collegeCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CollegeNames)),
+                datasets: [{
+                    label: 'Enrolled Students',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CollegeStudentCounts)),
+                    backgroundColor: ['#1e3c72', '#2a5298', '#11998e', '#f7971e'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+
+        // Program Chart
+        var progCtx = document.getElementById('programChart').getContext('2d');
+        var progChart = new Chart(progCtx, {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ProgramNames)),
+                datasets: [{
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ProgramStudentCounts)),
+                    backgroundColor: ['#0b2545', '#c0392b', '#f39c12', '#27ae60', '#8e44ad', '#16a085']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+}

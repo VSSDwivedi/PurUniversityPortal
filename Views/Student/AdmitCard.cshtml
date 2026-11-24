@@ -1,0 +1,177 @@
+@model AdmitCard
+@{
+    ViewData["Title"] = "Exam Card / Admit Card - " + Model.RollNumber;
+    Layout = "_StudentLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3 no-print">
+    <div>
+        <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-id-card me-2"></i> Purbanchal University Exam Card / Admit Card</h5>
+        <small class="text-muted">Generated for: @Model.StudentName &bull; Roll No: @Model.RollNumber</small>
+    </div>
+    <div>
+        <button onclick="window.print()" class="btn btn-primary fw-bold shadow-sm">
+            <i class="fa-solid fa-print me-1"></i> Print Exam Card (A4)
+        </button>
+        <a asp-action="MyApplications" class="btn btn-outline-secondary ms-2">
+            Back to Applications
+        </a>
+    </div>
+</div>
+
+<div class="admitcard-container shadow bg-white">
+    <!-- Security Watermark -->
+    <div class="print-watermark" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 5rem; color: rgba(0, 57, 128, 0.04); font-weight: 900; pointer-events: none; white-space: nowrap;">
+        PURBANCHAL UNIVERSITY
+    </div>
+
+    <!-- Official Header -->
+    <div class="admit-card-header text-center border-bottom pb-3 mb-3">
+        <img src="~/images/pulogo.png" alt="Purbanchal University" style="max-height: 80px;" class="mb-2" />
+        <h3 class="fw-bold mb-0 text-dark" style="letter-spacing: 0.5px;">PURBANCHAL UNIVERSITY</h3>
+        <h5 class="fw-bold text-danger mb-1" style="font-size: 1.15rem;">Office of the Examination Management</h5>
+        <div class="small text-muted mb-2">Puspalal Chowk, Biratnagar, Morang, Nepal &bull; puexam.edu.np</div>
+        <div class="badge bg-dark px-4 py-2 fs-6 text-uppercase">
+            EXAM CARD / ADMIT CARD
+        </div>
+    </div>
+
+    <!-- Examination Meta & Student Info Layout -->
+    <div class="row align-items-center mb-3">
+        <!-- Student Details Left -->
+        <div class="col-8">
+            <table class="table table-sm table-borderless mb-0" style="font-size: 0.95rem;">
+                <tr>
+                    <td style="width: 170px;" class="fw-bold text-muted">Examination Session:</td>
+                    <td class="fw-bold text-primary fs-6">@Model.ExamName</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold text-muted">Candidate Name:</td>
+                    <td class="fw-bold text-dark text-uppercase fs-6">@Model.StudentName</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold text-muted">Roll / Symbol No.:</td>
+                    <td class="fw-bold text-danger fs-5">@Model.RollNumber</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold text-muted">Registration Number:</td>
+                    <td class="fw-bold text-primary">@Model.RegistrationNumber</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold text-muted">Faculty & Program:</td>
+                    <td>@Model.FacultyName &bull; <strong>@Model.ProgramName</strong></td>
+                </tr>
+                <tr>
+                    <td class="fw-bold text-muted">College / Campus:</td>
+                    <td><strong>@Model.CollegeName</strong></td>
+                </tr>
+                <tr>
+                    <td class="fw-bold text-muted">Semester / Level:</td>
+                    <td><strong>@Model.SemesterName</strong></td>
+                </tr>
+                <tr>
+                    <td class="fw-bold text-muted">Examination Center:</td>
+                    <td class="fw-bold text-dark">
+                        <i class="fa-solid fa-location-dot text-danger me-1"></i> @Model.CenterName (@Model.CenterLocation)
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Student Photo & QR Code Right -->
+        <div class="col-4 text-center">
+            @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+            {
+                <img src="@Model.PhotoUrl" alt="Student Photo" class="admitcard-photo-box shadow-sm mb-2 mx-auto" />
+            }
+            else
+            {
+                <div class="admitcard-photo-box shadow-sm mb-2 mx-auto d-flex align-items-center justify-content-center bg-light text-secondary fs-1">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            }
+            <div class="small text-muted fw-bold">Candidate Signature</div>
+            <div style="height: 25px; border-bottom: 1px dashed #64748b; width: 140px; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+    <!-- Approved Subjects & Timetable Schedule -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-dark border-bottom pb-1 mb-2">
+            <i class="fa-solid fa-list-check me-1"></i> Authorized Examination Subjects & Routine
+        </h6>
+        <table class="table table-bordered table-sm align-middle text-center mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 50px;">S.N.</th>
+                    <th style="width: 120px;">Course Code</th>
+                    <th class="text-start">Course Title</th>
+                    <th style="width: 80px;">Category</th>
+                    <th style="width: 130px;">Exam Date</th>
+                    <th style="width: 160px;">Time / Shift</th>
+                    <th style="width: 120px;">Invigilator Sign</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Subjects.Any())
+                {
+                    int i = 1;
+                    foreach (var s in Model.Subjects)
+                    {
+                        <tr>
+                            <td>@(i++)</td>
+                            <td class="fw-bold text-primary">@s.SubjectCode</td>
+                            <td class="text-start">@s.SubjectName</td>
+                            <td><span class="badge bg-secondary">@s.SubjectType</span></td>
+                            <td class="fw-bold text-danger">@(s.ExamDate?.ToString("yyyy-MM-dd") ?? "As Per Routine")</td>
+                            <td>@(s.ExamTime ?? "07:00 AM - 10:00 AM")</td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-2">Subject routine specified in official university notice.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Instructions to the Examinee -->
+    <div class="border rounded p-3 mb-4 bg-light small" style="font-size: 0.82rem; line-height: 1.5;">
+        <strong class="text-dark d-block mb-1">INSTRUCTIONS TO THE EXAMINEE (PURBANCHAL UNIVERSITY):</strong>
+        <ol class="mb-0 ps-3">
+            <li>Examinees must preserve this Exam Card carefully and produce it on every day of examination along with institutional college ID.</li>
+            <li>Entry to the examination hall will strictly close 15 minutes after commencement of examination.</li>
+            <li>Mobile phones, smartwatches, programmable calculators, bags, and unauthorized slips are strictly prohibited in the exam hall.</li>
+            <li>Examinees must correctly write their Symbol Number and Purbanchal University Registration Number on the answer script cover page.</li>
+            <li>Any unfair means or malpractice will lead to immediate expulsion and disciplinary cancellation of examinations.</li>
+        </ol>
+    </div>
+
+    <!-- Footer: QR Code, Controller Signature, Verification -->
+    <div class="row align-items-end pt-2 border-top">
+        <div class="col-4 text-center">
+            @if (!string.IsNullOrEmpty(Model.QrCodeBase64))
+            {
+                <img src="@Model.QrCodeBase64" alt="Verification QR" style="width: 85px; height: 85px;" class="border p-1" />
+            }
+            <div class="text-muted" style="font-size: 0.65rem;">Scan to verify on puexam.edu.np</div>
+        </div>
+        <div class="col-4 text-center">
+            <div class="small text-muted mb-1">Date of Generation</div>
+            <strong class="text-dark">@Model.GeneratedDate.ToString("MMMM dd, yyyy")</strong>
+            <div class="small text-muted">Card No: @Model.AdmitCardNumber</div>
+        </div>
+        <div class="col-4 text-center">
+            <div style="font-family: 'Brush Script MT', cursive; font-size: 1.7rem; color: #003980;">
+                Prof. Dr. Suryanath Adhikari
+            </div>
+            <div class="signature-line" style="border-top: 1px solid #000;">
+                Controller of Examinations
+            </div>
+        </div>
+    </div>
+</div>

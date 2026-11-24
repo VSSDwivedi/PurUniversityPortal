@@ -1,0 +1,80 @@
+@model List<Notice>
+@{
+    ViewData["Title"] = "Notice Board Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="custom-card shadow-sm mb-4">
+    <div class="card-header-custom">
+        <h5><i class="fa-solid fa-bullhorn text-primary"></i> University Notice Board</h5>
+        <a asp-action="Create" class="btn btn-primary btn-sm fw-bold">
+            <i class="fa-solid fa-plus me-1"></i> Publish Notice
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Publish Date</th>
+                    <th>Notice Title</th>
+                    <th>Category</th>
+                    <th>Pinned?</th>
+                    <th>Attachment</th>
+                    <th>Views</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var n in Model)
+                {
+                    <tr>
+                        <td><strong>@n.PublishDate.ToString("yyyy-MM-dd")</strong></td>
+                        <td>
+                            <div class="fw-bold text-dark">@n.Title</div>
+                            <small class="text-muted">Slug: @n.Slug</small>
+                        </td>
+                        <td><span class="@(n.BadgeClass ?? "badge bg-primary")">@n.CategoryName</span></td>
+                        <td>
+                            @if (n.IsPinned)
+                            {
+                                <span class="badge bg-danger"><i class="fa-solid fa-thumbtack me-1"></i> Yes</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted small">No</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(n.AttachmentUrl))
+                            {
+                                <a href="@n.AttachmentUrl" target="_blank" class="text-danger fw-bold text-decoration-none">
+                                    <i class="fa-solid fa-file-pdf me-1"></i> PDF
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted small">None</span>
+                            }
+                        </td>
+                        <td><span class="badge bg-light text-dark border">@n.ViewCount</span></td>
+                        <td>
+                            <span class="badge @(n.IsActive ? "bg-success" : "bg-danger")">
+                                @(n.IsActive ? "Published" : "Draft")
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <form asp-action="Delete" asp-route-id="@n.NoticeId" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to deactivate this notice?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

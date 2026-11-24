@@ -1,0 +1,169 @@
+@model ExamApplicationViewModel
+@{
+    ViewData["Title"] = "Apply for Examination";
+    Layout = "_StudentLayout";
+    var activeExams = ViewBag.ActiveExams as List<Examination> ?? new List<Examination>();
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border rounded-3">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-file-pen me-2"></i> Semester Examination Application</h5>
+                    <small class="text-muted">Apply for upcoming examinations, select subject papers, and attach payment voucher.</small>
+                </div>
+                <span class="badge bg-danger fs-6 px-3 py-2">Official Examination Form</span>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <form asp-action="ApplyExam" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="StudentId" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 mb-4"></div>
+
+                    <!-- 1. Examination Session Selection -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                            <i class="fa-solid fa-calendar-check me-2 text-danger"></i> 1. Examination Session
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label asp-for="ExaminationId" class="form-label small fw-bold">Select Active Examination *</label>
+                                <select asp-for="ExaminationId" class="form-select" onchange="window.location.href='@Url.Action("ApplyExam")?examId=' + this.value" required>
+                                    @foreach (var ex in activeExams)
+                                    {
+                                        <option value="@ex.ExaminationId" selected="@(ex.ExaminationId == Model.ExaminationId)">
+                                            @ex.ExamName (@ex.ExamCode) &bull; Deadline: @ex.ApplicationDeadline.ToString("MMM dd, yyyy")
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="ExamType" class="form-label small fw-bold">Examination Category *</label>
+                                <select asp-for="ExamType" class="form-select" required>
+                                    <option value="Regular">Regular Examination</option>
+                                    <option value="Back">Backlog / Retake Examination</option>
+                                    <option value="Chance">Chance Examination</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Candidate Academic Dossier -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                            <i class="fa-solid fa-user-graduate me-2 text-warning"></i> 2. Candidate Information
+                        </h6>
+                        <div class="border rounded p-3 bg-light">
+                            <div class="row g-3 small">
+                                <div class="col-md-4">
+                                    <span class="text-muted d-block">CANDIDATE NAME</span>
+                                    <strong class="text-dark">@Model.Student?.FullName</strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="text-muted d-block">REGISTRATION NO</span>
+                                    <strong class="text-primary">@Model.Student?.RegistrationNumber</strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="text-muted d-block">COLLEGE / CAMPUS</span>
+                                    <strong class="text-dark">@Model.Student?.CollegeName</strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="text-muted d-block">PROGRAM</span>
+                                    <strong class="text-dark">@Model.Student?.ProgramName</strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="text-muted d-block">CURRENT SEMESTER</span>
+                                    <strong class="text-dark">@Model.Student?.CurrentSemester</strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="text-muted d-block">EXAM FEE APPLICABLE</span>
+                                    <strong class="text-success fs-6">NPR @Model.FeeAmount.ToString("N0")</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Subject Paper Selection -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                            <i class="fa-solid fa-book-open me-2 text-success"></i> 3. Examination Subjects / Papers Selection *
+                        </h6>
+                        <p class="text-muted small">Select the subjects you are applying to appear in this examination session:</p>
+
+                        <div class="table-responsive border rounded bg-white">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 50px;" class="text-center">Select</th>
+                                        <th>Subject Code</th>
+                                        <th>Subject Name</th>
+                                        <th class="text-center">Credits</th>
+                                        <th class="text-center">Full Marks</th>
+                                        <th class="text-center">Pass Marks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.AvailableSubjects.Any())
+                                    {
+                                        foreach (var sub in Model.AvailableSubjects)
+                                        {
+                                            <tr>
+                                                <td class="text-center">
+                                                    <input type="checkbox" name="SelectedSubjectIds" value="@sub.SubjectId" class="form-check-input"
+                                                           checked="@(Model.SelectedSubjectIds.Contains(sub.SubjectId))" />
+                                                </td>
+                                                <td class="fw-bold text-primary">@sub.SubjectCode</td>
+                                                <td>@sub.SubjectName</td>
+                                                <td class="text-center">@sub.CreditHours</td>
+                                                <td class="text-center">@sub.FullMarks</td>
+                                                <td class="text-center fw-bold text-danger">@sub.PassMarks</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted py-3">No curriculum subjects mapped for this semester.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <span asp-validation-for="SelectedSubjectIds" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <!-- 4. Fee & Payment Reference -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
+                            <i class="fa-solid fa-receipt me-2 text-info"></i> 4. Examination Fee & Payment
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="FeeAmount" class="form-label small fw-bold">Examination Fee (NPR) *</label>
+                                <input asp-for="FeeAmount" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="PaymentReference" class="form-label small fw-bold">Bank / Digital Voucher Transaction ID</label>
+                                <input asp-for="PaymentReference" class="form-control" placeholder="e.g. TXN-12345-EBANK" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="VoucherFile" class="form-label small fw-bold">Deposit Slip / Receipt (Image or PDF)</label>
+                                <input asp-for="VoucherFile" type="file" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-end border-top pt-4">
+                        <a asp-action="MyApplications" class="btn btn-outline-secondary px-4 me-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
+                            <i class="fa-solid fa-paper-plane me-1"></i> Submit Examination Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

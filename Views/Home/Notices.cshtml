@@ -1,0 +1,97 @@
+@model List<Notice>
+@{
+    ViewData["Title"] = "Official Notices & Announcements";
+    ViewData["IsInnerPage"] = true;
+    var categories = ViewBag.Categories as List<NoticeCategory> ?? new List<NoticeCategory>();
+    int? selectedCategory = ViewBag.SelectedCategoryId;
+    string? searchTerm = ViewBag.SearchTerm;
+}
+
+<div class="bg-primary text-white py-4" style="background: linear-gradient(135deg, #0b2545 0%, #133b5c 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h2 class="fw-bold mb-1"><i class="fa-solid fa-bullhorn text-warning me-2"></i> University Examination Notices</h2>
+                <p class="mb-0 text-white-50">Official notifications, routines, admit card alerts, and result announcements.</p>
+            </div>
+            <div class="col-md-5 mt-3 mt-md-0">
+                <form asp-action="Notices" method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" value="@searchTerm" class="form-control" placeholder="Search notices by keyword..." />
+                        @if (selectedCategory.HasValue)
+                        {
+                            <input type="hidden" name="categoryId" value="@selectedCategory.Value" />
+                        }
+                        <button type="submit" class="btn btn-warning fw-bold"><i class="fa-solid fa-search"></i> Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <!-- Category Filter Tabs -->
+    <div class="d-flex flex-wrap gap-2 mb-4 border-bottom pb-3">
+        <a asp-action="Notices" asp-route-search="@searchTerm" class="btn btn-sm @(!selectedCategory.HasValue ? "btn-primary" : "btn-outline-secondary")">
+            All Categories (@Model.Count)
+        </a>
+        @foreach (var cat in categories)
+        {
+            <a asp-action="Notices" asp-route-categoryId="@cat.CategoryId" asp-route-search="@searchTerm"
+               class="btn btn-sm @(selectedCategory == cat.CategoryId ? "btn-primary" : "btn-outline-secondary")">
+                @cat.CategoryName (@cat.NoticeCount)
+            </a>
+        }
+    </div>
+
+    <!-- Notices List -->
+    <div class="custom-card shadow-sm">
+        @if (Model.Any())
+        {
+            foreach (var n in Model)
+            {
+                <div class="notice-item py-3">
+                    <div class="notice-date-box">
+                        <div class="day">@n.PublishDate.ToString("dd")</div>
+                        <div class="month">@n.PublishDate.ToString("MMM")</div>
+                        <div class="text-muted" style="font-size: 0.7rem;">@n.PublishDate.ToString("yyyy")</div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="@(n.BadgeClass ?? "badge bg-primary")">@(n.CategoryName ?? "General")</span>
+                            @if (n.IsPinned)
+                            {
+                                <span class="badge bg-danger"><i class="fa-solid fa-thumbtack me-1"></i> Pinned</span>
+                            }
+                        </div>
+                        <a asp-action="NoticeDetails" asp-route-id="@n.NoticeId" class="notice-title fs-6">
+                            @n.Title
+                        </a>
+                        <p class="text-muted small mb-2">
+                            @(n.Description.Length > 220 ? n.Description.Substring(0, 220) + "..." : n.Description)
+                        </p>
+                        <div class="d-flex align-items-center gap-3 small text-muted">
+                            <span><i class="fa-regular fa-eye me-1"></i> @n.ViewCount views</span>
+                            @if (!string.IsNullOrEmpty(n.AttachmentUrl))
+                            {
+                                <a href="@n.AttachmentUrl" target="_blank" class="text-danger fw-bold text-decoration-none">
+                                    <i class="fa-solid fa-file-pdf me-1"></i> Download Attachment (@(n.AttachmentFileName ?? "Document.pdf"))
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="p-5 text-center text-muted">
+                <i class="fa-solid fa-folder-open fa-3x mb-3 text-secondary"></i>
+                <h5>No notices found</h5>
+                <p>There are no notices matching your selected category or search keyword.</p>
+                <a asp-action="Notices" class="btn btn-outline-primary btn-sm">Clear Filters</a>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,153 @@
+@model StudentRegistrationViewModel
+@{
+    ViewData["Title"] = "College Student Registration";
+    Layout = "_AdminLayout";
+    var college = ViewBag.College as College;
+    var faculties = ViewBag.Faculties as List<Faculty> ?? new List<Faculty>();
+    var programs = ViewBag.Programs as List<ProgramModel> ?? new List<ProgramModel>();
+    var academicYears = ViewBag.AcademicYears as List<AcademicYear> ?? new List<AcademicYear>();
+    var semesters = ViewBag.Semesters as List<Semester> ?? new List<Semester>();
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border rounded-3">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-user-plus me-2"></i> Register New Student (College Desk)</h5>
+                    <small class="text-muted">Registering student for campus: <strong>@(college?.CollegeName ?? "College")</strong></small>
+                </div>
+                <a asp-action="Students" class="btn btn-outline-secondary btn-sm">Back to Student List</a>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <form asp-action="RegisterStudent" method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 mb-4"></div>
+
+                    <!-- Personal Information -->
+                    <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">1. Personal Information</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="FullName" class="form-label small fw-bold">Full Name *</label>
+                            <input asp-for="FullName" class="form-control" placeholder="e.g. ROSHAN THAPA" required />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="DateOfBirth" class="form-label small fw-bold">Date of Birth *</label>
+                            <input asp-for="DateOfBirth" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Gender" class="form-label small fw-bold">Gender *</label>
+                            <select asp-for="Gender" class="form-select" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label small fw-bold">Email Address *</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="e.g. roshan@gmail.com" required />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="MobileNumber" class="form-label small fw-bold">Mobile Phone *</label>
+                            <input asp-for="MobileNumber" class="form-control" placeholder="e.g. +977-9856011223" required />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Address" class="form-label small fw-bold">Address *</label>
+                            <input asp-for="Address" class="form-control" placeholder="Permanent address" required />
+                        </div>
+                    </div>
+
+                    <!-- Academic Details -->
+                    <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">2. Program & Academic Session</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="FacultyId" class="form-label small fw-bold">Faculty *</label>
+                            <select asp-for="FacultyId" class="form-select" id="facSelect" required>
+                                <option value="">-- Select Faculty --</option>
+                                @foreach (var f in faculties)
+                                {
+                                    <option value="@f.FacultyId">@f.FacultyName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ProgramId" class="form-label small fw-bold">Degree Program *</label>
+                            <select asp-for="ProgramId" class="form-select" id="progSelect" required>
+                                <option value="">-- Select Program --</option>
+                                @foreach (var p in programs)
+                                {
+                                    <option value="@p.ProgramId" data-faculty="@p.FacultyId">@p.ProgramName (@p.ProgramCode)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="AcademicYearId" class="form-label small fw-bold">Academic Session *</label>
+                            <select asp-for="AcademicYearId" class="form-select" required>
+                                @foreach (var ay in academicYears)
+                                {
+                                    <option value="@ay.AcademicYearId" selected="@ay.IsCurrent">@ay.YearName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CurrentSemesterId" class="form-label small fw-bold">Semester *</label>
+                            <select asp-for="CurrentSemesterId" class="form-select" required>
+                                @foreach (var s in semesters)
+                                {
+                                    <option value="@s.SemesterId">@s.SemesterName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="PreviousQualification" class="form-label small fw-bold">Previous Qualification</label>
+                            <input asp-for="PreviousQualification" class="form-control" placeholder="e.g. +2 Science / Intermediate" />
+                        </div>
+                    </div>
+
+                    <!-- Uploads -->
+                    <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">3. Documents & Security</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="PhotoFile" class="form-label small fw-bold">Student Photograph</label>
+                            <input asp-for="PhotoFile" type="file" accept="image/*" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="IdentityDocumentFile" class="form-label small fw-bold">Citizenship / Identity Document (PDF/Image)</label>
+                            <input asp-for="IdentityDocumentFile" type="file" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Password" class="form-label small fw-bold">Assign Student Password *</label>
+                            <input asp-for="Password" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ConfirmPassword" class="form-label small fw-bold">Confirm Password *</label>
+                            <input asp-for="ConfirmPassword" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class="text-end border-top pt-4">
+                        <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">
+                            <i class="fa-solid fa-check me-1"></i> Submit & Register Student
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#facSelect').change(function() {
+            var selectedFaculty = $(this).val();
+            $('#progSelect option').each(function() {
+                var fac = $(this).data('faculty');
+                if (!fac || fac == selectedFaculty) $(this).show();
+                else $(this).hide();
+            });
+        });
+    </script>
+}

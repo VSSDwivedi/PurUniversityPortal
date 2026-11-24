@@ -1,0 +1,862 @@
+/**
+* Purbanchal University Examination Management System (puexam.edu.np)
+* Comprehensive Styling for Public Portal, Admin Dashboard & Student Portal
+*/
+
+:root {
+    --pu-primary: #003980;
+    --pu-primary-dark: #002758;
+    --pu-primary-light: #0d6efd;
+    --pu-dark: #121d24;
+    --pu-dark-header: #15222b;
+    --pu-navy-banner: #1d3553;
+    --pu-orange: #ff4a17;
+    --pu-orange-hover: #ff6a40;
+    --pu-gold: #ffc107;
+    --pu-gold-dark: #e0a800;
+    --pu-light-bg: #f5f8fb;
+    --pu-card-bg: #ffffff;
+    --pu-border: #e2e8f0;
+    --pu-text-dark: #222222;
+    --pu-text-muted: #555555;
+    --pu-radius: 4px;
+}
+
+body {
+    font-family: 'Quicksand', 'Raleway', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--pu-text-dark);
+    background-color: var(--pu-light-bg);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body::-webkit-scrollbar {
+    width: .45em;
+}
+
+body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+    background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--pu-primary);
+    border-radius: 2px;
+}
+
+a {
+    color: var(--pu-primary-light);
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+a:hover {
+    color: var(--pu-orange);
+    text-decoration: none;
+}
+
+/* ================= Top Bar ================= */
+.top-bar {
+    background-color: var(--pu-dark);
+    color: #cbd5e1;
+    font-size: 0.84rem;
+    padding: 7px 0;
+    border-bottom: 2px solid var(--pu-orange);
+}
+
+.top-bar a {
+    color: #e2e8f0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.top-bar a:hover {
+    color: var(--pu-gold);
+}
+
+/* ================= Main University Branding Header ================= */
+#header {
+    background: var(--pu-dark-header) !important;
+    transition: all 0.4s;
+    z-index: 997;
+    padding: 12px 0;
+    border-bottom: 3px solid var(--pu-primary);
+}
+
+#header .logo img {
+    max-height: 58px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+#header .logo h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#header .logo h2 {
+    font-size: 13px;
+    color: #ffd27f;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ================= Navigation Menu ================= */
+.navbar {
+    padding: 0;
+}
+
+.navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 4px;
+}
+
+.navbar li {
+    position: relative;
+}
+
+.navbar > ul > li {
+    white-space: nowrap;
+    padding: 6px 10px;
+}
+
+.navbar a,
+.navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    white-space: nowrap;
+    transition: 0.3s;
+    position: relative;
+}
+
+.navbar a i,
+.navbar a:focus i {
+    font-size: 11px;
+    line-height: 0;
+    margin-left: 4px;
+}
+
+.navbar > ul > li > a:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -6px;
+    left: 0;
+    background-color: var(--pu-orange);
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar a:hover:before,
+.navbar li:hover > a:before,
+.navbar .active:before {
+    width: 100%;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar li:hover > a {
+    color: #ffffff;
+}
+
+/* Dropdown */
+.navbar .dropdown ul {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: calc(100% + 15px);
+    margin: 0;
+    padding: 10px 0;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    background: #ffffff;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-top: 3px solid var(--pu-orange);
+    min-width: 220px;
+    border-radius: 0 0 4px 4px;
+}
+
+.navbar .dropdown ul li {
+    min-width: 200px;
+}
+
+.navbar .dropdown ul a {
+    padding: 10px 20px;
+    font-size: 13px;
+    text-transform: none;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.navbar .dropdown ul a:hover,
+.navbar .dropdown ul .active:hover,
+.navbar .dropdown ul li:hover > a {
+    color: var(--pu-orange);
+    background-color: #f8fafc;
+}
+
+.navbar .dropdown:hover > ul {
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+}
+
+/* ================= Hero Section ================= */
+#hero {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(0, 57, 128, 0.94) 0%, rgba(18, 29, 36, 0.96) 100%),
+                url('/images/hero-bg.jpg') center center / cover no-repeat;
+    padding: 65px 0 50px 0;
+    color: #ffffff;
+    position: relative;
+    border-bottom: 4px solid var(--pu-orange);
+}
+
+#hero .hero-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    letter-spacing: 1px;
+}
+
+#hero h2 {
+    font-size: 21px;
+    color: #ffd699;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+#hero .btn-hero-action {
+    background-color: var(--pu-orange);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 10px 28px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 74, 23, 0.4);
+}
+
+#hero .btn-hero-action:hover {
+    background-color: var(--pu-orange-hover);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+#hero .btn-hero-secondary {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 10px 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+#hero .btn-hero-secondary:hover {
+    background-color: #ffffff;
+    color: var(--pu-primary);
+}
+
+/* ================= Marquee / Notice Slider Bar ================= */
+section.notice-slider {
+    padding: 10px 0;
+    background-color: var(--pu-navy-banner);
+    border-bottom: 1px solid #2a4c73;
+}
+
+section.notice-slider article {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin-bottom: 6px;
+    color: #ffffff;
+}
+
+section.notice-slider article:last-child {
+    margin-bottom: 0;
+}
+
+section.notice-slider marquee {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+section.notice-slider marquee a {
+    color: #ffd54f;
+    margin-right: 25px;
+    font-weight: 600;
+}
+
+section.notice-slider marquee a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* ================= Tabbed Notices Section ================= */
+.notices {
+    padding: 40px 0;
+}
+
+.section-title {
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.section-title h2 {
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--pu-primary);
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--pu-orange);
+    bottom: 0;
+    left: 0;
+}
+
+.section-title p {
+    color: var(--pu-text-muted);
+    font-size: 15px;
+    margin-bottom: 0;
+}
+
+/* Notice Tabs */
+ul#myTab {
+    border-bottom: 2px solid var(--pu-primary);
+    margin-bottom: 1.5rem;
+    gap: 4px;
+}
+
+ul#myTab .nav-item {
+    background-color: #8c9ba5;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+}
+
+ul#myTab .nav-link {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 4px 4px 0 0;
+    transition: 0.2s;
+}
+
+ul#myTab .nav-link.active,
+ul#myTab .nav-link:hover {
+    color: #ffffff;
+    background-color: var(--pu-navy-banner);
+}
+
+.notice-list-item {
+    background: #ffffff;
+    border: 1px solid var(--pu-border);
+    border-left: 4px solid var(--pu-primary);
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.notice-list-item:hover {
+    border-left-color: var(--pu-orange);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transform: translateX(3px);
+}
+
+.notice-list-item a {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.notice-list-item a:hover {
+    color: var(--pu-orange);
+}
+
+/* ================= Programs Section ================= */
+.services {
+    padding: 45px 0;
+    background-color: #eef3f8;
+}
+
+.program-list.icon-box {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    margin-bottom: 24px;
+    border-top: 3px solid var(--pu-primary);
+    transition: 0.3s;
+    height: 100%;
+}
+
+.program-list.icon-box:hover {
+    border-top-color: var(--pu-orange);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.program-list.icon-box i {
+    font-size: 32px;
+    color: var(--pu-orange);
+    margin-bottom: 12px;
+    display: inline-block;
+}
+
+.program-list.icon-box h4 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.program-list.icon-box h4 a {
+    color: var(--pu-primary);
+}
+
+.program-data-item {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.program-data-item li.leval-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--pu-primary);
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.program-data-item li.list-item {
+    font-size: 13px;
+    color: #475569;
+    padding: 4px 0 4px 14px;
+    position: relative;
+}
+
+.program-data-item li.list-item::before {
+    content: "•";
+    color: var(--pu-orange);
+    position: absolute;
+    left: 2px;
+    font-weight: bold;
+}
+
+/* ================= Find Result Page ================= */
+.result-form-wrapper {
+    background: #ffffff;
+    border: 1px solid var(--pu-border);
+    border-radius: 6px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.reg-boxes {
+    display: flex;
+    gap: 8px;
+}
+
+.reg-box-part {
+    text-align: center;
+    font-weight: 600;
+}
+
+/* ================= Official Grade Sheet Styling ================= */
+.gradesheet-container {
+    background: #ffffff;
+    border: 2px solid #003980;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 40px;
+    margin: 30px auto;
+    max-width: 960px;
+    position: relative;
+    background-image: radial-gradient(circle at center, rgba(0, 57, 128, 0.03) 0%, transparent 70%);
+}
+
+.gradesheet-header {
+    text-align: center;
+    border-bottom: 2px solid var(--pu-primary);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.gradesheet-header img {
+    max-height: 80px;
+    margin-bottom: 8px;
+}
+
+.gradesheet-header h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--pu-primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.gradesheet-header h3 {
+    font-size: 17px;
+    color: #333333;
+    font-weight: 600;
+    margin: 4px 0;
+}
+
+.gradesheet-header h4 {
+    font-size: 14px;
+    color: #666666;
+    margin: 0;
+}
+
+.gradesheet-title-badge {
+    background: var(--pu-primary);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-block;
+    padding: 5px 22px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 10px;
+}
+
+.gradesheet-student-info {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.gradesheet-student-info table {
+    width: 100%;
+}
+
+.gradesheet-student-info td {
+    padding: 5px 8px;
+}
+
+.gradesheet-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    font-size: 13.5px;
+}
+
+.gradesheet-table th {
+    background: #eef4fb;
+    color: var(--pu-primary);
+    border: 1px solid #b8d2ef;
+    padding: 9px 10px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.gradesheet-table td {
+    border: 1px solid #cbd5e1;
+    padding: 8px 10px;
+}
+
+.gradesheet-summary {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 14px 20px;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.gradesheet-signatures {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px dashed #cbd5e1;
+    font-size: 13.5px;
+}
+
+.signature-box {
+    text-align: center;
+    min-width: 180px;
+}
+
+.signature-line {
+    border-top: 1px solid #333333;
+    margin-bottom: 6px;
+}
+
+/* ================= Official Admit Card Styling ================= */
+.admitcard-container {
+    background: #ffffff;
+    border: 2px dashed #003980;
+    padding: 30px;
+    max-width: 900px;
+    margin: 25px auto;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.admitcard-header {
+    text-align: center;
+    border-bottom: 2px solid var(--pu-primary);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+}
+
+.admitcard-photo-box {
+    width: 130px;
+    height: 150px;
+    border: 2px solid #cbd5e1;
+    padding: 4px;
+    text-align: center;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admitcard-photo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+/* ================= Footer ================= */
+#footer {
+    background: var(--pu-dark);
+    color: #ffffff;
+    font-size: 13.5px;
+    margin-top: auto;
+}
+
+#footer .footer-top {
+    background: var(--pu-dark-header);
+    border-bottom: 1px solid #1f313e;
+    padding: 50px 0 25px 0;
+}
+
+#footer h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+#footer h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffd699;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+#footer .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#footer .footer-links ul li {
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+}
+
+#footer .footer-links ul li a {
+    color: #cbd5e1;
+    transition: 0.25s;
+}
+
+#footer .footer-links ul li a:hover {
+    color: var(--pu-orange);
+    padding-left: 4px;
+}
+
+#footer .copyright {
+    text-align: center;
+    padding: 22px 0 10px 0;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+#footer .credits {
+    text-align: center;
+    padding-bottom: 20px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+#footer .credits a {
+    color: var(--pu-orange);
+}
+
+/* ================= Admin & Student Dashboards ================= */
+.dashboard-wrapper {
+    display: flex;
+    min-height: calc(100vh - 120px);
+}
+
+.dashboard-sidebar {
+    width: 260px;
+    background: var(--pu-dark-header);
+    color: #ffffff;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid var(--pu-primary);
+}
+
+.dashboard-sidebar .sidebar-brand {
+    padding: 18px 16px;
+    background: var(--pu-dark);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #233543;
+}
+
+.dashboard-sidebar .sidebar-brand img {
+    height: 42px;
+}
+
+.dashboard-sidebar .sidebar-brand span {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.dashboard-sidebar .nav-item {
+    width: 100%;
+}
+
+.dashboard-sidebar .nav-link {
+    color: #cbd5e1;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: 0.2s;
+}
+
+.dashboard-sidebar .nav-link i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #94a3b8;
+}
+
+.dashboard-sidebar .nav-link:hover,
+.dashboard-sidebar .nav-link.active {
+    color: #ffffff;
+    background: rgba(0, 57, 128, 0.4);
+    border-left-color: var(--pu-orange);
+}
+
+.dashboard-sidebar .nav-link:hover i,
+.dashboard-sidebar .nav-link.active i {
+    color: var(--pu-orange);
+}
+
+.dashboard-content {
+    flex-grow: 1;
+    padding: 28px;
+    background: #f8fafc;
+}
+
+.stats-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 20px;
+    border: 1px solid var(--pu-border);
+    border-top: 3px solid var(--pu-primary);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    transition: 0.25s;
+}
+
+.stats-card:hover {
+    border-top-color: var(--pu-orange);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.stats-card .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+/* ================= Print Styling ================= */
+@media print {
+    .no-print, #header, #footer, .top-bar, .dashboard-sidebar, .btn, nav {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    .gradesheet-container, .admitcard-container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+}
