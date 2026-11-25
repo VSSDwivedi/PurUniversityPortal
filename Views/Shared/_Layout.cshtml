@@ -53,8 +53,9 @@
             padding: 15px 0;
         }
         .popup-slider-img {
-            max-height: 80vh;
-            object-fit: contain;
+            max-height: 100vh;
+            width: 870px !important;
+            object-fit: fill;
             background: #fff;
         }
         #modalNotice .modal-dialog {
@@ -257,8 +258,13 @@
         <div class="modal fade" id="modalNotice" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content border-0 shadow-lg position-relative" style="background: transparent;">
-                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3 bg-danger" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1050; border-radius: 50%; padding: 8px;"></button>
-
+                    <button type="button"
+                            class="btn btn-danger rounded-circle position-absolute top-0 end-0 m-3 p-0 d-flex align-items-center justify-content-center"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            style="z-index: 1050; width: 28px; height: 28px; font-size: 22px; line-height: 1;">
+                        &times;
+                    </button>
                     <div class="home-popup-slider swiper shadow rounded overflow-hidden">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide text-center">

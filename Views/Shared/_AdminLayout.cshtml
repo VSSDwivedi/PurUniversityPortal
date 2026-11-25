@@ -29,7 +29,7 @@
         <!-- Sidebar Navigation -->
         <aside class="dashboard-sidebar no-print">
             <div class="sidebar-brand">
-                <img src="~/images/pulogo.png" alt="Purbanchal University" style="max-height: 44px;" />
+             @*    <img src="~/images/pulogo.png" alt="Purbanchal University" style="max-height: 44px;" /> *@
                 <div class="overflow-hidden">
                     <span class="d-block text-white fw-bold small text-truncate">PURBANCHAL UNIVERSITY</span>
                     <small class="text-warning fw-semibold" style="font-size: 11px;">Office of Exam Management</small>
@@ -140,9 +140,9 @@
             </ul>
 
             <div class="p-3 border-top border-secondary mt-auto">
-                <a asp-controller="Home" asp-action="Index" target="_blank" class="btn btn-sm btn-outline-light w-100 mb-2">
+              @*   <a asp-controller="Home" asp-action="Index" target="_blank" class="btn btn-sm btn-outline-light w-100 mb-2">
                     <i class="fa-solid fa-globe me-1"></i> Public Website
-                </a>
+                </a> *@
                 <form asp-controller="Account" asp-action="Logout" method="post">
                     @Html.AntiForgeryToken()
                     <button type="submit" class="btn btn-sm btn-danger w-100">
@@ -167,9 +167,9 @@
                     <a asp-controller="AdminExam" asp-action="Applications" asp-route-status="Pending" class="badge bg-info text-dark text-decoration-none py-2 px-3">
                         <i class="fa-solid fa-file-pen me-1"></i> Exam Applications
                     </a>
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-sm">
+               @*      <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary btn-sm">
                         <i class="fa-solid fa-house me-1"></i> puexam.edu.np Home
-                    </a>
+                    </a> *@
                 </div>
             </div>
 

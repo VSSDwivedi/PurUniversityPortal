@@ -268,7 +268,7 @@ div#heading-all {
 .navbar .active,
 .navbar .active:focus,
 .navbar li:hover>a {
-  color: #fff;
+  color: #fff !important;
 }
 
 .navbar .getstarted,
@@ -326,7 +326,7 @@ div#heading-all {
 .navbar .dropdown ul a:hover,
 .navbar .dropdown ul .active:hover,
 .navbar .dropdown ul li:hover>a {
-  color: #ff4a17;
+  color: #ff4a17 !important;
 }
 
 .navbar .dropdown:hover>ul {
@@ -336,10 +336,11 @@ div#heading-all {
 }
 
 .navbar .dropdown .dropdown ul {
-  top: 0;
+ top: 0;
   left: calc(100% - 30px);
   visibility: hidden;
 }
+
 
 .navbar .dropdown .dropdown:hover>ul {
   opacity: 1;
