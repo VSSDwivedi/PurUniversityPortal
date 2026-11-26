@@ -73,6 +73,30 @@
         }
         .gradesheet-table th {
             background: #f1f4f9;
+            }
+
+        #modalNotice .home-popup-slider {
+            position: relative;
+            padding-bottom: 35px; /* dots ke liye neeche jagah */
+        }
+
+        #modalNotice .swiper-pagination {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 100%;
+            z-index: 1060;
+        }
+
+        #modalNotice .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #999;
+            opacity: 1;
+        }
+
+        #modalNotice .swiper-pagination-bullet-active {
+            background: #dc3545;
         }
     </style>
     @await RenderSectionAsync("Styles", required: false)
@@ -359,28 +383,44 @@
             });
 
             // Popup Notice Slider
-            if ($('#modalNotice').length && !sessionStorage.getItem('puexam_popup_dismissed')) {
-                var noticeSwiper = new Swiper('.home-popup-slider', {
+               // Popup Notice Slider
+        if ($('#modalNotice').length && !sessionStorage.getItem('puexam_popup_dismissed')) {
+            var modalEl = document.getElementById('modalNotice');
+            var noticeSwiper = null;
+
+            modalEl.addEventListener('shown.bs.modal', function () {
+                if (noticeSwiper) {
+                    noticeSwiper.update();
+                    return;
+                }
+                noticeSwiper = new Swiper('#modalNotice .home-popup-slider', {
                     speed: 600,
                     loop: true,
+                    autoHeight: false,
+                    observer: true,
+                    observeParents: true,
                     autoplay: {
                         delay: 4000,
                         disableOnInteraction: false
                     },
                     pagination: {
-                        el: '.swiper-pagination',
+                        el: '#modalNotice .swiper-pagination',
                         clickable: true
                     },
                     navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev'
+                        nextEl: '#modalNotice .swiper-button-next',
+                        prevEl: '#modalNotice .swiper-button-prev'
                     }
                 });
-                $('#modalNotice').modal('show');
-                $('#modalNotice .btn-close').click(function() {
-                    sessionStorage.setItem('puexam_popup_dismissed', 'true');
-                });
-            }
+            });
+
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                if (noticeSwiper) noticeSwiper.autoplay.stop();
+                sessionStorage.setItem('puexam_popup_dismissed', 'true');
+            });
+
+            new bootstrap.Modal(modalEl).show();
+        }
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)

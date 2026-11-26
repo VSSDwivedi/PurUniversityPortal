@@ -76,8 +76,19 @@
                             <input type="number" name="Capacity" value="500" class="form-control" />
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Contact Phone</label>
-                            <input type="text" name="ContactNumber" class="form-control" />
+                            <label class="form-label small fw-bold">Contact Phone *</label>
+                            <input type="tel"
+                                   name="ContactNumber"
+                                   id="contactNumber"
+                                   class="form-control"
+                                   placeholder="98XXXXXXXX"
+                                   maxlength="10"
+                                   minlength="10"
+                                   inputmode="numeric"
+                                   pattern="[0-9]{10}"
+                                   title="Enter a valid 10 digit mobile number"
+                                   required />
+                            <div class="invalid-feedback">Enter a valid 10 digit mobile number.</div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -94,3 +105,24 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        const phoneInput = document.getElementById('contactNumber');
+
+        // Sirf digits allow karo (typing + paste dono me)
+        phoneInput.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            this.setCustomValidity('');
+        });
+
+        // Submit se pehle format check
+        phoneInput.form.addEventListener('submit', function (e) {
+            const v = phoneInput.value;
+            if (!/^[6-9][0-9]{9}$/.test(v)) {
+                phoneInput.setCustomValidity('Enter a valid 10 digit mobile number');
+                phoneInput.reportValidity();
+                e.preventDefault();
+            }
+        });
+    </script>
+}

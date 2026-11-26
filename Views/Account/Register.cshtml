@@ -38,7 +38,12 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label asp-for="FullName" class="form-label small fw-bold">Full Name (in BLOCK letters) *</label>
-                                    <input asp-for="FullName" class="form-control" placeholder="e.g. AARAV SHARMA" required />
+                                    <input asp-for="FullName" id="fullName" class="form-control text-uppercase"
+                                           placeholder="e.g. AARAV SHARMA"
+                                           maxlength="60"
+                                           pattern="[A-Za-z ]{3,60}"
+                                           title="Only letters and spaces allowed (min 3 characters)"
+                                           required />
                                     <span asp-validation-for="FullName" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-3">
@@ -58,12 +63,23 @@
 
                                 <div class="col-md-6">
                                     <label asp-for="Email" class="form-label small fw-bold">Email Address *</label>
-                                    <input asp-for="Email" type="email" class="form-control" placeholder="e.g. aarav.sharma@gmail.com" required />
+                                    <input asp-for="Email" id="email" type="email" class="form-control"
+                                           placeholder="e.g. aarav.sharma@gmail.com"
+                                           maxlength="100"
+                                           pattern="[a-zA-Z0-9._%+\-]+@@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                                           title="Enter a valid email address"
+                                           required />
                                     <span asp-validation-for="Email" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label asp-for="MobileNumber" class="form-label small fw-bold">Mobile Number *</label>
-                                    <input asp-for="MobileNumber" class="form-control" placeholder="e.g. +977-9846123456" required />
+                                    <input asp-for="MobileNumber" id="mobileNumber" type="tel" class="form-control"
+                                           placeholder="e.g. 9846123456"
+                                           maxlength="10"
+                                           inputmode="numeric"
+                                           pattern="[0-9]{10}"
+                                           title="Enter a valid 10 digit mobile number"
+                                           required />
                                     <span asp-validation-for="MobileNumber" class="text-danger small"></span>
                                 </div>
                                 <div class="col-12">
@@ -172,12 +188,22 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label asp-for="Password" class="form-label small fw-bold">Portal Password (minimum 6 characters) *</label>
-                                    <input asp-for="Password" class="form-control" required />
+                                    <div class="input-group">
+                                        <input asp-for="Password" id="password" type="password" class="form-control" minlength="6" required />
+                                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="password" tabindex="-1">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
                                     <span asp-validation-for="Password" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label asp-for="ConfirmPassword" class="form-label small fw-bold">Confirm Password *</label>
-                                    <input asp-for="ConfirmPassword" class="form-control" required />
+                                    <div class="input-group">
+                                        <input asp-for="ConfirmPassword" id="confirmPassword" type="password" class="form-control" required />
+                                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="confirmPassword" tabindex="-1">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
                                     <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                                 </div>
                             </div>
@@ -205,10 +231,11 @@
 
 @section Scripts {
     <script>
-        // Filter program dropdown based on selected faculty
-        $('#facultySelect').change(function() {
+        // Faculty ke hisab se program filter
+        $('#facultySelect').change(function () {
             var selectedFaculty = $(this).val();
-            $('#programSelect option').each(function() {
+            $('#programSelect').val('');
+            $('#programSelect option').each(function () {
                 var fac = $(this).data('faculty');
                 if (!fac || fac == selectedFaculty) {
                     $(this).show();
@@ -216,6 +243,57 @@
                     $(this).hide();
                 }
             });
+        });
+
+        // Name: sirf letters aur space
+        $('#fullName').on('input', function () {
+            this.value = this.value.replace(/[^A-Za-z ]/g, '').replace(/\s{2,}/g, ' ').toUpperCase();
+        });
+
+        // Mobile: sirf digits, max 10
+        $('#mobileNumber').on('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            this.setCustomValidity('');
+        });
+
+        // Password eye toggle
+        $('.toggle-password').on('click', function () {
+            var input = document.getElementById($(this).data('target'));
+            var icon = $(this).find('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+
+        // Submit se pehle final validation
+        $('form').on('submit', function (e) {
+            var mobile = $('#mobileNumber')[0];
+            var email = $('#email').val();
+            var pass = $('#password').val();
+            var confirm = $('#confirmPassword').val();
+
+            if (!/^[6-9][0-9]{9}$/.test(mobile.value)) {
+                mobile.setCustomValidity('Enter a valid 10 digit mobile number');
+                mobile.reportValidity();
+                e.preventDefault();
+                return;
+            }
+            if (!/^[a-zA-Z0-9._%+\-]+@@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                $('#email')[0].reportValidity();
+                e.preventDefault();
+                return;
+            }
+            if (pass !== confirm) {
+                var c = $('#confirmPassword')[0];
+                c.setCustomValidity('Passwords do not match');
+                c.reportValidity();
+                c.addEventListener('input', function () { c.setCustomValidity(''); }, { once: true });
+                e.preventDefault();
+            }
         });
     </script>
 }
