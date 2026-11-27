@@ -65,10 +65,10 @@ namespace UniversityExamSystem.Controllers
             {
                 model.Password = loginPwd;
             }
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
 
             var user = await _userRepo.AuthenticateAsync(model.LoginIdentifier);
 
