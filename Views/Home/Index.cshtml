@@ -382,65 +382,174 @@
     </section>
 
     <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-        <div class="container" data-aos="fade-up">
-            <div class="section-title">
-                <h2>Contact</h2>
-                <p>Contact Us</p>
-            </div>
+   <section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+        <div class="section-title">
+            <h2>Contact</h2>
+            <p>Contact Us</p>
+        </div>
 
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="info-box">
-                                <i class="bx bx-map"></i>
-                                <h3>Contact Details</h3>
-                                <p>Office Of The Examination Management Biratnagar, Puspalal Chowk, Nepal </p>
-                            </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="info-box">
+                            <i class="bx bx-map"></i>
+                            <h3>Contact Details</h3>
+                            <p>Office Of The Examination Management Biratnagar, Puspalal Chowk, Nepal </p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="info-box mt-4">
-                                <i class="bx bx-envelope"></i>
-                                <h3>Email Us</h3>
-                                <p>puoemgt@puexam.edu.np</p>
-                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-box mt-4">
+                            <i class="bx bx-envelope"></i>
+                            <h3>Email Us</h3>
+                            <p>puoemgt@puexam.edu.np</p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="info-box mt-4">
-                                <i class="bx bx-phone-call"></i>
-                                <h3>Call Us</h3>
-                                <p>+977-21-465240 , 590937</p>
-                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-box mt-4">
+                            <i class="bx bx-phone-call"></i>
+                            <h3>Call Us</h3>
+                            <p>+977-21-465240 , 590937</p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-lg-6 mt-4 mt-lg-0">
-                    <form action="/contact-us" method="post" role="form" id="contactUsForm" class="phpemailform">
-                        @Html.AntiForgeryToken()
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                            </div>
-                            <div class="col-md-6 form-group mt-3 mt-md-0">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0">
+                <form action="/contact-us" method="post" role="form" id="contactUsForm" class="phpemailform" novalidate>
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <input type="text"
+                                   name="name"
+                                   class="form-control"
+                                   id="name"
+                                   placeholder="Your Name"
+                                   minlength="2"
+                                   maxlength="50"
+                                   inputmode="text"
+                                   autocomplete="name"
+                                   autocapitalize="words"
+                                   autocorrect="off"
+                                   spellcheck="false"
+                                   required>
+                            <small class="text-danger d-none" id="nameError">Name can only contain letters (minimum 2 characters).</small>
                         </div>
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                        <div class="col-md-6 form-group mt-3 mt-md-0">
+                            <input type="email"
+                                   class="form-control"
+                                   name="email"
+                                   id="email"
+                                   placeholder="Your Email"
+                                   maxlength="100"
+                                   inputmode="email"
+                                   autocomplete="email"
+                                   autocapitalize="none"
+                                   autocorrect="off"
+                                   spellcheck="false"
+                                   required>
+                            <small class="text-danger d-none" id="emailError">Please enter a valid email address (e.g. name@example.com).</small>
                         </div>
-                        <div class="form-group mt-3">
-                            <textarea class="form-control" name="message" rows="3" placeholder="Message" required></textarea>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-md btn-primary px-4 py-2" id="submitContactus">Send Message</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <textarea class="form-control" name="message" rows="3" placeholder="Message" required></textarea>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-md btn-primary px-4 py-2" id="submitContactus">Send Message</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var form       = document.getElementById('contactUsForm');
+    var nameInput  = document.getElementById('name');
+    var emailInput = document.getElementById('email');
+    var nameError  = document.getElementById('nameError');
+    var emailError = document.getElementById('emailError');
+
+    var nameRegex  = /^[A-Za-z]+(?:[ .'\-][A-Za-z]+)*$/;
+    var emailRegex = /^[a-z0-9._%+\-]+@@[a-z0-9\-]+(\.[a-z0-9\-]+)*\.[a-z]{2,}$/;
+
+    function showError(input, errorEl, show) {
+        errorEl.classList.toggle('d-none', !show);
+        input.classList.toggle('is-invalid', show);
+    }
+
+    /* ---------- NAME ---------- */
+    nameInput.addEventListener('input', function () {
+        this.value = this.value
+            .replace(/[^A-Za-z .'\-]/g, '')   // remove digits and symbols
+            .replace(/\s{2,}/g, ' ')
+            .replace(/^[\s.'\-]+/, '');
+        showError(this, nameError, false);
+    });
+
+    nameInput.addEventListener('blur', function () {
+        this.value = this.value
+            .trim()
+            .toLowerCase()
+            .replace(/(^|[ .'\-])([a-z])/g, function (m, p, c) { return p + c.toUpperCase(); });
+    });
+
+    /* ---------- EMAIL ---------- */
+    emailInput.addEventListener('input', function () {
+        this.value = this.value
+            .replace(/\s/g, '')
+            .replace(/[^A-Za-z0-9._%+\-@@]/g, '')
+            .toLowerCase();
+        showError(this, emailError, false);
+    });
+
+    emailInput.addEventListener('blur', function () {
+        this.value = this.value.trim().toLowerCase();
+        if (this.value && !emailRegex.test(this.value)) {
+            showError(this, emailError, true);
+        }
+    });
+
+    /* ---------- SUBMIT ---------- */
+    form.addEventListener('submit', function (e) {
+        var valid = true;
+        var firstBad = null;
+
+        nameInput.value  = nameInput.value.trim();
+        emailInput.value = emailInput.value.trim().toLowerCase();
+
+        if (nameInput.value.length < 2 || !nameRegex.test(nameInput.value)) {
+            showError(nameInput, nameError, true);
+            valid = false;
+            firstBad = firstBad || nameInput;
+        }
+
+        if (!emailRegex.test(emailInput.value) || emailInput.value.indexOf('..') !== -1) {
+            showError(emailInput, emailError, true);
+            valid = false;
+            firstBad = firstBad || emailInput;
+        }
+
+        if (!valid) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            firstBad.focus();
+            return;
+        }
+
+        if (!form.checkValidity()) {   // checks subject and message
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            form.reportValidity();
+        }
+    });
+});
+</script>
 </main>
 
 @section Scripts {
@@ -478,3 +587,483 @@
         });
     </script>
 }
+
+
+                        <style>
+    /* =====================================================================
+       home.css  —  Purbanchal University OEM, public home page polish
+       Path: wwwroot/css/home.css
+       Sirf Home/Index view mein load karo (site.css ke BAAD):
+       <link rel="stylesheet" href="~/css/home.css" asp-append-version="true " />
+    View ka markup/logic/comments kuch nahi badalna padta.
+    ===================================================================== */
+
+    :root {
+        --hm-navy: #0b2a5b;
+        --hm-blue: #003980;
+        --hm-gold: #f2b705;
+        --hm-gold-dark: #d9a200;
+        --hm-paper: #f4f6fb;
+        --hm-ink: #1b2430;
+        --hm-body: #3b4556;
+        --hm-muted: #5b6678;
+        --hm-line: #dde3ee;
+        --hm-shadow: 0 1px 2px rgba(11, 42, 91, .06), 0 6px 18px rgba(11, 42, 91, .05);
+    }
+
+    /* ---------- Section titles ---------- */
+    #main .section-title {
+        text-align: center;
+        padding-bottom: 1.75rem;
+    }
+
+        #main .section-title h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -.01em;
+            text-transform: none;
+            color: var(--hm-navy);
+            margin: 0 0 .25rem;
+            padding: 0;
+        }
+
+            #main .section-title h2::after {
+                content: "";
+                display: block;
+                width: 56px;
+                height: 4px;
+                margin: .7rem auto 0;
+                background: var(--hm-gold);
+                border-radius: 2px;
+            }
+
+        #main .section-title p {
+            position: static;
+            margin: .6rem 0 0;
+            color: var(--hm-muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        #testimonials .section-title h2,
+        #main .section-title.text-white h2 {
+            color: #fff;
+        }
+
+    /* ---------- Hero ---------- */
+    #hero h1 {
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        font-weight: 800;
+        letter-spacing: -.01em;
+        line-height: 1.15;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, .35);
+    }
+
+    #hero h2 {
+        font-size: clamp(1rem, 2.2vw, 1.35rem);
+        font-weight: 500;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, .9);
+        text-shadow: 0 1px 8px rgba(0, 0, 0, .35);
+    }
+
+    #hero .btn-watch-video {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        padding: .6rem 1.2rem;
+        border: 1.5px solid rgba(255, 255, 255, .6);
+        border-radius: 999px;
+        color: #fff;
+        font-weight: 600;
+        transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+    }
+
+        #hero .btn-watch-video i {
+            color: var(--hm-gold);
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        #hero .btn-watch-video:hover {
+            background: var(--hm-gold);
+            border-color: var(--hm-gold);
+            color: var(--hm-navy);
+        }
+
+            #hero .btn-watch-video:hover i {
+                color: var(--hm-navy);
+            }
+
+    /* ---------- Notice marquee strips ---------- */
+    .notice-slider {
+        margin-top: -1px;
+    }
+
+        .notice-slider article {
+            background: #fff;
+            border: 1px solid var(--hm-line);
+            border-left: 4px solid var(--hm-gold);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--hm-shadow) !important;
+        }
+
+            .notice-slider article marquee {
+                display: block;
+                padding: .7rem 1rem;
+                color: var(--hm-ink);
+                white-space: nowrap;
+            }
+
+                .notice-slider article marquee a {
+                    color: var(--hm-blue);
+                    font-weight: 600;
+                    font-size: .92rem;
+                    margin-right: 1.75rem;
+                    text-decoration: none;
+                }
+
+                    .notice-slider article marquee a:hover {
+                        color: var(--hm-navy);
+                        text-decoration: underline;
+                    }
+
+            .notice-slider article .btn-primary {
+                background: var(--hm-navy);
+                border: 1px solid var(--hm-navy) !important;
+                color: #fff;
+                font-weight: 700;
+                border-radius: 8px;
+                padding: .45rem .9rem;
+                transition: background-color .15s ease, color .15s ease;
+            }
+
+                .notice-slider article .btn-primary:hover {
+                    background: var(--hm-gold);
+                    border-color: var(--hm-gold) !important;
+                    color: var(--hm-navy);
+                }
+
+    /* Button ko cramped col-lg-1 se bahar nikaalo */
+    @@media (min-width: 992px) {
+        .notice-slider article .row
+
+    {
+        flex-wrap: nowrap;
+    }
+
+    .notice-slider article .row > .col-lg-11 {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+    }
+
+    .notice-slider article .row > .col-lg-1 {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 7rem;
+        padding-right: .75rem;
+    }
+
+    }
+
+    @@media (max-width: 991.98px) {
+        .notice-slider article .row > [class*="col-lg-1"]:last-child
+
+    {
+        padding: 0 1rem .75rem;
+    }
+
+    }
+
+    /* ---------- Notice board tabs + list ---------- */
+    .notice-nav.nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-bottom: 2px solid var(--hm-line);
+        scrollbar-width: thin;
+    }
+
+    .notice-nav .nav-link {
+        border: 0;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        border-radius: 0;
+        padding: .8rem 1rem;
+        white-space: nowrap;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .03em;
+        color: #000;
+        background: transparent;
+        transition: color .15s ease, border-color .15s ease;
+    }
+
+        .notice-nav .nav-link:hover {
+            color: #a91519;
+            border-bottom-color: var(--hm-line);
+        }
+
+        .notice-nav .nav-link.active {
+            color:#000;
+            background: transparent;
+            border-bottom-color: var(--hm-gold);
+        }
+
+        .notice-nav .nav-link:focus-visible {
+            outline: 3px solid var(--hm-blue);
+            outline-offset: -3px;
+        }
+
+    #myTabContent {
+        margin-top: 1.1rem;
+    }
+
+        #myTabContent .list-group {
+            border: 1px solid var(--hm-line);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: var(--hm-shadow);
+        }
+
+        #myTabContent .list-group-item {
+            padding: .9rem 1.1rem;
+            border-color: var(--hm-line);
+            color: var(--hm-ink);
+            transition: background-color .15s ease;
+        }
+
+            #myTabContent .list-group-item:hover {
+                background: #eef3fb;
+            }
+
+            #myTabContent .list-group-item::before {
+                color: var(--hm-muted);
+                font-weight: 600;
+            }
+
+            #myTabContent .list-group-item a {
+                color: var(--hm-blue);
+                font-weight: 600;
+                text-decoration: none;
+            }
+
+                #myTabContent .list-group-item a:hover {
+                    color: var(--hm-navy);
+                    text-decoration: underline;
+                }
+
+    /* ---------- About ---------- */
+    #about .lead {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: var(--hm-ink);
+    }
+
+    #about p {
+        color: var(--hm-body);
+        line-height: 1.75;
+        max-width: 72ch;
+    }
+
+    #about .col-lg-4 h5 {
+        color: var(--hm-navy) !important;
+        letter-spacing: .04em;
+    }
+
+    #about .col-lg-4 small {
+        color: var(--hm-muted) !important;
+    }
+
+    @@media (min-width: 992px) {
+        #about .row > .col-lg-4
+
+    {
+        border-left: 1px solid var(--hm-line);
+    }
+
+    }
+
+    /* ---------- Programs (7 faculties) ---------- */
+    #services.section-bg {
+        background: var(--hm-paper);
+    }
+
+    #services .program-list.icon-box {
+        position: relative;
+        background: #fff;
+        border: 1px solid var(--hm-line);
+        border-radius: 12px;
+        padding: 1.5rem 1.5rem 1.25rem;
+        box-shadow: var(--hm-shadow);
+        transform: none;
+        transition: border-color .15s ease;
+    }
+
+        #services .program-list.icon-box:hover {
+            background: #fff;
+            transform: none;
+            border-color: var(--hm-blue);
+        }
+
+    #services .program-list > i {
+        float: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        margin: 0 0 .85rem;
+        border-radius: 10px;
+        background: var(--hm-navy);
+        color: var(--hm-gold);
+        font-size: 1.3rem;
+        line-height: 1;
+    }
+
+    #services .program-list h4 {
+        margin: 0 0 1rem !important;
+        padding: 0 !important;
+        font-size: 1.15rem;
+        font-weight: 700;
+    }
+
+        #services .program-list h4 a {
+            color: var(--hm-navy) !important;
+            text-decoration: none;
+        }
+
+            #services .program-list h4 a:hover {
+                color: var(--hm-blue) !important;
+            }
+
+    #services .program-data-item {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        #services .program-data-item .leval-name {
+            display: inline-block;
+            margin-top: 1.1rem;
+            padding-bottom: .3rem;
+            border-bottom: 2px solid var(--hm-gold);
+            font-size: .8rem !important;
+            letter-spacing: .06em;
+            color: var(--hm-navy);
+            text-decoration: none !important;
+        }
+
+            #services .program-data-item .leval-name:first-child {
+                margin-top: 0;
+            }
+
+        #services .program-data-item .list-item {
+            position: relative;
+            padding: .4rem 0 .4rem 1.1rem;
+            border-bottom: 1px dashed var(--hm-line);
+            font-size: .84rem !important;
+            line-height: 1.45;
+            color: var(--hm-body);
+        }
+
+            #services .program-data-item .list-item::before {
+                content: "";
+                position: absolute;
+                left: .15rem;
+                top: .95em;
+                width: .38rem;
+                height: .38rem;
+                border-radius: 50%;
+                background: var(--hm-gold);
+            }
+
+    /* ---------- Testimonials ---------- */
+    #testimonials .testimonial-item h3 {
+        font-weight: 700;
+    }
+
+    #testimonials .testimonial-item h4 {
+        opacity: .85;
+    }
+
+    #testimonials .testimonial-item p {
+        max-width: 62ch;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+
+    /* ---------- Contact ---------- */
+    #contact .info-box {
+        background: #fff;
+        border: 1px solid var(--hm-line);
+        border-radius: 12px;
+        box-shadow: var(--hm-shadow);
+    }
+
+        #contact .info-box h3 {
+            color: var(--hm-navy);
+            font-weight: 700;
+        }
+
+        #contact .info-box p {
+            color: var(--hm-body);
+            overflow-wrap: anywhere;
+        }
+
+        #contact .info-box i {
+            color: var(--hm-blue);
+        }
+
+    #contactUsForm {
+        background: #fff;
+        border: 1px solid var(--hm-line);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: var(--hm-shadow);
+    }
+
+        #contactUsForm .form-control {
+            border: 1.5px solid var(--hm-line);
+            border-radius: 8px;
+            padding: .65rem .85rem;
+            color: var(--hm-ink);
+        }
+
+            #contactUsForm .form-control:focus {
+                border-color: var(--hm-blue);
+                box-shadow: 0 0 0 .2rem rgba(0, 57, 128, .15);
+            }
+
+        #contactUsForm .btn-primary {
+            background: var(--hm-navy);
+            border-color: var(--hm-navy);
+            border-radius: 8px;
+            font-weight: 700;
+            transition: background-color .15s ease, color .15s ease;
+        }
+
+            #contactUsForm .btn-primary:hover {
+                background: var(--hm-gold);
+                border-color: var(--hm-gold);
+                color: var(--hm-navy);
+            }
+
+    /* ---------- Keyboard focus ---------- */
+    #main a:focus-visible,
+    #main button:focus-visible,
+    .notice-slider a:focus-visible,
+    #hero a:focus-visible {
+        outline: 3px solid var(--hm-blue);
+        outline-offset: 2px;
+    }
+
+    #hero a:focus-visible {
+        outline-color: var(--hm-gold);
+    }</style>

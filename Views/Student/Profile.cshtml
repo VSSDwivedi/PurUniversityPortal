@@ -3,166 +3,851 @@
     ViewData["Title"] = "Student Profile";
     Layout = "_StudentLayout";
     var docs = ViewBag.Documents as List<StudentDocument> ?? new List<StudentDocument>();
+    var approved = Model.RegistrationStatus == "Approved";
 }
 
-<div class="row g-4">
-    <!-- Profile Card Column -->
-    <div class="col-lg-4">
-        <div class="card shadow-sm border p-4 text-center">
-            <div class="mx-auto mb-3" style="width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 4px solid #f1f5f9;">
-                @if (!string.IsNullOrEmpty(Model.PhotoUrl))
-                {
-                    <img src="@Model.PhotoUrl" alt="Student Photo" class="w-100 h-100 object-fit-cover" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+
+<style>
+    .sp {
+        --ink: #0f1b3d;
+        --ink-2: #4a5878;
+        --ink-3: #8592ad;
+        --line: #e4e9f2;
+        --paper: #ffffff;
+        --wash: #f3f6fb;
+        --blue: #2150d9;
+        --gold: #c8963e;
+        --gold-soft: #fbf1dc;
+        --red: #b4232c;
+        --green: #138a5b;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        color: var(--ink);
+    }
+
+        /* ============ HERO ============ */
+        .sp .hero {
+            position: relative;
+            border-radius: 20px;
+            padding: 2rem 2rem 5.5rem;
+            color: #fff;
+            overflow: hidden;
+            background: radial-gradient(900px 300px at 100% 0%, rgba(200,150,62,.28), transparent 60%), repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 2px, transparent 2px 18px), linear-gradient(115deg, #0b1533 0%, #14265c 55%, #1d3a8c 100%);
+        }
+
+            .sp .hero::after {
+                content: "";
+                position: absolute;
+                right: -70px;
+                top: -70px;
+                width: 260px;
+                height: 260px;
+                border-radius: 50%;
+                border: 1px solid rgba(255,255,255,.12);
+                box-shadow: 0 0 0 36px rgba(255,255,255,.03), 0 0 0 72px rgba(255,255,255,.02);
+                pointer-events: none;
+            }
+
+        .sp .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+        }
+
+        .sp .avatar-wrap {
+            flex: none;
+            width: 148px;
+            height: 148px;
+            padding: 5px;
+            border-radius: 50%;
+            background: conic-gradient(from 210deg, var(--gold), #f3d79c, var(--gold));
+            box-shadow: 0 10px 30px rgba(0,0,0,.35);
+        }
+
+        .sp .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #0f1b3d;
+            background: var(--wash);
+        }
+
+        .sp .hero h1 {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+            letter-spacing: -.01em;
+            line-height: 1.1;
+            margin: 0 0 .5rem;
+            color: #fff;
+        }
+
+        .sp .hero .sid {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .9rem;
+            color: #f3d79c;
+            font-weight: 600;
+            margin-bottom: .9rem;
+        }
+
+        .sp .hero .program {
+            font-size: .95rem;
+            color: rgba(255,255,255,.78);
+            margin-bottom: 1rem;
+        }
+
+        .sp .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .4rem .9rem;
+            border-radius: 999px;
+            font-size: .8rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+
+            .sp .pill.ok {
+                background: rgba(19,138,91,.22);
+                color: #7ff0c1;
+                border: 1px solid rgba(127,240,193,.35);
+            }
+
+            .sp .pill.pending {
+                background: rgba(255,193,7,.18);
+                color: #ffe08a;
+                border: 1px solid rgba(255,224,138,.35);
+            }
+
+        /* ============ STAT STRIP ============ */
+        .sp .stats {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: -3.4rem 1.25rem 1.5rem;
+        }
+
+        .sp .stat {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 1rem 1.15rem;
+            box-shadow: 0 12px 28px -12px rgba(15,27,61,.25);
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+            min-width: 0;
+        }
+
+            .sp .stat .ico {
+                flex: none;
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                display: grid;
+                place-items: center;
+                font-size: 1.05rem;
+            }
+
+        .sp .ico.blue {
+            background: #e7edff;
+            color: var(--blue);
+        }
+
+        .sp .ico.red {
+            background: #fde9eb;
+            color: var(--red);
+        }
+
+        .sp .ico.gold {
+            background: var(--gold-soft);
+            color: #a06c14;
+        }
+
+        .sp .ico.green {
+            background: #e3f6ee;
+            color: var(--green);
+        }
+
+        .sp .ico.slate {
+            background: var(--wash);
+            color: var(--ink-2);
+        }
+
+        .sp .stat small {
+            display: block;
+            font-size: .74rem;
+            color: var(--ink-3);
+            font-weight: 500;
+        }
+
+        .sp .stat strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+            line-height: 1.25;
+        }
+
+        /* ============ PANELS ============ */
+        .sp .panel {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 1px 2px rgba(15,27,61,.04);
+            overflow: hidden;
+        }
+
+            .sp .panel + .panel {
+                margin-top: 1.5rem;
+            }
+
+        .sp .panel-head {
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+            padding: 1.1rem 1.5rem;
+            background: linear-gradient(180deg, #fafbfe, #fff);
+            border-bottom: 1px solid var(--line);
+        }
+
+            .sp .panel-head .ico {
+                width: 40px;
+                height: 40px;
+                border-radius: 12px;
+                display: grid;
+                place-items: center;
+            }
+
+            .sp .panel-head h5 {
+                margin: 0;
+                font-size: 1.02rem;
+                font-weight: 700;
+            }
+
+            .sp .panel-head p {
+                margin: 0;
+                font-size: .78rem;
+                color: var(--ink-3);
+            }
+
+            .sp .panel-head .count {
+                margin-left: auto;
+                font-size: .75rem;
+                font-weight: 700;
+                background: var(--wash);
+                color: var(--ink-2);
+                border-radius: 999px;
+                padding: .25rem .7rem;
+            }
+
+        .sp .panel-body {
+            padding: 1.5rem;
+        }
+
+        /* ---- academic list ---- */
+        .sp .acad {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+            .sp .acad li {
+                display: flex;
+                gap: 1rem;
+                padding: .95rem 0;
+                border-bottom: 1px dashed var(--line);
+            }
+
+                .sp .acad li:last-child {
+                    border-bottom: 0;
                 }
-                else
-                {
-                    <div class="w-100 h-100 bg-secondary text-white d-flex align-items-center justify-content-center fs-1">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
+
+            .sp .acad .ico {
+                flex: none;
+                width: 38px;
+                height: 38px;
+                border-radius: 11px;
+                display: grid;
+                place-items: center;
+                font-size: .9rem;
+            }
+
+            .sp .acad small {
+                display: block;
+                color: var(--ink-3);
+                font-size: .74rem;
+                font-weight: 500;
+            }
+
+            .sp .acad strong {
+                font-weight: 600;
+                font-size: .93rem;
+                line-height: 1.35;
+            }
+
+        /* ---- form ---- */
+        .sp .form-label {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: .4rem;
+        }
+
+            .sp .form-label.locked {
+                color: var(--ink-3);
+                font-weight: 500;
+            }
+
+                .sp .form-label.locked i {
+                    color: var(--ink-3);
+                    margin-right: .3rem;
                 }
+
+        .sp .form-control {
+            border: 1.5px solid #d6deec;
+            border-radius: 11px;
+            padding: .65rem .9rem;
+            font-size: .92rem;
+            font-family: inherit;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+            .sp .form-control:focus {
+                border-color: var(--blue);
+                box-shadow: 0 0 0 4px rgba(33,80,217,.12);
+            }
+
+            .sp .form-control:disabled {
+                background: var(--wash);
+                border-color: var(--line);
+                border-style: dashed;
+                color: var(--ink-2);
+            }
+
+        .sp .editable-tag {
+            font-size: .68rem;
+            font-weight: 700;
+            color: var(--blue);
+            background: #e7edff;
+            border-radius: 6px;
+            padding: .1rem .45rem;
+            margin-left: .4rem;
+        }
+
+        .sp .btn-main {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            border: 0;
+            border-radius: 11px;
+            padding: .7rem 1.4rem;
+            font-weight: 700;
+            font-size: .9rem;
+            color: #fff;
+            background: linear-gradient(135deg, #2150d9, #173fb0);
+            box-shadow: 0 8px 18px -8px rgba(33,80,217,.7);
+            transition: transform .15s, box-shadow .15s;
+        }
+
+            .sp .btn-main:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 12px 22px -8px rgba(33,80,217,.75);
+                color: #fff;
+            }
+
+            .sp .btn-main:focus-visible {
+                outline: 3px solid rgba(33,80,217,.35);
+                outline-offset: 2px;
+            }
+
+            .sp .btn-main.dark {
+                background: linear-gradient(135deg, #14265c, #0b1533);
+                box-shadow: 0 8px 18px -8px rgba(11,21,51,.7);
+            }
+
+        .sp .note {
+            font-size: .78rem;
+            color: var(--ink-3);
+        }
+
+        /* ---- documents ---- */
+        .sp .doc {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: .85rem 1rem;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            transition: border-color .15s, background .15s;
+        }
+
+            .sp .doc + .doc {
+                margin-top: .65rem;
+            }
+
+            .sp .doc:hover {
+                border-color: #c5d1ea;
+                background: #fafbfe;
+            }
+
+            .sp .doc .ico {
+                flex: none;
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                display: grid;
+                place-items: center;
+                font-size: 1.1rem;
+            }
+
+            .sp .doc .t {
+                font-weight: 600;
+                font-size: .92rem;
+                line-height: 1.3;
+            }
+
+            .sp .doc .m {
+                font-size: .76rem;
+                color: var(--ink-3);
+            }
+
+            .sp .doc .grow {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .sp .doc .t, .sp .doc .m {
+                overflow-wrap: anywhere;
+            }
+
+        .sp .btn-view {
+            flex: none;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            border: 1.5px solid #d6deec;
+            border-radius: 10px;
+            padding: .4rem .85rem;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--blue);
+            background: #fff;
+            text-decoration: none;
+            transition: background .15s, border-color .15s;
+        }
+
+            .sp .btn-view:hover {
+                background: #e7edff;
+                border-color: var(--blue);
+                color: var(--blue);
+            }
+
+        .sp .empty {
+            text-align: center;
+            padding: 2rem 1rem;
+            border: 1.5px dashed #cdd6e6;
+            border-radius: 14px;
+            color: var(--ink-3);
+            font-size: .88rem;
+        }
+
+            .sp .empty i {
+                display: block;
+                font-size: 1.8rem;
+                margin-bottom: .5rem;
+                opacity: .55;
+            }
+
+        /* ---- password toggle ---- */
+        .sp .pw {
+            position: relative;
+        }
+
+            .sp .pw .form-control {
+                padding-right: 2.9rem;
+            }
+
+        .sp .pw-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2.9rem;
+            height: 100%;
+            border: 0;
+            background: transparent;
+            color: var(--ink-3);
+            border-radius: 0 11px 11px 0;
+            cursor: pointer;
+        }
+
+            .sp .pw-toggle:hover {
+                color: var(--blue);
+            }
+
+            .sp .pw-toggle:focus-visible {
+                outline: 2px solid var(--blue);
+                outline-offset: -2px;
+            }
+
+    /* ---- sticky side ---- */
+    @@media (min-width: 992px) {
+        .sp .sticky-side {
+            position: sticky;
+            top: 1rem;
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .sp .stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .sp .hero {
+            padding: 1.5rem 1.25rem 5rem;
+        }
+
+        .sp .hero-inner {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .sp .stats {
+            margin-left: .5rem;
+            margin-right: .5rem;
+            gap: .65rem;
+        }
+
+        .sp .stat {
+            padding: .8rem;
+            gap: .6rem;
+        }
+
+            .sp .stat .ico {
+                width: 36px;
+                height: 36px;
+            }
+
+        .sp .panel-body {
+            padding: 1.1rem;
+        }
+
+        .sp .doc {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
+<div class="sp">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="avatar-wrap">
+                <div class="avatar">
+                    @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                    {
+                        <img src="@Model.PhotoUrl" alt="Student Photo" class="w-100 h-100 object-fit-cover" />
+                    }
+                    else
+                    {
+                        <div class="w-100 h-100 bg-secondary text-white d-flex align-items-center justify-content-center fs-1">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    }
+                </div>
             </div>
 
-            <h4 class="fw-bold text-primary mb-1">@Model.FullName</h4>
-            <div class="text-danger fw-semibold small mb-2">Student ID: @Model.StudentUniqueId</div>
             <div>
-                <span class="badge @(Model.RegistrationStatus == "Approved" ? "bg-success" : "bg-warning text-dark") px-3 py-2">
+                <h1>@Model.FullName</h1>
+                <div class="sid"><i class="fa-solid fa-id-card"></i> Student ID: @Model.StudentUniqueId</div>
+                <div class="program">@Model.ProgramName &middot; @Model.CollegeName</div>
+                <span class="pill @(approved ? "ok" : "pending")">
+                    <i class="fa-solid @(approved ? "fa-circle-check" : "fa-clock")"></i>
                     Registration: @Model.RegistrationStatus
                 </span>
             </div>
+        </div>
+    </section>
 
-            <hr/>
-
-            <div class="text-start small">
-                <div class="mb-2"><strong>Registration No:</strong> <span class="text-primary fw-bold">@(Model.RegistrationNumber ?? "Pending Approval")</span></div>
-                <div class="mb-2"><strong>Roll Number:</strong> <span class="text-danger fw-bold">@(Model.RollNumber ?? "Not Allocated")</span></div>
-                <div class="mb-2"><strong>College:</strong> @Model.CollegeName</div>
-                <div class="mb-2"><strong>Faculty:</strong> @Model.FacultyName</div>
-                <div class="mb-2"><strong>Program:</strong> @Model.ProgramName</div>
-                <div class="mb-2"><strong>Semester:</strong> @Model.CurrentSemester</div>
-                <div><strong>Enrolled Session:</strong> @Model.AcademicYear</div>
+    <!-- ================= STAT STRIP ================= -->
+    <div class="stats">
+        <div class="stat">
+            <span class="ico blue"><i class="fa-solid fa-file-signature"></i></span>
+            <div>
+                <small>Registration No</small>
+                <strong class="text-primary">@(Model.RegistrationNumber ?? "Pending Approval")</strong>
+            </div>
+        </div>
+        <div class="stat">
+            <span class="ico red"><i class="fa-solid fa-hashtag"></i></span>
+            <div>
+                <small>Roll Number</small>
+                <strong class="text-danger">@(Model.RollNumber ?? "Not Allocated")</strong>
+            </div>
+        </div>
+        <div class="stat">
+            <span class="ico gold"><i class="fa-solid fa-layer-group"></i></span>
+            <div>
+                <small>Semester</small>
+                <strong>@Model.CurrentSemester</strong>
+            </div>
+        </div>
+        <div class="stat">
+            <span class="ico green"><i class="fa-solid fa-calendar-days"></i></span>
+            <div>
+                <small>Enrolled Session</small>
+                <strong>@Model.AcademicYear</strong>
             </div>
         </div>
     </div>
 
-    <!-- Edit Contact Information & Documents -->
-    <div class="col-lg-8">
-        <div class="custom-card shadow-sm mb-4">
-            <div class="card-header-custom">
-                <h5><i class="fa-solid fa-user-pen text-primary"></i> Personal & Contact Information</h5>
-            </div>
-            <div class="p-4">
-                <form asp-action="UpdateProfile" method="post">
-                    @Html.AntiForgeryToken()
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">FULL NAME</label>
-                            <input type="text" class="form-control" value="@Model.FullName" disabled />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">DATE OF BIRTH</label>
-                            <input type="text" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" disabled />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">GENDER</label>
-                            <input type="text" class="form-control" value="@Model.Gender" disabled />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">EMAIL ADDRESS</label>
-                            <input type="text" class="form-control" value="@Model.Email" disabled />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">MOBILE NUMBER *</label>
-                            <input type="text" name="mobileNumber" class="form-control" value="@Model.MobileNumber" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted">PREVIOUS QUALIFICATION</label>
-                            <input type="text" class="form-control" value="@Model.PreviousQualification" disabled />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label small fw-bold">PERMANENT ADDRESS *</label>
-                            <input type="text" name="address" class="form-control" value="@Model.Address" required />
-                        </div>
-                        <div class="col-12 text-end mt-3">
-                            <button type="submit" class="btn btn-primary fw-bold px-4">
-                                <i class="fa-solid fa-floppy-disk me-1"></i> Save Contact Updates
-                            </button>
+    <div class="row g-4">
+        <!-- ================= LEFT: ACADEMIC ================= -->
+        <div class="col-lg-4">
+            <div class="sticky-side">
+                <div class="panel">
+                    <div class="panel-head">
+                        <span class="ico blue"><i class="fa-solid fa-building-columns"></i></span>
+                        <div>
+                            <h5>Academic Details</h5>
+                            <p>Your enrollment at a glance</p>
                         </div>
                     </div>
-                </form>
+                    <div class="panel-body">
+                        <ul class="acad">
+                            <li>
+                                <span class="ico blue"><i class="fa-solid fa-building-columns"></i></span>
+                                <div><small>College</small><strong>@Model.CollegeName</strong></div>
+                            </li>
+                            <li>
+                                <span class="ico gold"><i class="fa-solid fa-sitemap"></i></span>
+                                <div><small>Faculty</small><strong>@Model.FacultyName</strong></div>
+                            </li>
+                            <li>
+                                <span class="ico green"><i class="fa-solid fa-graduation-cap"></i></span>
+                                <div><small>Program</small><strong>@Model.ProgramName</strong></div>
+                            </li>
+                            <li>
+                                <span class="ico slate"><i class="fa-solid fa-layer-group"></i></span>
+                                <div><small>Semester</small><strong>@Model.CurrentSemester</strong></div>
+                            </li>
+                            <li>
+                                <span class="ico red"><i class="fa-solid fa-calendar-days"></i></span>
+                                <div><small>Enrolled Session</small><strong>@Model.AcademicYear</strong></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Student Documents -->
-        <div class="custom-card shadow-sm">
-            <div class="card-header-custom">
-                <h5><i class="fa-solid fa-folder-closed text-warning"></i> Uploaded Documents</h5>
+        <!-- ================= RIGHT: FORMS ================= -->
+        <div class="col-lg-8">
+
+            <div class="panel">
+                <div class="panel-head">
+                    <span class="ico blue"><i class="fa-solid fa-user-pen"></i></span>
+                    <div>
+                        <h5>Personal &amp; Contact Information</h5>
+                        <p>Only mobile number and address can be edited</p>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form asp-action="UpdateProfile" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label locked"><i class="fa-solid fa-lock fa-xs"></i>Full name</label>
+                                <input type="text" class="form-control" value="@Model.FullName" disabled />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label locked"><i class="fa-solid fa-lock fa-xs"></i>Date of birth</label>
+                                <input type="text" class="form-control" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")" disabled />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label locked"><i class="fa-solid fa-lock fa-xs"></i>Gender</label>
+                                <input type="text" class="form-control" value="@Model.Gender" disabled />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label locked"><i class="fa-solid fa-lock fa-xs"></i>Email address</label>
+                                <input type="text" class="form-control" value="@Model.Email" disabled />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Mobile number *<span class="editable-tag">Editable</span></label>
+                                <input type="tel"
+                                       id="mobileNumber"
+                                       name="mobileNumber"
+                                       class="form-control"
+                                       value="@Model.MobileNumber"
+                                       inputmode="numeric"
+                                       maxlength="10"
+                                       pattern="[6-9][0-9]{9}"
+                                       placeholder="10 digit mobile number"
+                                       title="Enter a valid 10 digit mobile number (starts with 6-9)"
+                                       autocomplete="tel-national"
+                                       required />
+                                <div class="note mt-1" id="mobileHint" style="display:none; color:#b4232c;">
+                                    Enter a valid 10 digit mobile number.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label locked"><i class="fa-solid fa-lock fa-xs"></i>Previous qualification</label>
+                                <input type="text" class="form-control" value="@Model.PreviousQualification" disabled />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Permanent address *<span class="editable-tag">Editable</span></label>
+                                <input type="text" name="address" class="form-control" value="@Model.Address" required />
+                            </div>
+                            <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2 pt-2">
+                                <span class="note"><i class="fa-solid fa-circle-info me-1"></i>Fields marked * are required.</span>
+                                <button type="submit" class="btn-main">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save Contact Updates
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="p-4">
-                @if (docs.Any() || !string.IsNullOrEmpty(Model.IdentityDocumentUrl))
-                {
-                    <ul class="list-group list-group-flush">
+
+            <div class="panel">
+                <div class="panel-head">
+                    <span class="ico gold"><i class="fa-solid fa-folder-closed"></i></span>
+                    <div>
+                        <h5>Uploaded Documents</h5>
+                        <p>Files submitted with your registration</p>
+                    </div>
+                    <span class="count">@(docs.Count + (string.IsNullOrEmpty(Model.IdentityDocumentUrl) ? 0 : 1)) files</span>
+                </div>
+                <div class="panel-body">
+                    @if (docs.Any() || !string.IsNullOrEmpty(Model.IdentityDocumentUrl))
+                    {
                         @if (!string.IsNullOrEmpty(Model.IdentityDocumentUrl))
                         {
-                            <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-0">
-                                <div>
-                                    <i class="fa-solid fa-file-pdf text-danger me-2"></i>
-                                    <strong>Identity Document / Citizenship</strong>
+                            <div class="doc">
+                                <span class="ico red"><i class="fa-solid fa-file-pdf"></i></span>
+                                <div class="grow">
+                                    <div class="t">Identity Document / Citizenship</div>
                                 </div>
-                                <a href="@Model.IdentityDocumentUrl" target="_blank" class="btn btn-sm btn-outline-primary">
-                                    <i class="fa-solid fa-eye me-1"></i> View Document
+                                <a href="@Model.IdentityDocumentUrl" target="_blank" class="btn-view">
+                                    <i class="fa-solid fa-eye"></i> View Document
                                 </a>
-                            </li>
+                            </div>
                         }
                         @foreach (var d in docs)
                         {
-                            <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-0">
-                                <div>
-                                    <i class="fa-solid fa-file-lines text-primary me-2"></i>
-                                    <strong>@d.DocumentType</strong>: @d.DocumentName
-                                    <small class="text-muted">(@(d.FileSizeKB ?? 0) KB &bull; @d.UploadedDate.ToString("MMM dd, yyyy"))</small>
+                            <div class="doc">
+                                <span class="ico blue"><i class="fa-solid fa-file-lines"></i></span>
+                                <div class="grow">
+                                    <div class="t">@d.DocumentType: @d.DocumentName</div>
+                                    <div class="m">@(d.FileSizeKB ?? 0) KB &bull; @d.UploadedDate.ToString("MMM dd, yyyy")</div>
                                 </div>
-                                <a href="@d.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
-                                    <i class="fa-solid fa-eye me-1"></i> View
+                                <a href="@d.FilePath" target="_blank" class="btn-view">
+                                    <i class="fa-solid fa-eye"></i> View
                                 </a>
-                            </li>
+                            </div>
                         }
-                    </ul>
-                }
-                else
-                {
-                    <p class="text-muted small mb-0">No supplemental documents uploaded.</p>
-                }
+                    }
+                    else
+                    {
+                        <div class="empty">
+                            <i class="fa-regular fa-folder-open"></i>
+                            No supplemental documents uploaded.
+                        </div>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div class="custom-card shadow-sm mt-4">
-            <div class="card-header-custom">
-                <h5><i class="fa-solid fa-key text-primary"></i> Change Password</h5>
-            </div>
-            <div class="p-4">
-                <form asp-controller="Account" asp-action="ChangePassword" method="post">
-                    @Html.AntiForgeryToken()
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label small fw-bold">CURRENT PASSWORD *</label>
-                            <input type="password" name="currentPassword" class="form-control" autocomplete="current-password" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small fw-bold">NEW PASSWORD *</label>
-                            <input type="password" name="newPassword" class="form-control" minlength="8" autocomplete="new-password" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small fw-bold">CONFIRM PASSWORD *</label>
-                            <input type="password" name="confirmPassword" class="form-control" minlength="8" autocomplete="new-password" required />
-                        </div>
-                        <div class="col-12 text-end">
-                            <button type="submit" class="btn btn-primary fw-bold px-4">
-                                <i class="fa-solid fa-lock me-1"></i> Update Password
-                            </button>
-                        </div>
+            <div class="panel">
+                <div class="panel-head">
+                    <span class="ico red"><i class="fa-solid fa-shield-halved"></i></span>
+                    <div>
+                        <h5>Change Password</h5>
+                        <p>Use at least 8 characters</p>
                     </div>
-                </form>
+                </div>
+                <div class="panel-body">
+                    <form asp-controller="Account" asp-action="ChangePassword" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Current password *</label>
+                                <div class="pw">
+                                    <input type="password" name="currentPassword" class="form-control" autocomplete="current-password" required />
+                                    <button type="button" class="pw-toggle" aria-label="Show password" title="Show password"><i class="fa-solid fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">New password *</label>
+                                <div class="pw">
+                                    <input type="password" name="newPassword" class="form-control" minlength="8" autocomplete="new-password" required />
+                                    <button type="button" class="pw-toggle" aria-label="Show password" title="Show password"><i class="fa-solid fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Confirm password *</label>
+                                <div class="pw">
+                                    <input type="password" name="confirmPassword" class="form-control" minlength="8" autocomplete="new-password" required />
+                                    <button type="button" class="pw-toggle" aria-label="Show password" title="Show password"><i class="fa-solid fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-12 text-end pt-2">
+                                <button type="submit" class="btn-main dark">
+                                    <i class="fa-solid fa-lock"></i> Update Password
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.sp .pw-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = btn.parentElement.querySelector('input');
+            var icon = btn.querySelector('i');
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            icon.className = show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            var label = show ? 'Hide password' : 'Show password';
+            btn.setAttribute('aria-label', label);
+            btn.setAttribute('title', label);
+        });
+        });(function () {
+        var mobile = document.getElementById('mobileNumber');
+        var hint = document.getElementById('mobileHint');
+        if (!mobile) return;
+
+        var valid = /^[6-9][0-9]{9}$/;
+
+        // sirf digits allow, typing aur paste dono par
+        mobile.addEventListener('input', function () {
+            mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
+            if (valid.test(mobile.value) || mobile.value === '') {
+                hint.style.display = 'none';
+                mobile.setCustomValidity('');
+            }
+        });
+
+        // field se bahar jaane par validation message
+        mobile.addEventListener('blur', function () {
+            if (mobile.value !== '' && !valid.test(mobile.value)) {
+                hint.style.display = 'block';
+                mobile.setCustomValidity('Enter a valid 10 digit mobile number.');
+            }
+        });
+    })();
+</script>

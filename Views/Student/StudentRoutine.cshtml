@@ -1,0 +1,561 @@
+﻿@{
+    ViewData["Title"] = "Purbanchal University Exam Schedules";
+    Layout = "_StudentLayout";
+    ViewData["IsInnerPage"] = true;
+    var exams = ViewBag.Exams as List<Examination> ?? new List<Examination>();
+    // var faculties = ViewBag.Faculties as List<Faculty> ?? new List<Faculty>();
+    // var programs = ViewBag.Programs as List<ProgramModel> ?? new List<ProgramModel>();
+    var semesters = ViewBag.Semesters as List<Semester> ?? new List<Semester>();
+    // int? selFaculty = ViewBag.SelectedFacultyId;
+    // int? selProgram = ViewBag.SelectedProgramId;
+    int? selSem = ViewBag.SelectedSemesterId;
+}
+<style>
+    .section-title {
+        padding-bottom: 0px;
+    }
+
+    /* ========== Page tokens ========== */
+    .pu-routine {
+        --pu-navy: #0b2a5b;
+        --pu-blue: #003980;
+        --pu-gold: #f2b705;
+        --pu-gold-dark: #d9a200;
+        --pu-paper: #f4f6fb;
+        --pu-ink: #1b2430;
+        --pu-muted: #5b6678;
+        --pu-line: #dde3ee;
+        --pu-ok: #1a7f4b;
+        --pu-bad: #b4372f;
+        color: var(--pu-ink);
+        font-feature-settings: "tnum" 1;
+    }
+
+        /* ========== Filter panel ========== */
+        .pu-routine .pu-filter {
+            background: #fff;
+            border: 1px solid var(--pu-line) !important;
+            border-top: 4px solid var(--pu-gold) !important;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(11, 42, 91, .06) !important;
+        }
+
+            .pu-routine .pu-filter .section-title p {
+                color: var(--pu-muted) !important;
+                font-size: .875rem;
+                letter-spacing: .01em;
+                text-transform: none !important;
+                font-weight: 600;
+                margin-bottom: .15rem !important;
+            }
+
+            .pu-routine .pu-filter .section-title h2 {
+                color: var(--pu-navy) !important;
+                font-size: 1.6rem;
+                letter-spacing: -.01em;
+            }
+
+        .pu-routine .form-floating > .form-select {
+            border: 1.5px solid var(--pu-line);
+            border-radius: 8px;
+            min-height: 3.5rem;
+            background-color: #fff;
+            color: var(--pu-ink);
+            font-weight: 500;
+        }
+
+            .pu-routine .form-floating > .form-select:focus {
+                border-color: var(--pu-blue);
+                box-shadow: 0 0 0 .2rem rgba(0, 57, 128, .15);
+            }
+
+        .pu-routine .form-floating > label {
+            color: var(--pu-muted);
+            font-weight: 500;
+            text-transform: none;
+        }
+
+        .pu-routine .pu-search-btn {
+            background: var(--pu-gold);
+            border: 1px solid var(--pu-gold-dark);
+            color: var(--pu-navy);
+            border-radius: 8px;
+            min-height: 3.5rem;
+            transition: background-color .15s ease, transform .1s ease;
+        }
+
+            .pu-routine .pu-search-btn:hover {
+                background: var(--pu-gold-dark);
+                color: var(--pu-navy);
+            }
+
+            .pu-routine .pu-search-btn:active {
+                transform: translateY(1px);
+            }
+
+            .pu-routine .pu-search-btn:focus-visible,
+            .pu-routine .form-select:focus-visible {
+                outline: 3px solid var(--pu-blue);
+                outline-offset: 2px;
+            }
+
+
+        /* ========== Heading overlap fix (theme's .section-title styles) ========== */
+        .pu-routine .pu-filter .section-title {
+            position: static;
+            margin-bottom: 1.25rem !important;
+        }
+
+            .pu-routine .pu-filter .section-title p {
+                position: static !important;
+                display: block;
+                margin: 0 0 .25rem 0 !important;
+                line-height: 1.3 !important;
+                transform: none !important;
+            }
+
+            .pu-routine .pu-filter .section-title h2 {
+                position: static !important;
+                margin: 0 !important;
+                line-height: 1.25 !important;
+                text-transform: none !important;
+                padding-bottom: 0;
+            }
+
+        /* ========== Reset button ========== */
+        .pu-routine .pu-reset-btn {
+            background: #fff;
+            border: 1.5px solid var(--pu-line);
+            color: var(--pu-navy);
+            border-radius: 8px;
+            min-height: 3.5rem;
+            transition: background-color .15s ease, border-color .15s ease;
+        }
+
+            .pu-routine .pu-reset-btn:hover {
+                background: var(--pu-paper);
+                border-color: var(--pu-blue);
+                color: var(--pu-blue);
+            }
+
+            .pu-routine .pu-reset-btn:focus-visible {
+                outline: 3px solid var(--pu-blue);
+                outline-offset: 2px;
+            }
+
+        /* ========== Schedules table card ========== */
+        .pu-routine .pu-table-card {
+            background: #fff;
+            border: 1px solid var(--pu-line) !important;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(11, 42, 91, .06) !important;
+        }
+
+        .pu-routine .pu-table-head {
+            background: var(--pu-navy) !important;
+            border-bottom: 0 !important;
+            padding: 1rem 1.25rem !important;
+        }
+
+            .pu-routine .pu-table-head h5 {
+                color: #fff !important;
+                font-size: 1.05rem;
+            }
+
+                .pu-routine .pu-table-head h5 i {
+                    color: var(--pu-gold) !important;
+                }
+
+            .pu-routine .pu-table-head .badge {
+                background: var(--pu-gold) !important;
+                color: var(--pu-navy);
+                font-weight: 700;
+                padding: .45em .8em;
+                border-radius: 999px;
+            }
+
+        .pu-routine .pu-table thead th {
+            background: var(--pu-paper);
+            color: var(--pu-muted);
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .02em;
+            white-space: nowrap;
+            padding: .85rem 1rem;
+            border-bottom: 2px solid var(--pu-line);
+        }
+
+        .pu-routine .pu-table tbody td {
+            padding: 1rem;
+            border-color: var(--pu-line);
+            font-size: .93rem;
+            vertical-align: middle;
+        }
+
+        .pu-routine .pu-table tbody tr:nth-child(even) {
+            background: #fbfcfe;
+        }
+
+        .pu-routine .pu-table.table-hover > tbody > tr:hover > * {
+            background-color: #eef3fb;
+            --bs-table-accent-bg: transparent;
+        }
+
+        .pu-routine .pu-exam-name {
+            color: var(--pu-blue) !important;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: .3rem;
+        }
+
+        .pu-routine .pu-table .badge.bg-secondary {
+            background: var(--pu-paper) !important;
+            color: var(--pu-muted);
+            border: 1px solid var(--pu-line);
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        .pu-routine .pu-table .badge.bg-info {
+            background: #e3edfb !important;
+            color: var(--pu-blue) !important;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        .pu-routine .pu-table .badge.bg-light {
+            background: #fff !important;
+            color: var(--pu-ink) !important;
+            border: 1px solid var(--pu-line) !important;
+            font-weight: 500;
+            white-space: nowrap;
+            border-radius: 4px;
+            padding: .45em .7em;
+        }
+
+        .pu-routine .pu-date {
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+            .pu-routine .pu-date .text-success {
+                color: var(--pu-ok) !important;
+            }
+
+            .pu-routine .pu-date .text-danger {
+                color: var(--pu-bad) !important;
+            }
+
+        .pu-routine .pu-empty {
+            text-align: center;
+            padding: 3rem 1rem !important;
+            color: var(--pu-muted);
+        }
+
+            .pu-routine .pu-empty i {
+                font-size: 2rem;
+                color: var(--pu-line);
+                display: block;
+                margin-bottom: .6rem;
+            }
+
+            .pu-routine .pu-empty strong {
+                display: block;
+                color: var(--pu-ink);
+                margin-bottom: .2rem;
+            }
+
+    /* ========== Mobile: each row becomes a stacked card ========== */
+    @@media (max-width: 767.98px) {
+        .pu-routine .pu-filter .section-title h2 {
+            font-size: 1.3rem;
+        }
+
+        .pu-routine .pu-table thead {
+            display: none;
+        }
+
+        .pu-routine .pu-table,
+        .pu-routine .pu-table tbody,
+        .pu-routine .pu-table tr,
+        .pu-routine .pu-table td {
+            display: block;
+            width: 100%;
+        }
+
+            .pu-routine .pu-table tbody tr {
+                padding: .85rem 1rem;
+                border-bottom: 1px solid var(--pu-line);
+            }
+
+            .pu-routine .pu-table tbody td {
+                border: 0;
+                padding: .3rem 0;
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                text-align: right;
+            }
+
+                .pu-routine .pu-table tbody td::before {
+                    content: attr(data-label);
+                    flex: 0 0 auto;
+                    color: var(--pu-muted);
+                    font-size: .8rem;
+                    font-weight: 600;
+                    text-align: left;
+                }
+
+                .pu-routine .pu-table tbody td.pu-title-cell {
+                    display: block;
+                    text-align: left;
+                    padding-bottom: .6rem;
+                }
+
+                    .pu-routine .pu-table tbody td.pu-title-cell::before {
+                        content: none;
+                    }
+
+                .pu-routine .pu-table tbody td.pu-empty {
+                    display: block;
+                }
+
+                    .pu-routine .pu-table tbody td.pu-empty::before {
+                        content: none;
+                    }
+    }
+</style>
+@*
+<div class="py-4 text-white" style="background: linear-gradient(135deg, #003980 0%, #121d24 100%);">
+    <div class="container">
+        <h2 class="fw-bold mb-1"><i class="fa-solid fa-calendar-days text-warning me-2"></i> Purbanchal University Exam Schedules</h2>
+        <p class="mb-0 text-white-50">Filter routines by Semester/Year &bull; puexam.edu.np/exam-schedule-new</p>
+    </div>
+</div>
+*@
+<div class="container py-4 pu-routine">
+    <!-- Filter Form replicating puexam.edu.np/exam-schedule-new -->
+    <div class="card border-0 shadow-sm p-4 mb-4 bg-white border-top border-4 border-warning pu-filter">
+        <div class="section-title mb-3">
+            <p class="text-uppercase text-muted fw-bold small mb-1">Exam Schedules</p>
+            <h2 class="fw-bold text-primary">Search Examination Schedules</h2>
+        </div>
+        <form method="get" asp-action="StudentRoutine">
+            <div class="row g-3">
+
+                @* ===== Faculty filter (abhi band) =====
+                <div class="col-lg-3 col-md-6">
+                    <div class="form-floating">
+                        <select name="facultyId" id="faculty" class="form-select">
+                            <option value="">Select Faculty</option>
+                            @foreach (var f in faculties)
+                            {
+                                <option value="@f.FacultyId" selected="@(selFaculty == f.FacultyId ? "selected" : null)">@f.FacultyName</option>
+                            }
+                        </select>
+                        <label for="faculty">FACULTY</label>
+                    </div>
+                </div>
+                *@
+
+                @* ===== Program filter (abhi band) =====
+                <div class="col-lg-3 col-md-6">
+                    <div class="form-floating">
+                        <select name="programId" id="program" class="form-select">
+                            <option value="">Select Program</option>
+                            @foreach (var p in programs)
+                            {
+                                <option value="@p.ProgramId" data-faculty="@p.FacultyId" selected="@(selProgram == p.ProgramId ? "selected" : null)">@p.ProgramName</option>
+                            }
+                        </select>
+                        <label for="program">PROGRAM</label>
+                    </div>
+                </div>
+                *@
+
+                <div class="col-lg-7 col-md-12">
+                    <div class="form-floating">
+                        <select name="semesterYearId" id="semesterYearId" class="form-select">
+                            <option value="">Semester/Year</option>
+                            @foreach (var s in semesters)
+                            {
+                                <option value="@s.SemesterId" selected="@(selSem == s.SemesterId ? "selected" : null)">@s.SemesterName</option>
+                            }
+                        </select>
+                        <label for="semesterYearId">SEMESTER / YEAR</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-8">
+                    <button type="submit" class="btn btn-warning h-100 w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 pu-search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search Schedule
+                    </button>
+                </div>
+
+                <div class="col-lg-2 col-md-6 col-4">
+                    <a asp-action="StudentRoutine" class="btn h-100 w-100 fw-bold d-flex align-items-center justify-content-center gap-2 pu-reset-btn">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Active Schedules Table -->
+    <div class="card border-0 shadow-sm mb-4 bg-white overflow-hidden pu-table-card">
+        <div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center pu-table-head">
+            <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-clock text-primary me-2"></i> Active Examination Sessions</h5>
+            <span class="badge bg-primary">Academic Year 2026/2083</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 pu-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Examination Title</th>
+                        <th>Type</th>
+                        <th>Session</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Shift / Time</th>
+                        <th>Center</th>
+                        @*  <th class="text-end">Routine File</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ex in exams)
+                    {
+                        <tr>
+                            <td class="pu-title-cell">
+                                <div class="fw-bold text-primary pu-exam-name">@ex.ExamName</div>
+                                <span class="badge bg-secondary">@ex.ExamCode</span>
+                            </td>
+                            <td data-label="Type"><span class="badge bg-info text-dark">@ex.ExamType</span></td>
+                            <td data-label="Session">@ex.AcademicYearName &bull; @ex.SemesterName</td>
+                            <td data-label="Start date" class="pu-date"><span><i class="fa-regular fa-calendar-check text-success me-1"></i> @ex.StartDate.ToString("MMM dd, yyyy")</span></td>
+                            <td data-label="End date" class="pu-date"><span><i class="fa-regular fa-calendar-xmark text-danger me-1"></i> @ex.EndDate.ToString("MMM dd, yyyy")</span></td>
+                            <td data-label="Shift / time"><span class="badge bg-light text-dark border">07:00 AM - 10:00 AM (Morning)</span></td>
+                            <td data-label="Center">@(ex.DefaultCenterName ?? "Allocated Exam Centers")</td>
+                            @* <td class="text-end">
+                                <a href="/files/notices/Routine_Spring_2026.pdf" target="_blank" class="btn btn-sm btn-outline-danger fw-bold">
+                                    <i class="fa-solid fa-file-pdf me-1"></i> Routine PDF
+                                </a>
+                            </td>*@
+                        </tr>
+                    }
+                    @if (!exams.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="pu-empty">
+                                <i class="fa-regular fa-calendar-xmark"></i>
+                                <strong>No examinations found</strong>
+                                Try a different semester or year, then search again.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Day-wise Routine Matrix -->
+    @*<div class="card border-0 shadow-sm bg-white overflow-hidden">
+        <div class="p-3 bg-light border-bottom">
+            <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-table-list text-primary me-2"></i> Purbanchal University Semester Day-Wise Routine Timetable</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mb-0 text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th width="12%">Date</th>
+                        <th width="10%">Day</th>
+                        <th width="12%">Program</th>
+                        <th width="10%">Course Code</th>
+                        <th class="text-start">Course Title</th>
+                        <th width="15%">Exam Shift / Time</th>
+                        <th width="16%">Allocated Center</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>2026-04-15</strong></td>
+                        <td>Wednesday</td>
+                        <td><span class="badge bg-primary">BE-CMP / CIVIL</span></td>
+                        <td class="fw-bold">MTH111</td>
+                        <td class="text-start">Engineering Mathematics I</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-17</strong></td>
+                        <td>Friday</td>
+                        <td><span class="badge bg-primary">BE-CMP / CIVIL</span></td>
+                        <td class="fw-bold">PHY112</td>
+                        <td class="text-start">Physics for Engineers</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-19</strong></td>
+                        <td>Sunday</td>
+                        <td><span class="badge bg-primary">BE-CMP</span></td>
+                        <td class="fw-bold">CMP113</td>
+                        <td class="text-start">Computer Programming (C)</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-21</strong></td>
+                        <td>Tuesday</td>
+                        <td><span class="badge bg-primary">BE-CMP / ELE</span></td>
+                        <td class="fw-bold">ELE114</td>
+                        <td class="text-start">Basic Electrical Engineering</td>
+                        <td>07:00 AM &ndash; 10:00 AM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-23</strong></td>
+                        <td>Thursday</td>
+                        <td><span class="badge bg-success">BBA</span></td>
+                        <td class="fw-bold">MGT111</td>
+                        <td class="text-start">Principles of Management</td>
+                        <td>01:00 PM &ndash; 04:00 PM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2026-04-25</strong></td>
+                        <td>Saturday</td>
+                        <td><span class="badge bg-success">BBA</span></td>
+                        <td class="fw-bold">ACC113</td>
+                        <td class="text-start">Financial Accounting I</td>
+                        <td>01:00 PM &ndash; 04:00 PM</td>
+                        <td>PU Central Complex (Biratnagar)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>*@
+</div>
+
+@section Scripts {
+@*
+            <script>
+                $(document).ready(function() {
+                    $('#faculty').on('change', function() {
+                        var facId = $(this).val();
+                        if (facId) {
+                            $('#program option').each(function() {
+                                var pFac = $(this).data('faculty');
+                                if (!pFac || pFac == facId) {
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        } else {
+                            $('#program option').show();
+                        }
+                    });
+                });
+            </script>
+            *@
+}

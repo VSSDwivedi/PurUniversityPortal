@@ -1,97 +1,383 @@
 @model List<Notice>
 @{
-    ViewData["Title"] = "Official Notices & Announcements";
+    ViewData["Title"] = "Official Notices & Announcements"; Layout = "_StudentLayout";
     ViewData["IsInnerPage"] = true;
     var categories = ViewBag.Categories as List<NoticeCategory> ?? new List<NoticeCategory>();
     int? selectedCategory = ViewBag.SelectedCategoryId;
     string? searchTerm = ViewBag.SearchTerm;
 }
 
-<div class="bg-primary text-white py-4" style="background: linear-gradient(135deg, #0b2545 0%, #133b5c 100%);">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-7">
-                <h2 class="fw-bold mb-1"><i class="fa-solid fa-bullhorn text-warning me-2"></i> University Examination Notices</h2>
-                <p class="mb-0 text-white-50">Official notifications, routines, admit card alerts, and result announcements.</p>
-            </div>
-            <div class="col-md-5 mt-3 mt-md-0">
-                <form asp-action="Notices" method="get">
-                    <div class="input-group">
-                        <input type="text" name="search" value="@searchTerm" class="form-control" placeholder="Search notices by keyword..." />
-                        @if (selectedCategory.HasValue)
-                        {
-                            <input type="hidden" name="categoryId" value="@selectedCategory.Value" />
-                        }
-                        <button type="submit" class="btn btn-warning fw-bold"><i class="fa-solid fa-search"></i> Search</button>
-                    </div>
-                </form>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+
+<style>
+    .nt {
+        --ink: #0f1b3d;
+        --ink-2: #4a5878;
+        --ink-3: #8592ad;
+        --line: #e4e9f2;
+        --wash: #f3f6fb;
+        --blue: #2150d9;
+        --gold: #c8963e;
+        --gold-soft: #fbf1dc;
+        --red: #b4232c;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        color: var(--ink);
+    }
+
+        /* ============ HERO ============ */
+        .nt .nt-hero {
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            padding: 2.5rem 0 3.5rem;
+            background: radial-gradient(900px 300px at 100% 0%, rgba(200,150,62,.28), transparent 60%), repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 2px, transparent 2px 18px), linear-gradient(115deg, #0b1533 0%, #14265c 55%, #1d3a8c 100%);
+        }
+
+            .nt .nt-hero::after {
+                content: "";
+                position: absolute;
+                right: -70px;
+                top: -80px;
+                width: 260px;
+                height: 260px;
+                border-radius: 50%;
+                border: 1px solid rgba(255,255,255,.12);
+                box-shadow: 0 0 0 36px rgba(255,255,255,.03), 0 0 0 72px rgba(255,255,255,.02);
+                pointer-events: none;
+            }
+
+            .nt .nt-hero .container {
+                position: relative;
+                z-index: 1;
+            }
+
+            .nt .nt-hero h2 {
+                font-family: 'Fraunces', Georgia, serif;
+                font-weight: 700;
+                font-size: clamp(1.5rem, 3vw, 2.2rem);
+                letter-spacing: -.01em;
+                color: #fff;
+            }
+
+                .nt .nt-hero h2 i {
+                    display: inline-grid;
+                    place-items: center;
+                    width: 46px;
+                    height: 46px;
+                    border-radius: 13px;
+                    background: rgba(200,150,62,.18);
+                    border: 1px solid rgba(243,215,156,.35);
+                    font-size: 1.1rem;
+                    vertical-align: middle;
+                    margin-right: .75rem !important;
+                }
+
+            .nt .nt-hero p {
+                color: rgba(255,255,255,.78) !important;
+                font-size: .95rem;
+            }
+
+            .nt .nt-hero .input-group {
+                background: #fff;
+                border-radius: 14px;
+                padding: .35rem;
+                box-shadow: 0 16px 32px -16px rgba(0,0,0,.5);
+            }
+
+            .nt .nt-hero .form-control {
+                border: 0;
+                background: transparent;
+                box-shadow: none;
+                padding-left: .9rem;
+                font-size: .92rem;
+            }
+
+            .nt .nt-hero .btn-warning {
+                border: 0;
+                border-radius: 10px !important;
+                background: linear-gradient(135deg, #d9a54a, #c8963e);
+                color: #2a1c05;
+                padding: .55rem 1.1rem;
+            }
+
+        /* ============ FILTER CHIPS ============ */
+        .nt .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .55rem;
+            padding: 1.1rem 1.25rem;
+            margin-top: -2.2rem;
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 18px 36px -22px rgba(15,27,61,.35);
+            margin-bottom: 1.75rem !important;
+            border-bottom: 1px solid var(--line) !important;
+        }
+
+            .nt .chips .btn {
+                border-radius: 999px;
+                padding: .45rem 1rem;
+                font-size: .82rem;
+                font-weight: 600;
+                border: 1.5px solid #d6deec;
+                color: var(--ink-2);
+                background: #fff;
+                transition: all .15s;
+            }
+
+            .nt .chips .btn-outline-secondary:hover {
+                border-color: var(--blue);
+                color: var(--blue);
+                background: #eef2ff;
+            }
+
+            .nt .chips .btn-primary {
+                background: var(--ink);
+                border-color: var(--ink);
+                color: #f3d79c;
+                box-shadow: 0 8px 16px -8px rgba(15,27,61,.6);
+            }
+
+        /* ============ NOTICE LIST ============ */
+        .nt .custom-card {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+        .nt .notice-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+            padding: 1.2rem 1.4rem !important;
+            margin-bottom: .9rem;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(15,27,61,.04);
+            transition: transform .15s, box-shadow .15s, border-color .15s;
+        }
+
+            .nt .notice-item:hover {
+                transform: translateY(-2px);
+                border-color: #c9d5ee;
+                box-shadow: 0 16px 30px -18px rgba(15,27,61,.35);
+            }
+
+            .nt .notice-item.is-pinned {
+                border-left: 5px solid var(--gold);
+                background: linear-gradient(90deg, var(--gold-soft), #fff 35%);
+            }
+
+        .nt .notice-date-box {
+            flex: none;
+            width: 74px;
+            text-align: center;
+            padding: .65rem .3rem .55rem;
+            border-radius: 14px;
+            background: var(--wash);
+            border: 1px solid var(--line);
+            border-top: 4px solid var(--ink);
+            line-height: 1.1;
+        }
+
+            .nt .notice-date-box .day {
+                font-family: 'Fraunces', Georgia, serif;
+                font-size: 1.75rem;
+                font-weight: 700;
+                color: var(--ink);
+            }
+
+            .nt .notice-date-box .month {
+                font-size: .75rem;
+                font-weight: 700;
+                letter-spacing: .1em;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-top: .15rem;
+            }
+
+            .nt .notice-date-box .text-muted {
+                color: var(--ink-3) !important;
+                margin-top: .15rem;
+            }
+
+        .nt .notice-item .badge {
+            border-radius: 999px;
+            padding: .38rem .8rem;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+        }
+
+        .nt .notice-title {
+            display: inline-block;
+            margin: .25rem 0 .35rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--ink);
+            text-decoration: none;
+            transition: color .15s;
+        }
+
+            .nt .notice-title:hover {
+                color: var(--blue);
+            }
+
+        .nt .notice-item p {
+            line-height: 1.6;
+            color: var(--ink-2) !important;
+        }
+
+        .nt .notice-item .small.text-muted {
+            color: var(--ink-3) !important;
+        }
+
+        .nt .notice-item a.text-danger {
+            display: inline-flex;
+            align-items: center;
+            padding: .3rem .8rem;
+            border-radius: 999px;
+            background: #fde9eb;
+            font-size: .78rem;
+            transition: background .15s;
+        }
+
+            .nt .notice-item a.text-danger:hover {
+                background: #fad3d7;
+            }
+
+        /* ============ EMPTY STATE ============ */
+        .nt .empty-box {
+            background: #fff;
+            border: 1.5px dashed #cdd6e6;
+            border-radius: 18px;
+        }
+
+            .nt .empty-box i {
+                opacity: .5;
+            }
+
+    /* ============ RESPONSIVE ============ */
+    @@media (max-width: 575.98px) {
+        .nt .nt-hero {
+            padding: 1.75rem 0 3.2rem;
+        }
+
+        .nt .chips {
+            padding: .9rem;
+            margin-left: -.25rem;
+            margin-right: -.25rem;
+        }
+
+        .nt .notice-item {
+            gap: .9rem;
+            padding: 1rem !important;
+        }
+
+        .nt .notice-date-box {
+            width: 60px;
+        }
+
+            .nt .notice-date-box .day {
+                font-size: 1.4rem;
+            }
+    }
+</style>
+
+<div class="nt">
+
+    <div class="nt-hero text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h2 class="fw-bold mb-1"><i class="fa-solid fa-bullhorn text-warning me-2"></i> University Examination Notices</h2>
+                    <p class="mb-0 text-white-50">Official notifications, routines, admit card alerts, and result announcements.</p>
+                </div>
+                <div class="col-md-5 mt-3 mt-md-0">
+                    <form asp-action="Notices" method="get">
+                        <div class="input-group">
+                            <input type="text" name="search" value="@searchTerm" class="form-control" placeholder="Search notices by keyword..." />
+                            @if (selectedCategory.HasValue)
+                            {
+                                <input type="hidden" name="categoryId" value="@selectedCategory.Value" />
+                            }
+                            <button type="submit" class="btn btn-warning fw-bold"><i class="fa-solid fa-search"></i> Search</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container py-4">
-    <!-- Category Filter Tabs -->
-    <div class="d-flex flex-wrap gap-2 mb-4 border-bottom pb-3">
-        <a asp-action="Notices" asp-route-search="@searchTerm" class="btn btn-sm @(!selectedCategory.HasValue ? "btn-primary" : "btn-outline-secondary")">
-            All Categories (@Model.Count)
-        </a>
-        @foreach (var cat in categories)
-        {
-            <a asp-action="Notices" asp-route-categoryId="@cat.CategoryId" asp-route-search="@searchTerm"
-               class="btn btn-sm @(selectedCategory == cat.CategoryId ? "btn-primary" : "btn-outline-secondary")">
-                @cat.CategoryName (@cat.NoticeCount)
+    <div class="container py-4">
+        <!-- Category Filter Tabs -->
+        <div class="chips mb-4 border-bottom pb-3">
+            <a asp-action="Notices" asp-route-search="@searchTerm" class="btn btn-sm @(!selectedCategory.HasValue ? "btn-primary" : "btn-outline-secondary")">
+                All Categories (@Model.Count)
             </a>
-        }
-    </div>
-
-    <!-- Notices List -->
-    <div class="custom-card shadow-sm">
-        @if (Model.Any())
-        {
-            foreach (var n in Model)
+            @foreach (var cat in categories)
             {
-                <div class="notice-item py-3">
-                    <div class="notice-date-box">
-                        <div class="day">@n.PublishDate.ToString("dd")</div>
-                        <div class="month">@n.PublishDate.ToString("MMM")</div>
-                        <div class="text-muted" style="font-size: 0.7rem;">@n.PublishDate.ToString("yyyy")</div>
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="d-flex align-items-center gap-2 mb-1">
-                            <span class="@(n.BadgeClass ?? "badge bg-primary")">@(n.CategoryName ?? "General")</span>
-                            @if (n.IsPinned)
-                            {
-                                <span class="badge bg-danger"><i class="fa-solid fa-thumbtack me-1"></i> Pinned</span>
-                            }
+                <a asp-action="Notices" asp-route-categoryId="@cat.CategoryId" asp-route-search="@searchTerm"
+                   class="btn btn-sm @(selectedCategory == cat.CategoryId ? "btn-primary" : "btn-outline-secondary")">
+                    @cat.CategoryName (@cat.NoticeCount)
+                </a>
+            }
+        </div>
+
+        <!-- Notices List -->
+        <div class="custom-card shadow-sm">
+            @if (Model.Any())
+            {
+                foreach (var n in Model)
+                {
+                    <div class="notice-item py-3 @(n.IsPinned ? "is-pinned" : "")">
+                        <div class="notice-date-box">
+                            <div class="day">@n.PublishDate.ToString("dd")</div>
+                            <div class="month">@n.PublishDate.ToString("MMM")</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">@n.PublishDate.ToString("yyyy")</div>
                         </div>
-                        <a asp-action="NoticeDetails" asp-route-id="@n.NoticeId" class="notice-title fs-6">
-                            @n.Title
-                        </a>
-                        <p class="text-muted small mb-2">
-                            @(n.Description.Length > 220 ? n.Description.Substring(0, 220) + "..." : n.Description)
-                        </p>
-                        <div class="d-flex align-items-center gap-3 small text-muted">
-                            <span><i class="fa-regular fa-eye me-1"></i> @n.ViewCount views</span>
-                            @if (!string.IsNullOrEmpty(n.AttachmentUrl))
-                            {
-                                <a href="@n.AttachmentUrl" target="_blank" class="text-danger fw-bold text-decoration-none">
-                                    <i class="fa-solid fa-file-pdf me-1"></i> Download Attachment (@(n.AttachmentFileName ?? "Document.pdf"))
-                                </a>
-                            }
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="@(n.BadgeClass ?? "badge bg-primary")">@(n.CategoryName ?? "General")</span>
+                                @if (n.IsPinned)
+                                {
+                                    <span class="badge bg-danger"><i class="fa-solid fa-thumbtack me-1"></i> Pinned</span>
+                                }
+                            </div>
+                            <a asp-action="NoticeDetails" asp-route-id="@n.NoticeId" class="notice-title fs-6">
+                                @n.Title
+                            </a>
+                            <p class="text-muted small mb-2">
+                                @(n.Description.Length > 220 ? n.Description.Substring(0, 220) + "..." : n.Description)
+                            </p>
+                            <div class="d-flex align-items-center gap-3 small text-muted">
+                                <span><i class="fa-regular fa-eye me-1"></i> @n.ViewCount views</span>
+                                @if (!string.IsNullOrEmpty(n.AttachmentUrl))
+                                {
+                                    <a href="@n.AttachmentUrl" target="_blank" class="text-danger fw-bold text-decoration-none">
+                                        <i class="fa-solid fa-file-pdf me-1"></i> Download Attachment (@(n.AttachmentFileName ?? "Document.pdf"))
+                                    </a>
+                                }
+                            </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="p-5 text-center text-muted empty-box">
+                    <i class="fa-solid fa-folder-open fa-3x mb-3 text-secondary"></i>
+                    <h5>No notices found</h5>
+                    <p>There are no notices matching your selected category or search keyword.</p>
+                    <a asp-action="Notices" class="btn btn-outline-primary btn-sm">Clear Filters</a>
                 </div>
             }
-        }
-        else
-        {
-            <div class="p-5 text-center text-muted">
-                <i class="fa-solid fa-folder-open fa-3x mb-3 text-secondary"></i>
-                <h5>No notices found</h5>
-                <p>There are no notices matching your selected category or search keyword.</p>
-                <a asp-action="Notices" class="btn btn-outline-primary btn-sm">Clear Filters</a>
-            </div>
-        }
+        </div>
     </div>
+
 </div>

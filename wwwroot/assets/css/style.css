@@ -219,7 +219,7 @@ div#heading-all {
 
 .navbar>ul>li {
   white-space: nowrap;
-  padding: 8px 5px;
+  padding: 8px 10px;
 /*  padding: 8px 12px;*/
 }
 
@@ -672,7 +672,7 @@ ul#myTab {
 # Sections General
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
+  padding: 20px 0;
   overflow: hidden;
 }
 
@@ -708,7 +708,7 @@ section {
 .section-title p {
   margin: 0;
   margin: 0;
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
   text-transform: uppercase;
   font-family: "Poppins", sans-serif;
@@ -1205,7 +1205,7 @@ ul.program-data-item::-webkit-scrollbar-thumb {
 # Testimonials
 --------------------------------------------------------------*/
 .testimonials {
-  padding: 80px 0;
+  padding: 30px 0;
   background: url("../img/aboutpu.jpg") no-repeat;
   background-position: center center;
   background-size: cover;
@@ -1564,10 +1564,11 @@ ul.program-data-item::-webkit-scrollbar-thumb {
 }
 
 .contact .info-box i {
-  font-size: 15px;
+  font-size:35px;
+  font-weight:500;
   color: #ff4a17;
   border-radius: 50%;
-  padding: 8px;
+/*  padding: 8px;*/
 }
 
 .contact .info-box h3 {

@@ -4,18 +4,198 @@
 }
 
 <style>
-    .ui-state-error{
-        padding-left:10px; display:none;
+    .ui-state-error {
+        padding-left: 10px;
+        display: none;
     }
+
     header#header {
         background: rgba(21, 34, 43, 0.85);
         padding: 10px 0;
     }
+
     .section-title {
         margin-top: 1%;
     }
+
     .list-group.small.mb-4.pb-1 {
         border-radius: 0px !important;
+    }
+
+    /* ========== Downloads list ========== */
+    .dl-list {
+        --dl-navy: #0b2a5b;
+        --dl-blue: #003980;
+        --dl-gold: #f2b705;
+        --dl-paper: #f4f6fb;
+        --dl-ink: #1b2430;
+        --dl-muted: #5b6678;
+        --dl-line: #dde3ee;
+        --dl-pdf: #c0392b;
+        font-feature-settings: "tnum" 1;
+    }
+
+        .dl-list.list-group {
+            border: 1px solid var(--dl-line);
+            border-top: 4px solid var(--dl-gold);
+            border-radius: 10px !important;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(11, 42, 91, .06);
+        }
+
+        .dl-list .dl-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 0;
+            border-bottom: 1px solid var(--dl-line);
+            border-radius: 0;
+            background: #fff;
+            transition: background-color .15s ease;
+        }
+
+            .dl-list .dl-item:last-child {
+                border-bottom: 0;
+            }
+
+            .dl-list .dl-item:hover {
+                background: #eef3fb;
+            }
+
+        .dl-list .dl-title {
+            flex: 1 1 auto;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+            margin: 0;
+            font-size: .98rem;
+            font-weight: 700;
+            line-height: 1.35;
+            letter-spacing: .01em;
+            color: var(--dl-navy) !important;
+            text-decoration: none;
+        }
+
+            .dl-list .dl-title:hover {
+                color: var(--dl-blue) !important;
+                text-decoration: underline;
+            }
+
+        .dl-list .dl-icon {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 8px;
+            background: #fdecea;
+            color: var(--dl-pdf);
+            font-size: 1.25rem;
+        }
+
+        .dl-list .dl-size {
+            flex: 0 0 6.5rem;
+            text-align: right;
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--dl-muted) !important;
+            white-space: nowrap;
+        }
+
+        .dl-list .dl-actions {
+            flex: 0 0 auto;
+            display: flex;
+            gap: .5rem;
+        }
+
+            .dl-list .dl-actions .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: .4rem;
+                margin: 0 !important;
+                padding: .45rem .9rem;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: .82rem;
+                white-space: nowrap;
+                transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+            }
+
+            /* View = outline, Download = solid */
+            .dl-list .dl-actions .dl-view {
+                background: #fff;
+                color: var(--dl-blue);
+                border: 1.5px solid var(--dl-blue);
+            }
+
+                .dl-list .dl-actions .dl-view:hover {
+                    background: var(--dl-blue);
+                    color: #fff;
+                }
+
+            .dl-list .dl-actions .dl-get {
+                background: var(--dl-navy);
+                color: #fff;
+                border: 1.5px solid var(--dl-navy);
+            }
+
+                .dl-list .dl-actions .dl-get:hover {
+                    background: var(--dl-gold);
+                    border-color: var(--dl-gold);
+                    color: var(--dl-navy);
+                }
+
+            .dl-list .dl-actions .btn:focus-visible,
+            .dl-list .dl-title:focus-visible {
+                outline: 3px solid var(--dl-blue);
+                outline-offset: 2px;
+            }
+
+    /* Pagination */
+    .dl-pagination .page-link {
+        color: #003980;
+        border-color: #dde3ee;
+        border-radius: 6px;
+        margin: 0 .15rem;
+        font-weight: 600;
+    }
+
+    .dl-pagination .page-item.active .page-link {
+        background: #0b2a5b;
+        border-color: #0b2a5b;
+        color: #fff;
+    }
+
+    .dl-pagination .page-item.disabled .page-link {
+        color: #8a94a6;
+        background: #f4f6fb;
+    }
+
+    /* ========== Mobile ========== */
+    @@media (max-width: 767.98px) {
+        .dl-list .dl-item {
+            flex-wrap: wrap;
+            gap: .6rem 1rem;
+            padding: .9rem 1rem;
+        }
+
+        .dl-list .dl-title {
+            flex: 1 1 100%;
+        }
+
+        .dl-list .dl-size {
+            flex: 1 1 auto;
+            text-align: left;
+            padding-left: 3.25rem; /* icon ke neeche title ke saath align */
+        }
+
+        .dl-list .dl-actions {
+            flex: 0 0 auto;
+        }
     }
 </style>
 
@@ -26,84 +206,89 @@
                 <h2>Downloads</h2>
             </div>
 
-            <div class="list-group small mb-4 pb-1">
-                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    <a href="/download/retotaling_(2)_1791191337.pdf" target="_blank" class="text-dark h6 mb-0" style="width:20%">
-                        1. RETOTALING
+            <div class="list-group small mb-4 pb-1 dl-list">
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center dl-item">
+                    <a href="/download/retotaling_(2)_1791191337.pdf" target="_blank" class="text-dark h6 mb-0 dl-title">
+                        <span class="dl-icon"><i class="bi bi-file-earmark-pdf-fill"></i></span>
+                        <span>1. RETOTALING</span>
                     </a>
-                    <span class="text-dark h6 mb-0" style="width:20%">482.79&nbsp;KB</span>
-                    <div>
-                        <a href="/download/retotaling_(2)_1791191337.pdf" target="_blank" class="btn btn-sm btn-success me-3">
+                    <span class="text-dark h6 mb-0 dl-size">482.79&nbsp;KB</span>
+                    <div class="dl-actions">
+                        <a href="/download/retotaling_(2)_1791191337.pdf" target="_blank" class="btn btn-sm btn-success me-3 dl-view">
                             View <i class="bi bi-eye-fill"></i>
                         </a>
-                        <a href="/download/retotaling_(2)_1791191337.pdf" download target="_blank" class="btn btn-sm btn-success">
+                        <a href="/download/retotaling_(2)_1791191337.pdf" download target="_blank" class="btn btn-sm btn-success dl-get">
                             Download <i class="bi bi-cloud-arrow-down-fill"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    <a href="/download/original_provisional_mig_1790842028.pdf" target="_blank" class="text-dark h6 mb-0" style="width:20%">
-                        2. ORIGINAL/PROVISIONAL FORM
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center dl-item">
+                    <a href="/download/original_provisional_mig_1790842028.pdf" target="_blank" class="text-dark h6 mb-0 dl-title">
+                        <span class="dl-icon"><i class="bi bi-file-earmark-pdf-fill"></i></span>
+                        <span>2. ORIGINAL/PROVISIONAL FORM</span>
                     </a>
-                    <span class="text-dark h6 mb-0" style="width:20%">219.1&nbsp;KB</span>
-                    <div>
-                        <a href="/download/original_provisional_mig_1790842028.pdf" target="_blank" class="btn btn-sm btn-success me-3">
+                    <span class="text-dark h6 mb-0 dl-size">219.1&nbsp;KB</span>
+                    <div class="dl-actions">
+                        <a href="/download/original_provisional_mig_1790842028.pdf" target="_blank" class="btn btn-sm btn-success me-3 dl-view">
                             View <i class="bi bi-eye-fill"></i>
                         </a>
-                        <a href="/download/original_provisional_mig_1790842028.pdf" download target="_blank" class="btn btn-sm btn-success">
+                        <a href="/download/original_provisional_mig_1790842028.pdf" download target="_blank" class="btn btn-sm btn-success dl-get">
                             Download <i class="bi bi-cloud-arrow-down-fill"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    <a href="/download/transcript_1790841954.pdf" target="_blank" class="text-dark h6 mb-0" style="width:20%">
-                        3. TRANSCRIPT FORM
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center dl-item">
+                    <a href="/download/transcript_1790841954.pdf" target="_blank" class="text-dark h6 mb-0 dl-title">
+                        <span class="dl-icon"><i class="bi bi-file-earmark-pdf-fill"></i></span>
+                        <span>3. TRANSCRIPT FORM</span>
                     </a>
-                    <span class="text-dark h6 mb-0" style="width:20%">343.93&nbsp;KB</span>
-                    <div>
-                        <a href="/download/transcript_1790841954.pdf" target="_blank" class="btn btn-sm btn-success me-3">
+                    <span class="text-dark h6 mb-0 dl-size">343.93&nbsp;KB</span>
+                    <div class="dl-actions">
+                        <a href="/download/transcript_1790841954.pdf" target="_blank" class="btn btn-sm btn-success me-3 dl-view">
                             View <i class="bi bi-eye-fill"></i>
                         </a>
-                        <a href="/download/transcript_1790841954.pdf" download target="_blank" class="btn btn-sm btn-success">
+                        <a href="/download/transcript_1790841954.pdf" download target="_blank" class="btn btn-sm btn-success dl-get">
                             Download <i class="bi bi-cloud-arrow-down-fill"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    <a href="/download/registration_1790842061.pdf" target="_blank" class="text-dark h6 mb-0" style="width:20%">
-                        4. REGISTRAION FORM
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center dl-item">
+                    <a href="/download/registration_1790842061.pdf" target="_blank" class="text-dark h6 mb-0 dl-title">
+                        <span class="dl-icon"><i class="bi bi-file-earmark-pdf-fill"></i></span>
+                        <span>4. REGISTRAION FORM</span>
                     </a>
-                    <span class="text-dark h6 mb-0" style="width:20%">490.9&nbsp;KB</span>
-                    <div>
-                        <a href="/download/registration_1790842061.pdf" target="_blank" class="btn btn-sm btn-success me-3">
+                    <span class="text-dark h6 mb-0 dl-size">490.9&nbsp;KB</span>
+                    <div class="dl-actions">
+                        <a href="/download/registration_1790842061.pdf" target="_blank" class="btn btn-sm btn-success me-3 dl-view">
                             View <i class="bi bi-eye-fill"></i>
                         </a>
-                        <a href="/download/registration_1790842061.pdf" download target="_blank" class="btn btn-sm btn-success">
+                        <a href="/download/registration_1790842061.pdf" download target="_blank" class="btn btn-sm btn-success dl-get">
                             Download <i class="bi bi-cloud-arrow-down-fill"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    <a href="/download/pu_nagarik_wada_1790751488.pdf" target="_blank" class="text-dark h6 mb-0" style="width:20%">
-                        5. CITIZEN CHARTER
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center dl-item">
+                    <a href="/download/pu_nagarik_wada_1790751488.pdf" target="_blank" class="text-dark h6 mb-0 dl-title">
+                        <span class="dl-icon"><i class="bi bi-file-earmark-pdf-fill"></i></span>
+                        <span>5. CITIZEN CHARTER</span>
                     </a>
-                    <span class="text-dark h6 mb-0" style="width:20%">922.96&nbsp;KB</span>
-                    <div>
-                        <a href="/download/pu_nagarik_wada_1790751488.pdf" target="_blank" class="btn btn-sm btn-success me-3">
+                    <span class="text-dark h6 mb-0 dl-size">922.96&nbsp;KB</span>
+                    <div class="dl-actions">
+                        <a href="/download/pu_nagarik_wada_1790751488.pdf" target="_blank" class="btn btn-sm btn-success me-3 dl-view">
                             View <i class="bi bi-eye-fill"></i>
                         </a>
-                        <a href="/download/pu_nagarik_wada_1790751488.pdf" download target="_blank" class="btn btn-sm btn-success">
+                        <a href="/download/pu_nagarik_wada_1790751488.pdf" download target="_blank" class="btn btn-sm btn-success dl-get">
                             Download <i class="bi bi-cloud-arrow-down-fill"></i>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <nav aria-label="..." class="text-end">
+            <nav aria-label="..." class="text-end dl-pagination">
                 <ul class="pagination pb-4 justify-content-center">
                     <li class="page-item disabled">
                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
