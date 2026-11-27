@@ -7,7 +7,7 @@ using UniversityExamSystem.Services;
 
 namespace UniversityExamSystem.Controllers
 {
-    [Authorize(Policy = "RequireStudentRole")]
+    //[Authorize(Policy = "RequireStudentRole")]
     public class StudentController : Controller
     {
         private readonly IStudentRepository _studentRepo;

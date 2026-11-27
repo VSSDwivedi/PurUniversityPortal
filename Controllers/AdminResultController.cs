@@ -8,7 +8,7 @@ using UniversityExamSystem.Services;
 
 namespace UniversityExamSystem.Controllers
 {
-    [Authorize(Policy = "RequireControllerRole")]
+    //[Authorize(Policy = "RequireControllerRole")]
     public class AdminResultController : Controller
     {
         private readonly IResultRepository _resultRepo;

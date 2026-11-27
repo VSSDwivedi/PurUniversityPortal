@@ -738,20 +738,29 @@ ul#myTab .nav-link:hover {
     color: var(--pu-orange);
 }
 
-/* ================= Admin & Student Dashboards ================= */
+/* ================= Admin & Student Dashboards (Fully Responsive) ================= */
 .dashboard-wrapper {
     display: flex;
-    min-height: calc(100vh - 120px);
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
 }
 
 .dashboard-sidebar {
-    width: 260px;
+    width: 270px;
     background: var(--pu-dark-header);
     color: #ffffff;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     border-right: 2px solid var(--pu-primary);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1040;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
 }
 
 .dashboard-sidebar .sidebar-brand {
@@ -761,6 +770,7 @@ ul#myTab .nav-link:hover {
     align-items: center;
     gap: 12px;
     border-bottom: 1px solid #233543;
+    flex-shrink: 0;
 }
 
 .dashboard-sidebar .sidebar-brand img {
@@ -774,33 +784,56 @@ ul#myTab .nav-link:hover {
     line-height: 1.2;
 }
 
+.dashboard-sidebar .btn-close-sidebar {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dashboard-sidebar .btn-close-sidebar:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffc107;
+}
+
 .dashboard-sidebar .nav-item {
     width: 100%;
 }
 
 .dashboard-sidebar .nav-link {
     color: #cbd5e1;
-    padding: 12px 18px;
+    padding: 11px 18px;
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 500;
     border-left: 3px solid transparent;
     transition: 0.2s;
+    white-space: normal;
+    word-break: break-word;
 }
 
 .dashboard-sidebar .nav-link i {
     width: 20px;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     color: #94a3b8;
+    flex-shrink: 0;
 }
 
 .dashboard-sidebar .nav-link:hover,
 .dashboard-sidebar .nav-link.active {
     color: #ffffff;
-    background: rgba(0, 57, 128, 0.4);
+    background: rgba(0, 57, 128, 0.45);
     border-left-color: var(--pu-orange);
 }
 
@@ -809,26 +842,91 @@ ul#myTab .nav-link:hover {
     color: var(--pu-orange);
 }
 
-.dashboard-content {
-    flex-grow: 1;
-    padding: 28px;
-    background: #f8fafc;
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 1050;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
+.sidebar-backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
+    display: block;
+}
+
+/* Dashboard Workspace */
+.dashboard-content {
+    flex: 1 1 0%;
+    min-width: 0;
+    padding: 24px 28px;
+    background: #f8fafc;
+    overflow-x: hidden;
+}
+
+.dashboard-topbar {
+    background: #ffffff;
+    border: 1px solid var(--pu-border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Responsive Custom Cards & Headers */
+.custom-card {
+    background: #ffffff;
+    border: 1px solid var(--pu-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.card-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 18px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--pu-border);
+}
+
+.card-header-custom h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--pu-text-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Stats Card */
 .stats-card {
     background: #ffffff;
-    border-radius: 6px;
-    padding: 20px;
+    border-radius: 8px;
+    padding: 18px;
     border: 1px solid var(--pu-border);
     border-top: 3px solid var(--pu-primary);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     transition: 0.25s;
 }
 
 .stats-card:hover {
     border-top-color: var(--pu-orange);
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
 }
 
 .stats-card .stat-icon {
@@ -839,6 +937,144 @@ ul#myTab .nav-link:hover {
     align-items: center;
     justify-content: center;
     font-size: 22px;
+}
+
+/* Notice items on Student Dashboard */
+.notice-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--pu-border);
+    transition: background-color 0.2s;
+}
+
+.notice-item:last-child {
+    border-bottom: none;
+}
+
+.notice-item:hover {
+    background-color: #f8fafc;
+}
+
+.notice-date-box {
+    min-width: 52px;
+    text-align: center;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 4px;
+    flex-shrink: 0;
+}
+
+.notice-date-box .day {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--pu-primary);
+}
+
+.notice-date-box .month {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.notice-title {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 13.5px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.notice-title:hover {
+    color: var(--pu-orange);
+}
+
+/* Mobile & Tablet Breakpoints for Dashboards */
+@media (max-width: 991.98px) {
+    .dashboard-wrapper {
+        display: block;
+        min-height: 100vh;
+    }
+
+    .dashboard-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        max-width: 85vw;
+        z-index: 1060;
+        transform: translateX(-100%);
+        border-right: none;
+    }
+
+    .dashboard-sidebar.sidebar-open {
+        transform: translateX(0);
+        box-shadow: 0 0 35px rgba(0, 0, 0, 0.45);
+    }
+
+    .dashboard-content {
+        padding: 16px 12px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .dashboard-topbar {
+        padding: 12px 14px;
+        margin-bottom: 16px;
+    }
+
+    .topbar-actions {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .dashboard-topbar h4 {
+        font-size: 1.1rem;
+    }
+
+    .dashboard-content {
+        padding: 12px 8px;
+    }
+
+    .kpi-card {
+        padding: 1rem !important;
+        min-height: auto !important;
+    }
+
+    .kpi-card .kpi-value {
+        font-size: 1.5rem !important;
+    }
+
+    .kpi-card .kpi-title {
+        font-size: 0.85rem !important;
+    }
+
+    .kpi-card .kpi-icon {
+        font-size: 1.8rem !important;
+    }
+
+    .card-header-custom {
+        padding: 10px 12px;
+    }
+
+    .card-header-custom h5 {
+        font-size: 0.9rem;
+    }
+
+    .table th, .table td {
+        padding: 6px 8px;
+    }
 }
 
 /* ================= Print Styling ================= */

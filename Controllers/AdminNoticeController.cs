@@ -6,7 +6,7 @@ using UniversityExamSystem.Services;
 
 namespace UniversityExamSystem.Controllers
 {
-    [Authorize(Policy = "RequireAdminRole")]
+    //[Authorize(Policy = "RequireAdminRole")]
     public class AdminNoticeController : Controller
     {
         private readonly INoticeRepository _noticeRepo;
