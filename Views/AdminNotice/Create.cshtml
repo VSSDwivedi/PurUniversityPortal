@@ -5,6 +5,28 @@
     var categories = ViewBag.Categories as List<NoticeCategory> ?? new List<NoticeCategory>();
 }
 
+<style>
+    .nf-section {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .nf-section-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0d6efd;
+        margin-bottom: 15px;
+    }
+
+    .nf-section .form-control,
+    .nf-section .form-select {
+        background-color: #fff;
+    }
+</style>
+
 <div class="row justify-content-center">
     <div class="col-lg-9">
         <div class="custom-card shadow-sm">
@@ -18,58 +40,115 @@
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 mb-4"></div>
 
-                    <div class="row g-3">
-                        <div class="col-md-8">
-                            <label asp-for="Title" class="form-label small fw-bold">Notice Title *</label>
-                            <input asp-for="Title" class="form-control" placeholder="e.g. Schedule for Rechecking and Retotaling - Spring 2026" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label asp-for="CategoryId" class="form-label small fw-bold">Notice Category *</label>
-                            <select asp-for="CategoryId" class="form-select" required>
-                                @foreach (var c in categories)
-                                {
-                                    <option value="@c.CategoryId">@c.CategoryName</option>
-                                }
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label asp-for="PublishDate" class="form-label small fw-bold">Publish Date *</label>
-                            <input asp-for="PublishDate" type="date" class="form-control" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="ExpiryDate" class="form-label small fw-bold">Notice Expiry Date (Optional)</label>
-                            <input asp-for="ExpiryDate" type="date" class="form-control" />
-                        </div>
-
-                        <div class="col-12">
-                            <label asp-for="Description" class="form-label small fw-bold">Full Notice Text & Instructions *</label>
-                            <textarea asp-for="Description" rows="6" class="form-control" placeholder="Enter complete notification content, deadlines, eligibility, and instructions..." required></textarea>
-                        </div>
-
-                        <div class="col-md-8">
-                            <label class="form-label small fw-bold">Signed Official Attachment (PDF / Document)</label>
-                            <input type="file" name="attachmentFile" accept=".pdf,.doc,.docx" class="form-control" />
-                            <small class="text-muted">Upload officially signed and stamped circular PDF</small>
-                        </div>
-
-                        <div class="col-md-4 d-flex align-items-center">
-                            <div class="form-check mt-3">
-                                <input asp-for="IsPinned" class="form-check-input" />
-                                <label asp-for="IsPinned" class="form-check-label small fw-bold">Pin to top of notice board</label>
+                    <div class="nf-section">
+                        <div class="nf-section-title"><i class="fa-solid fa-circle-info"></i> Notice Details</div>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label asp-for="Title" class="form-label small fw-bold">Notice Title *</label>
+                                <input asp-for="Title" class="form-control" placeholder="e.g. Schedule for Rechecking and Retotaling - Spring 2026" required />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="CategoryId" class="form-label small fw-bold">Notice Category *</label>
+                                <select asp-for="CategoryId" class="form-select" required>
+                                    @foreach (var c in categories)
+                                    {
+                                        <option value="@c.CategoryId">@c.CategoryName</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PublishDate" class="form-label small fw-bold">Publish Date *</label>
+                                <input asp-for="PublishDate" type="date" class="form-control" required />
+                                <span asp-validation-for="PublishDate" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ExpiryDate" class="form-label small fw-bold">Notice Expiry Date (Optional)</label>
+                                <input asp-for="ExpiryDate" type="date" class="form-control" />
+                                <span asp-validation-for="ExpiryDate" class="text-danger small"></span>
                             </div>
                         </div>
+                    </div>
 
-                        <input type="hidden" asp-for="IsActive" value="true" />
+                    <div class="nf-section">
+                        <div class="nf-section-title"><i class="fa-solid fa-file-lines"></i> Notice Content</div>
+                        <label asp-for="Description" class="form-label small fw-bold">Full Notice Text &amp; Instructions *</label>
+                        <textarea asp-for="Description" rows="6" class="form-control" placeholder="Enter complete notification content, deadlines, eligibility, and instructions..." required></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
 
-                        <div class="col-12 text-end border-top pt-4">
-                            <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">
-                                <i class="fa-solid fa-paper-plane me-1"></i> Publish Notice
-                            </button>
+                    <div class="nf-section">
+                        <div class="nf-section-title"><i class="fa-solid fa-paperclip"></i> Attachment &amp; Options</div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-8">
+                                <label class="form-label small fw-bold">Signed Official Attachment (PDF / Document)</label>
+                                <input type="file" name="attachmentFile" accept=".pdf,.doc,.docx" class="form-control" />
+                                <small class="text-muted">Upload officially signed and stamped circular PDF</small>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch mt-md-3">
+                                    <input asp-for="IsPinned" class="form-check-input" />
+                                    <label asp-for="IsPinned" class="form-check-label small fw-bold">Pin to top of notice board</label>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <input type="hidden" asp-for="IsActive" value="true" />
+
+                    <div class="text-end border-top pt-4">
+                        <a asp-action="Index" class="btn btn-light border px-4 me-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-5 fw-bold shadow-sm">
+                            <i class="fa-solid fa-paper-plane me-1"></i> Publish Notice
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<style>
+    .card-header-custom {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 16px 24px;
+        border-bottom: 1px solid #e9ecef;
+        background: #fff;
+        border-radius: 12px 12px 0 0;
+    }
+
+        .card-header-custom h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+    .custom-card {
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+    }
+
+    .nf-section {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .nf-section-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0d6efd;
+        margin-bottom: 15px;
+    }
+
+    .nf-section .form-control,
+    .nf-section .form-select {
+        background-color: #fff;
+    }
+</style>

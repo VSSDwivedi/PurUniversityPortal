@@ -1,0 +1,462 @@
+﻿/* =====================================================================
+   admin-ui.css  —  Purbanchal University OEM, common admin styling
+   Path: wwwroot/css/admin-ui.css   (site.css ke BAAD load karna)
+   Kaam: .custom-card, .card-header-custom, filter bar, table, badge,
+         button, form, pagination, mobile cards — sab admin pages pe
+         bina kisi extra class ke lagta hai.
+   ===================================================================== */
+
+/* ---------- Tokens ---------- */
+.dashboard-wrapper {
+    --ui-navy: #0b2a5b;
+    --ui-blue: #003980;
+    --ui-gold: #f2b705;
+    --ui-gold-dark: #d9a200;
+    --ui-paper: #f4f6fb;
+    --ui-ink: #1b2430;
+    --ui-muted: #5b6678;
+    --ui-line: #dde3ee;
+    --ui-ok: #1a7f4b;
+    --ui-radius: 10px;
+    --ui-radius-sm: 8px;
+    --ui-shadow: 0 1px 2px rgba(11, 42, 91, .06);
+    /* Bootstrap ke primary ko university blue bana do */
+    --bs-primary: #003980;
+    --bs-primary-rgb: 0, 57, 128;
+    --bs-link-color: #003980;
+    --bs-link-hover-color: #0b2a5b;
+}
+
+/* ---------- Page ---------- */
+.dashboard-content {
+    background: var(--ui-paper);
+    color: var(--ui-ink);
+    font-feature-settings: "tnum" 1;
+}
+
+    .dashboard-content .text-primary {
+        color: var(--ui-blue) !important;
+    }
+
+/* ---------- Topbar ---------- */
+.dashboard-topbar {
+    border-color: var(--ui-line) !important;
+    border-radius: var(--ui-radius) !important;
+    box-shadow: var(--ui-shadow) !important;
+}
+
+    .dashboard-topbar h4 {
+        color: var(--ui-navy) !important;
+        letter-spacing: -.01em;
+    }
+
+/* ---------- Card ---------- */
+.custom-card {
+    background: #fff;
+    border: 1px solid var(--ui-line);
+    border-radius: var(--ui-radius);
+    overflow: hidden;
+    box-shadow: var(--ui-shadow) !important;
+}
+
+    /* ---------- Card header ---------- */
+    .custom-card .card-header-custom {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem 1rem;
+        padding: 1rem 1.25rem;
+        background: var(--ui-navy);
+        border-bottom: 0;
+    }
+
+        .custom-card .card-header-custom h5,
+        .custom-card .card-header-custom h4,
+        .custom-card .card-header-custom h6 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+        }
+
+            .custom-card .card-header-custom h5 i,
+            .custom-card .card-header-custom h4 i,
+            .custom-card .card-header-custom h6 i {
+                color: var(--ui-gold) !important;
+            }
+
+.card-header-custom .btn-primary {
+    background: var(--ui-gold);
+    border-color: var(--ui-gold);
+    color: var(--ui-navy);
+}
+
+    .card-header-custom .btn-primary:hover,
+    .card-header-custom .btn-primary:focus {
+        background: var(--ui-gold-dark);
+        border-color: var(--ui-gold-dark);
+        color: #fff!important;
+    }
+
+.card-header-custom .btn-outline-secondary,
+.card-header-custom .btn-outline-primary,
+.card-header-custom .btn-outline-light {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, .45);
+}
+
+    .card-header-custom .btn-outline-secondary:hover,
+    .card-header-custom .btn-outline-primary:hover,
+    .card-header-custom .btn-outline-light:hover {
+        background: rgba(255, 255, 255, .12);
+        border-color: #fff;
+        color: #fff;
+    }
+
+/* ---------- Filter strip (card ke andar ka bg-light block) ---------- */
+.custom-card > .bg-light,
+.custom-card > form.bg-light {
+    background: var(--ui-paper) !important;
+    border-bottom: 1px solid var(--ui-line) !important;
+    padding: 1rem 1.25rem !important;
+}
+
+/* ---------- Forms ---------- */
+.dashboard-content .form-label {
+    font-weight: 600;
+    color: var(--ui-ink);
+    font-size: .875rem;
+    margin-bottom: .35rem;
+}
+
+.dashboard-content .form-control,
+.dashboard-content .form-select {
+    border: 1.5px solid var(--ui-line);
+    border-radius: var(--ui-radius-sm);
+    color: var(--ui-ink);
+    background-color: #fff;
+}
+
+    .dashboard-content .form-control:focus,
+    .dashboard-content .form-select:focus {
+        border-color: var(--ui-blue);
+        box-shadow: 0 0 0 .2rem rgba(0, 57, 128, .15);
+    }
+
+    .dashboard-content .form-control::placeholder {
+        color: #8a94a6;
+    }
+
+.dashboard-content .form-control-sm,
+.dashboard-content .form-select-sm {
+    min-height: 2.35rem;
+}
+
+.dashboard-content .form-text,
+.dashboard-content .text-muted {
+    color: var(--ui-muted) !important;
+}
+
+/* ---------- Buttons ---------- */
+.dashboard-content .btn {
+    border-radius: var(--ui-radius-sm);
+    font-weight: 600;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.dashboard-content .btn-sm {
+    padding: .42rem .8rem;
+}
+
+.dashboard-content .btn-primary {
+    background: var(--ui-blue);
+    border-color: var(--ui-blue);
+    color: #fff;
+}
+
+    .dashboard-content .btn-primary:hover,
+    .dashboard-content .btn-primary:focus {
+        background: #dc3545;
+        border-color: #dc3545;
+    }
+
+.dashboard-content .btn-outline-primary {
+    color: var(--ui-blue);
+    border-color: var(--ui-blue);
+    background: #fff;
+}
+
+    .dashboard-content .btn-outline-primary:hover {
+        background: var(--ui-blue);
+        border-color: var(--ui-blue);
+        color: #fff !important;
+    }
+
+.dashboard-content .btn-outline-secondary {
+    color: var(--ui-navy);
+    border-color: var(--ui-line);
+    background: #fff;
+}
+
+    .dashboard-content .btn-outline-secondary:hover {
+        background: var(--ui-paper);
+        border-color: var(--ui-blue);
+        color: var(--ui-blue);
+    }
+
+.dashboard-content .btn-success {
+    background: var(--ui-ok);
+    border-color: var(--ui-ok);
+}
+
+    .dashboard-content .btn-success:hover {
+        background: #146a3e;
+        border-color: #146a3e;
+    }
+
+.dashboard-content .btn-outline-success {
+    color: var(--ui-ok);
+    border-color: var(--ui-ok);
+    background: #fff;
+}
+
+    .dashboard-content .btn-outline-success:hover {
+        background: var(--ui-ok);
+        color: #fff;
+    }
+
+.dashboard-content .btn-outline-warning {
+    color: #6b4a00 !important;
+    border-color: #e0b100;
+    background: #fff;
+}
+
+    .dashboard-content .btn-outline-warning:hover {
+        background: var(--ui-gold);
+        border-color: var(--ui-gold);
+        color: var(--ui-navy) !important;
+    }
+
+.dashboard-content .btn-outline-danger {
+    background: #fff;
+}
+
+/* Focus: keyboard users ko saaf dikhe */
+.dashboard-content .btn:focus-visible,
+.dashboard-content a:focus-visible,
+.dashboard-content .form-control:focus-visible,
+.dashboard-content .form-select:focus-visible {
+    outline: 3px solid var(--ui-blue);
+    outline-offset: 2px;
+}
+
+/* ---------- Tables ---------- */
+.custom-card .table {
+    margin-bottom: 0;
+    --bs-table-bg: transparent;
+}
+
+    .custom-card .table thead th {
+        background: var(--ui-paper);
+        color: var(--ui-muted);
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .02em;
+        white-space: nowrap;
+        padding: .85rem 1rem;
+        border-bottom: 2px solid var(--ui-line);
+    }
+
+    .custom-card .table tbody td {
+        padding: 1rem;
+        font-size: .92rem;
+        border-color: var(--ui-line);
+        vertical-align: middle;
+    }
+
+    .custom-card .table tbody tr:nth-child(even) {
+        background: #fbfcfe;
+    }
+
+.custom-card .table-hover > tbody > tr:hover > * {
+    background-color: #eef3fb;
+    --bs-table-accent-bg: transparent;
+}
+
+/* Actions wala cell (text-end): buttons ek line mein, wrap nahi */
+.custom-card .table td.text-end {
+    white-space: nowrap;
+    width: 1%;
+}
+
+    .custom-card .table td.text-end .btn + .btn {
+        margin-left: .4rem;
+    }
+
+    .custom-card .table td.text-end .btn {
+        white-space: nowrap;
+    }
+
+/* Empty row (colspan wala cell) */
+.custom-card .table tbody td[colspan] {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ui-muted);
+}
+
+/* ---------- Badges: soft tint, ek jaisa look ---------- */
+.dashboard-content .badge {
+    font-weight: 600;
+    border-radius: 6px;
+    letter-spacing: .01em;
+}
+
+    .dashboard-content .badge.bg-primary {
+        background: #e3edfb !important;
+        color: #0b4fa8 !important;
+    }
+
+    .dashboard-content .badge.bg-success {
+        background: #dff3e8 !important;
+        color: #14633a !important;
+    }
+
+    .dashboard-content .badge.bg-warning {
+        background: #fff1d1 !important;
+        color: #7a4d00 !important;
+    }
+
+    .dashboard-content .badge.bg-danger {
+        background: #fde4e2 !important;
+        color: #9a2a22 !important;
+    }
+
+    .dashboard-content .badge.bg-info {
+        background: #def3f8 !important;
+        color: #0b5566 !important;
+    }
+
+    .dashboard-content .badge.bg-secondary {
+        background: #eceff4 !important;
+        color: #3b4556 !important;
+        border: 1px solid var(--ui-line);
+    }
+
+    .dashboard-content .badge.bg-dark {
+        background: #dfe3ea !important;
+        color: var(--ui-ink) !important;
+    }
+
+/* ---------- Alerts ---------- */
+.dashboard-content .alert {
+    border-radius: var(--ui-radius-sm);
+}
+
+/* ---------- Pagination ---------- */
+.dashboard-content .pagination .page-link {
+    color: var(--ui-blue);
+    border-color: var(--ui-line);
+    border-radius: 6px;
+    margin: 0 .15rem;
+}
+
+.dashboard-content .pagination .page-item.active .page-link {
+    background: var(--ui-blue);
+    border-color: var(--ui-blue);
+    color: #fff;
+}
+
+/* ---------- Sidebar: current page highlight (admin-ui.js active class lagata hai) ---------- */
+.dashboard-sidebar .nav-link.active {
+    background: rgba(255, 255, 255, .09);
+    box-shadow: inset 3px 0 0 var(--ui-gold);
+    color: #fff;
+    font-weight: 600;
+}
+
+    .dashboard-sidebar .nav-link.active i {
+        color: var(--ui-gold);
+    }
+
+/* ---------- Mobile / tablet: har table row ek stacked card ----------
+   admin-ui.js har cell pe data-label lagata hai (header ke text se). */
+@media (max-width: 991.98px) {
+    .custom-card .table thead {
+        display: none;
+    }
+
+    .custom-card .table,
+    .custom-card .table tbody,
+    .custom-card .table tr,
+    .custom-card .table td {
+        display: block;
+        width: 100%;
+    }
+
+        .custom-card .table tbody tr {
+            padding: .9rem 1rem;
+            border-bottom: 1px solid var(--ui-line);
+        }
+
+        .custom-card .table tbody td {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: .3rem 0;
+            border: 0;
+            text-align: right;
+        }
+
+            .custom-card .table tbody td[data-label]::before {
+                content: attr(data-label);
+                flex: 0 0 auto;
+                color: var(--ui-muted);
+                font-size: .8rem;
+                font-weight: 600;
+                text-align: left;
+            }
+
+            .custom-card .table tbody td.td-actions {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: .4rem;
+                width: 100%;
+                padding-top: .7rem;
+                white-space: normal;
+            }
+
+                .custom-card .table tbody td.td-actions .btn {
+                    flex: 1 1 auto;
+                    margin: 0 !important;
+                }
+
+            .custom-card .table tbody td.td-empty,
+            .custom-card .table tbody td[colspan] {
+                display: block;
+                text-align: center;
+                padding: 2.5rem 1rem;
+            }
+}
+
+/* ---------- Print ---------- */
+@media print {
+    .custom-card {
+        box-shadow: none !important;
+        border-color: #999;
+    }
+
+        .custom-card .card-header-custom {
+            background: #fff;
+        }
+
+            .custom-card .card-header-custom h5 {
+                color: #000;
+            }
+}

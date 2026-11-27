@@ -5,145 +5,215 @@
 }
 
 <!-- Top 4 Primary KPI Cards -->
-<div class="row g-3 mb-4">
+<!-- Top 4 Primary KPI Cards -->
+<div class="row g-4 mb-4">
     <div class="col-xl-3 col-sm-6">
-        <div class="kpi-card blue">
-            <div class="min-w-0">
-                <div class="kpi-value">@Model.TotalStudents</div>
-                <div class="kpi-title text-truncate">Total Enrolled Students</div>
-                <small class="text-white-50 d-block text-truncate">@Model.RegisteredStudents Verified &bull; @Model.PendingRegistrations Pending</small>
+        <div class="stat-card stat-blue">
+            <div class="stat-top">
+                <div>
+                    <div class="stat-title">Total Enrolled Students</div>
+                    <div class="stat-value">@Model.TotalStudents</div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
             </div>
-            <div class="kpi-icon flex-shrink-0"><i class="fa-solid fa-user-graduate"></i></div>
+            <div class="stat-foot">
+                <span><i class="fa-solid fa-circle-check"></i> @Model.RegisteredStudents Verified</span>
+                <span><i class="fa-solid fa-clock"></i> @Model.PendingRegistrations Pending</span>
+            </div>
         </div>
     </div>
 
     <div class="col-xl-3 col-sm-6">
-        <div class="kpi-card green">
-            <div class="min-w-0">
-                <div class="kpi-value">@Model.TotalColleges</div>
-                <div class="kpi-title text-truncate">Affiliated Colleges</div>
-                <small class="text-white-50 d-block text-truncate">@Model.TotalFaculties Faculties &bull; @Model.TotalPrograms Programs</small>
+        <div class="stat-card stat-green">
+            <div class="stat-top">
+                <div>
+                    <div class="stat-title">Affiliated Colleges</div>
+                    <div class="stat-value">@Model.TotalColleges</div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-building-columns"></i></div>
             </div>
-            <div class="kpi-icon flex-shrink-0"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="stat-foot">
+                <span><i class="fa-solid fa-layer-group"></i> @Model.TotalFaculties Faculties</span>
+                <span><i class="fa-solid fa-graduation-cap"></i> @Model.TotalPrograms Programs</span>
+            </div>
         </div>
     </div>
 
     <div class="col-xl-3 col-sm-6">
-        <div class="kpi-card orange">
-            <div class="min-w-0">
-                <div class="kpi-value">@Model.TotalApplications</div>
-                <div class="kpi-title text-truncate">Exam Applications</div>
-                <small class="text-white-50 d-block text-truncate">@Model.ApprovedApplications Approved &bull; @Model.AdmitCardsGenerated Admit Cards</small>
+        <div class="stat-card stat-orange">
+            <div class="stat-top">
+                <div>
+                    <div class="stat-title">Exam Applications</div>
+                    <div class="stat-value">@Model.TotalApplications</div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-file-invoice"></i></div>
             </div>
-            <div class="kpi-icon flex-shrink-0"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="stat-foot">
+                <span><i class="fa-solid fa-circle-check"></i> @Model.ApprovedApplications Approved</span>
+                <span><i class="fa-solid fa-id-card"></i> @Model.AdmitCardsGenerated Admit Cards</span>
+            </div>
         </div>
     </div>
 
     <div class="col-xl-3 col-sm-6">
-        <div class="kpi-card purple">
-            <div class="min-w-0">
-                <div class="kpi-value">@Model.ResultsPublished</div>
-                <div class="kpi-title text-truncate">Published Results</div>
-                <small class="text-white-50 d-block text-truncate">@Model.TotalExaminations Total Exam Sessions</small>
+        <div class="stat-card stat-purple">
+            <div class="stat-top">
+                <div>
+                    <div class="stat-title">Published Results</div>
+                    <div class="stat-value">@Model.ResultsPublished</div>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
             </div>
-            <div class="kpi-icon flex-shrink-0"><i class="fa-solid fa-square-poll-vertical"></i></div>
+            <div class="stat-foot">
+                <span><i class="fa-solid fa-calendar-check"></i> @Model.TotalExaminations Total Exam Sessions</span>
+            </div>
         </div>
     </div>
-</div>
-
+</div><!-- Secondary KPI Row -->
 <!-- Secondary KPI Row -->
 <div class="row g-2 g-sm-3 mb-4">
     <div class="col-md-3 col-6">
-        <div class="bg-white p-3 rounded-3 border shadow-sm text-center h-100">
-            <div class="fs-4 fw-bold text-primary">@Model.TotalSubjects</div>
-            <div class="small fw-semibold text-muted text-uppercase text-truncate">Curriculum Subjects</div>
+        <div class="mini-stat mini-blue">
+            <div class="mini-icon"><i class="fa-solid fa-book"></i></div>
+            <div>
+                <div class="mini-value">@Model.TotalSubjects</div>
+                <div class="mini-title">Curriculum Subjects</div>
+            </div>
         </div>
     </div>
     <div class="col-md-3 col-6">
-        <div class="bg-white p-3 rounded-3 border shadow-sm text-center h-100">
-            <div class="fs-4 fw-bold text-success">@Model.RegisteredStudents</div>
-            <div class="small fw-semibold text-muted text-uppercase text-truncate">Approved Students</div>
+        <div class="mini-stat mini-green">
+            <div class="mini-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+                <div class="mini-value">@Model.RegisteredStudents</div>
+                <div class="mini-title">Approved Students</div>
+            </div>
         </div>
     </div>
     <div class="col-md-3 col-6">
-        <div class="bg-white p-3 rounded-3 border shadow-sm text-center h-100">
-            <div class="fs-4 fw-bold text-warning">@Model.PendingRegistrations</div>
-            <div class="small fw-semibold text-muted text-uppercase text-truncate">Pending Verifications</div>
+        <div class="mini-stat mini-orange">
+            <div class="mini-icon"><i class="fa-solid fa-user-clock"></i></div>
+            <div>
+                <div class="mini-value">@Model.PendingRegistrations</div>
+                <div class="mini-title">Pending Verifications</div>
+            </div>
         </div>
     </div>
     <div class="col-md-3 col-6">
-        <div class="bg-white p-3 rounded-3 border shadow-sm text-center h-100">
-            <div class="fs-4 fw-bold text-danger">@Model.AdmitCardsGenerated</div>
-            <div class="small fw-semibold text-muted text-uppercase text-truncate">Admit Cards Active</div>
+        <div class="mini-stat mini-red">
+            <div class="mini-icon"><i class="fa-solid fa-id-card"></i></div>
+            <div>
+                <div class="mini-value">@Model.AdmitCardsGenerated</div>
+                <div class="mini-title">Admit Cards Active</div>
+            </div>
         </div>
     </div>
 </div>
-
+<!-- Chart.js Graphical Analytics Row -->
 <!-- Chart.js Graphical Analytics Row -->
 <div class="row g-4 mb-4">
+    <!-- Student Distribution by College -->
     <div class="col-lg-8">
-        <div class="custom-card shadow-sm h-100">
-            <div class="card-header-custom">
-                <h5 class="mb-0"><i class="fa-solid fa-chart-bar text-primary"></i> Student Distribution by College</h5>
+        <div class="panel-card">
+            <div class="panel-head head-green">
+                <div class="panel-title">
+                    <span class="panel-title-icon"><i class="fa-solid fa-chart-column"></i></span>
+                    Student Distribution by College
+                </div>
+                <span class="panel-chip">
+                    <i class="fa-solid fa-building-columns"></i> @Model.TotalColleges Colleges
+                </span>
             </div>
-            <div class="p-3">
-                <div style="position: relative; height: 260px; width: 100%;">
+            <div class="chart-body">
+                <div class="chart-wrap" style="height: 300px;">
                     <canvas id="collegeChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Enrollment by Degree -->
     <div class="col-lg-4">
-        <div class="custom-card shadow-sm h-100">
-            <div class="card-header-custom">
-                <h5 class="mb-0"><i class="fa-solid fa-chart-pie text-success"></i> Enrollment by Degree</h5>
+        <div class="panel-card">
+            <div class="panel-head head-purple">
+                <div class="panel-title">
+                    <span class="panel-title-icon"><i class="fa-solid fa-chart-pie"></i></span>
+                    Enrollment by Degree
+                </div>
+                <span class="panel-chip">
+                    <i class="fa-solid fa-graduation-cap"></i> @Model.TotalPrograms Programs
+                </span>
             </div>
-            <div class="p-3">
-                <div style="position: relative; height: 260px; width: 100%;">
+            <div class="chart-body">
+                <div class="chart-wrap" style="height: 300px;">
                     <canvas id="programChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Recent Applications & Pending Registrations Grid -->
+<!-- Recent Applications & Recent Enrollments -->
 <div class="row g-4">
+    <!-- Recent Examination Applications -->
     <div class="col-lg-7">
-        <div class="custom-card shadow-sm h-100">
-            <div class="card-header-custom">
-                <h5 class="mb-0"><i class="fa-solid fa-clock-rotate-left text-primary"></i> Recent Examination Applications</h5>
-                <a asp-controller="AdminExam" asp-action="Applications" class="btn btn-sm btn-outline-primary fw-bold">View All</a>
+        <div class="panel-card">
+            <div class="panel-head head-blue">
+                <div class="panel-title">
+                    <span class="panel-title-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                    Recent Examination Applications
+                </div>
+                <a asp-controller="AdminExam" asp-action="Applications" class="panel-link">
+                    View All <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
+
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0 small text-nowrap">
-                    <thead class="table-light">
+                <table class="table panel-table align-middle mb-0">
+                    <thead>
                         <tr>
                             <th>Candidate</th>
                             <th>College</th>
                             <th>Semester</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var app in Model.RecentApplications)
+                        @if (Model.RecentApplications != null && Model.RecentApplications.Any())
+                        {
+                            foreach (var app in Model.RecentApplications)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="avatar av-blue">@(string.IsNullOrEmpty(app.StudentName) ? "?" : app.StudentName.Substring(0, 1).ToUpper())</div>
+                                            <div>
+                                                <div class="cell-name">@app.StudentName</div>
+                                                <div class="cell-sub">@app.ApplicationNumber</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cell-text">@app.CollegeName</td>
+                                    <td><span class="sem-chip">@app.SemesterName</span></td>
+                                    <td>
+                                        <span class="status-pill @(app.Status == "Approved" ? "pill-success" : app.Status == "Pending" ? "pill-warning" : "pill-danger")">
+                                            <span class="dot"></span>@app.Status
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <a asp-controller="AdminExam" asp-action="Applications" asp-route-examId="@app.ExaminationId" class="btn-review">
+                                            <i class="fa-solid fa-eye"></i> Review
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
                         {
                             <tr>
-                                <td>
-                                    <div class="fw-bold text-dark">@app.StudentName</div>
-                                    <small class="text-muted">@app.ApplicationNumber</small>
-                                </td>
-                                <td>@app.CollegeName</td>
-                                <td>@app.SemesterName</td>
-                                <td>
-                                    <span class="badge @(app.Status == "Approved" ? "bg-success" : app.Status == "Pending" ? "bg-warning text-dark" : "bg-danger")">
-                                        @app.Status
-                                    </span>
-                                </td>
-                                <td>
-                                    <a asp-controller="AdminExam" asp-action="Applications" asp-route-examId="@app.ExaminationId" class="btn btn-sm btn-outline-secondary py-0">Review</a>
+                                <td colspan="5" class="empty-state">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <div>No examination applications yet.</div>
                                 </td>
                             </tr>
                         }
@@ -153,30 +223,50 @@
         </div>
     </div>
 
+    <!-- Recent Student Enrollments -->
     <div class="col-lg-5">
-        <div class="custom-card shadow-sm h-100">
-            <div class="card-header-custom">
-                <h5 class="mb-0"><i class="fa-solid fa-user-plus text-warning"></i> Recent Student Enrollments</h5>
-                <a asp-controller="AdminStudent" asp-action="Index" class="btn btn-sm btn-outline-primary fw-bold">View Master</a>
+        <div class="panel-card">
+            <div class="panel-head head-orange">
+                <div class="panel-title">
+                    <span class="panel-title-icon"><i class="fa-solid fa-user-plus"></i></span>
+                    Recent Student Enrollments
+                </div>
+                <a asp-controller="AdminStudent" asp-action="Index" class="panel-link">
+                    View Master <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
-            <div class="list-group list-group-flush">
-                @foreach (var st in Model.RecentStudents)
+
+            <div class="enroll-list">
+                @if (Model.RecentStudents != null && Model.RecentStudents.Any())
                 {
-                    <div class="list-group-item d-flex justify-content-between align-items-center py-2 flex-wrap gap-2">
-                        <div class="min-w-0">
-                            <div class="fw-bold text-dark text-truncate">@st.FullName</div>
-                            <small class="text-muted d-block text-truncate">@st.ProgramName &bull; @st.CollegeName</small>
+                    foreach (var st in Model.RecentStudents)
+                    {
+                        <div class="enroll-item">
+                            <div class="avatar av-orange">@(string.IsNullOrEmpty(st.FullName) ? "?" : st.FullName.Substring(0, 1).ToUpper())</div>
+                            <div class="enroll-info">
+                                <div class="cell-name">@st.FullName</div>
+                                <div class="cell-sub">
+                                    <i class="fa-solid fa-graduation-cap"></i> @st.ProgramName
+                                    &bull; <i class="fa-solid fa-building-columns"></i> @st.CollegeName
+                                </div>
+                            </div>
+                            <span class="status-pill @(st.RegistrationStatus == "Approved" ? "pill-success" : "pill-warning")">
+                                <span class="dot"></span>@st.RegistrationStatus
+                            </span>
                         </div>
-                        <span class="badge flex-shrink-0 @(st.RegistrationStatus == "Approved" ? "bg-success" : "bg-warning text-dark")">
-                            @st.RegistrationStatus
-                        </span>
+                    }
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <i class="fa-solid fa-user-slash"></i>
+                        <div>No recent enrollments.</div>
                     </div>
                 }
             </div>
         </div>
     </div>
 </div>
-
 @section Scripts {
     <script>
         // College Chart
@@ -224,64 +314,507 @@
     </script>
 }
 <style>
-    .kpi-card {
+    /* ===== Chart Cards ===== */
+    .head-green {
+        background: linear-gradient(135deg, #0f9b8e, #1fbf75 70%, #38ef7d);
+    }
+
+    .head-purple {
+        background: linear-gradient(135deg, #5f2eea, #8e2de2 60%, #b44bf0);
+    }
+
+    .panel-chip {
+        position: relative;
+        z-index: 1;
+        white-space: nowrap;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 700;
+        color: #fff;
+        background: rgba(255, 255, 255, .2);
+        border: 1px solid rgba(255, 255, 255, .4);
+    }
+
+        .panel-chip i {
+            margin-right: 4px;
+            font-size: .72rem;
+        }
+
+    .chart-body {
+        padding: 18px 20px 20px;
+    }
+
+    .chart-wrap {
+        position: relative;
+        width: 100%;
+    }
+
+    .chart-empty {
+        position: absolute;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #9aa7b8;
+        font-size: .88rem;
+    }
+
+        .chart-empty i {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            opacity: .6;
+        }
+    /* ===== Panel Cards (Applications / Enrollments) ===== */
+    .panel-card {
+        height: 100%;
+        background: #fff;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid #e9eef5;
+        box-shadow: 0 6px 18px rgba(11, 37, 69, .08);
+    }
+
+    .panel-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1.25rem 1.5rem;
-        border-radius: 14px;
+        gap: 10px;
+        padding: 16px 20px;
         color: #fff;
-        min-height: 125px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         position: relative;
         overflow: hidden;
+    }
+
+        .panel-head::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            right: -30px;
+            top: -50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .12);
+            pointer-events: none;
+        }
+
+    .head-blue {
+        background: linear-gradient(135deg, #1e3c72, #2a5298 60%, #3a7bd5);
+    }
+
+    .head-orange {
+        background: linear-gradient(135deg, #e8590c, #f76707 50%, #ffa62b);
+    }
+
+    .panel-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .panel-title-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, .22);
+        border: 1px solid rgba(255, 255, 255, .3);
+        font-size: .95rem;
+    }
+
+    .panel-link {
+        position: relative;
+        z-index: 1;
+        white-space: nowrap;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        background: rgba(255, 255, 255, .2);
+        border: 1px solid rgba(255, 255, 255, .4);
+        transition: background .2s ease;
+    }
+
+        .panel-link:hover {
+            background: rgba(255, 255, 255, .35);
+            color: #fff;
+        }
+
+        .panel-link i {
+            font-size: .7rem;
+            margin-left: 4px;
+        }
+
+    /* ----- Table ----- */
+    .panel-table thead th {
+        background: #f6f9fd;
+        color: #6c7a8c;
+        font-size: .7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #e9eef5;
+    }
+
+    .panel-table tbody td {
+        padding: 14px 16px;
+        border-bottom: 1px solid #f0f3f8;
+    }
+
+    .panel-table tbody tr {
+        transition: background .15s ease;
+    }
+
+        .panel-table tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .panel-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+    .cell-name {
+        font-weight: 700;
+        color: #0b2545;
+        font-size: .9rem;
+        line-height: 1.2;
+    }
+
+    .cell-sub {
+        font-size: .74rem;
+        color: #8794a6;
+        margin-top: 2px;
+    }
+
+        .cell-sub i {
+            font-size: .68rem;
+            margin-right: 2px;
+        }
+
+    .cell-text {
+        font-size: .85rem;
+        color: #3d4b5f;
+    }
+
+    .sem-chip {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 8px;
+        font-size: .74rem;
+        font-weight: 600;
+        background: #eef3ff;
+        color: #2a5298;
+    }
+
+    /* ----- Avatar ----- */
+    .avatar {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: .95rem;
+        color: #fff;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
+    }
+
+    .av-blue {
+        background: linear-gradient(135deg, #2a5298, #4776e6);
+    }
+
+    .av-orange {
+        background: linear-gradient(135deg, #f76707, #ffa62b);
+    }
+
+    /* ----- Status Pill ----- */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: .74rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .status-pill .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+    .pill-success {
+        background: rgba(25, 135, 84, .12);
+        color: #146c43;
+    }
+
+    .pill-warning {
+        background: rgba(245, 159, 0, .16);
+        color: #b36b00;
+    }
+
+    .pill-danger {
+        background: rgba(220, 53, 69, .12);
+        color: #b02a37;
+    }
+
+    /* ----- Review Button ----- */
+    .btn-review {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: .76rem;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        background: linear-gradient(135deg, #2a5298, #4776e6);
+        box-shadow: 0 3px 8px rgba(42, 82, 152, .3);
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+        .btn-review:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(42, 82, 152, .4);
+        }
+
+    /* ----- Enrollment List ----- */
+    .enroll-list {
+        padding: 6px 0;
+    }
+
+    .enroll-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        border-bottom: 1px solid #f0f3f8;
+        transition: background .15s ease;
+    }
+
+        .enroll-item:last-child {
+            border-bottom: 0;
+        }
+
+        .enroll-item:hover {
+            background: #fffaf3;
+        }
+
+    .enroll-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+        .enroll-info .cell-sub {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    /* ----- Empty State ----- */
+    .empty-state {
+        text-align: center;
+        padding: 36px 16px !important;
+        color: #9aa7b8;
+        font-size: .88rem;
+    }
+
+        .empty-state i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+            opacity: .6;
+        }
+    /* ===== Primary Gradient Stat Cards ===== */
+    .stat-card {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        min-height: 150px;
+        padding: 20px 22px 16px;
+        border-radius: 18px;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, .22);
+        }
+        /* decorative circles */
+        .stat-card::before,
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .12);
+            pointer-events: none;
+        }
+
+        .stat-card::before {
+            width: 140px;
+            height: 140px;
+            right: -40px;
+            top: -50px;
+        }
+
+        .stat-card::after {
+            width: 90px;
+            height: 90px;
+            right: 40px;
+            bottom: -45px;
+        }
+
+    .stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-title {
+        font-size: .8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        opacity: .92;
+        margin-bottom: 6px;
+    }
+
+    .stat-value {
+        font-size: 2.4rem;
+        font-weight: 800;
+        line-height: 1;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+    }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        background: rgba(255, 255, 255, .22);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, .3);
+    }
+
+    .stat-foot {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        margin-top: 14px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, .3);
+        font-size: .78rem;
+        font-weight: 600;
+    }
+
+        .stat-foot i {
+            margin-right: 4px;
+            opacity: .9;
+        }
+
+    .stat-blue {
+        background: linear-gradient(135deg, #1e3c72, #2a5298 60%, #3a7bd5);
+    }
+
+    .stat-green {
+        background: linear-gradient(135deg, #0f9b8e, #1fbf75 70%, #38ef7d);
+    }
+
+    .stat-orange {
+        background: linear-gradient(135deg, #e8590c, #f76707 50%, #ffa62b);
+    }
+
+    .stat-purple {
+        background: linear-gradient(135deg, #5f2eea, #8e2de2 60%, #b44bf0);
+    }
+
+    /* ===== Secondary Mini Stat Cards ===== */
+    .mini-stat {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 100%;
+        padding: 14px 16px;
+        border-radius: 14px;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
         transition: transform .2s ease, box-shadow .2s ease;
     }
 
-    .kpi-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        .mini-stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .18);
+        }
+
+    .mini-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        background: rgba(255, 255, 255, .25);
     }
 
-    .kpi-card .kpi-value {
-        font-size: clamp(1.5rem, 3.5vw, 2rem);
-        font-weight: 700;
+    .mini-value {
+        font-size: 1.5rem;
+        font-weight: 800;
         line-height: 1.1;
     }
 
-    .kpi-card .kpi-title {
-        font-size: .95rem;
+    .mini-title {
+        font-size: .68rem;
         font-weight: 600;
-        margin-bottom: .25rem;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        opacity: .92;
     }
 
-    .kpi-card .kpi-icon {
-        font-size: clamp(1.8rem, 4vw, 2.5rem);
-        opacity: .35;
-        margin-left: 0.5rem;
+    .mini-blue {
+        background: linear-gradient(135deg, #2a5298, #4776e6);
     }
 
-    .kpi-card.blue {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
+    .mini-green {
+        background: linear-gradient(135deg, #11998e, #38b97d);
     }
 
-    .kpi-card.green {
-        background: linear-gradient(135deg, #11998e, #38ef7d);
+    .mini-orange {
+        background: linear-gradient(135deg, #f76707, #ffa62b);
     }
 
-    .kpi-card.orange {
-        background: linear-gradient(135deg, #f7971e, #ffd200);
-    }
-
-    .kpi-card.purple {
-        background: linear-gradient(135deg, #8e2de2, #4a00e0);
-    }
-
-    @@media (max-width: 575.98px) {
-        .kpi-card {
-            padding: 1rem 1.15rem;
-            min-height: 100px;
-            border-radius: 10px;
-        }
+    .mini-red {
+        background: linear-gradient(135deg, #d63031, #ff6b6b);
     }
 </style>

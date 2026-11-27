@@ -36,6 +36,12 @@ namespace UniversityExamSystem.Controllers
             await LoadDropDownsAsync();
             return View(new ResultSearchViewModel());
         }
+         [HttpGet]
+        public async Task<IActionResult> Studentfindresult()
+        {
+            await LoadDropDownsAsync();
+            return View(new ResultSearchViewModel());
+        }
 
         [AcceptVerbs("GET", "POST")]
         [Route("Results/Search")]

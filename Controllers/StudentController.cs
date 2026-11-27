@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniversityExamSystem.Models;
@@ -58,7 +59,37 @@ namespace UniversityExamSystem.Controllers
 
             return null;
         }
+        public async Task<IActionResult> StudentRoutine(int? facultyId, int? programId, int? semesterYearId)
+        {
+            var exams = await _examRepo.GetExaminationsAsync();
 
+            // Sirf Semester ke basis par filter
+            if (semesterYearId.HasValue)
+            {
+                exams = exams.Where(e => e.SemesterId == semesterYearId.Value).ToList();
+            }
+
+            // --- Faculty / Program filter (abhi band hai, zarurat ho to uncomment karein) ---
+            // if (facultyId.HasValue)
+            // {
+            //     exams = exams.Where(e => e.FacultyId == facultyId.Value).ToList();
+            // }
+            // if (programId.HasValue)
+            // {
+            //     exams = exams.Where(e => e.ProgramId == programId.Value).ToList();
+            // }
+
+            ViewBag.Exams = exams;
+
+            // ViewBag.Faculties = await _academicRepo.GetFacultiesAsync();
+            // ViewBag.Programs = await _academicRepo.GetProgramsAsync();
+            ViewBag.Semesters = await _academicRepo.GetSemestersAsync();
+
+            // ViewBag.SelectedFacultyId = facultyId;
+            // ViewBag.SelectedProgramId = programId;
+            ViewBag.SelectedSemesterId = semesterYearId;
+            return View();
+        }
         public async Task<IActionResult> Index()
         {
             var student = await GetCurrentStudentAsync();
@@ -91,7 +122,18 @@ namespace UniversityExamSystem.Controllers
         {
             var student = await GetCurrentStudentAsync();
             if (student == null) return RedirectToAction("Login", "Account");
+            // Mobile: sirf 10 digits, 6-9 se shuru
+            if (!Regex.IsMatch(mobileNumber, @"^[6-9][0-9]{9}$"))
+            {
+                TempData["ErrorMessage"] = "Please enter a valid 10 digit mobile number.";
+                return RedirectToAction(nameof(Profile));
+            }
 
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                TempData["ErrorMessage"] = "Permanent address is required.";
+                return RedirectToAction(nameof(Profile));
+            }
             student.MobileNumber = mobileNumber;
             student.Address = address;
 

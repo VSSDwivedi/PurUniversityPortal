@@ -13,63 +13,70 @@
             </div>
 
             <div class="p-4 p-md-5">
-                <form asp-action="SaveSettings" method="post">
+                <form asp-action="SaveSettings" method="post" id="settingsForm" novalidate>
                     @Html.AntiForgeryToken()
+
+                    <div id="settingsSummary" class="alert alert-danger d-none" role="alert" tabindex="-1">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                        <span id="settingsSummaryText"></span>
+                    </div>
 
                     <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">1. University & Examination Office Identity</h6>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">University Legal Name *</label>
-                            <input type="text" name="UniversityName" value="@(Model.GetValueOrDefault("UniversityName", "Purbanchal University"))" class="form-control" required />
+                            <label for="UniversityName" class="form-label small fw-bold">University Legal Name *</label>
+                            <input type="text" id="UniversityName" name="UniversityName" value="@(Model.GetValueOrDefault("UniversityName", "Purbanchal University"))" class="form-control" maxlength="150" required />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Office / Branch Title *</label>
-                            <input type="text" name="OfficeName" value="@(Model.GetValueOrDefault("OfficeName", "Office of the Examination Management"))" class="form-control" required />
+                            <label for="OfficeName" class="form-label small fw-bold">Office / Branch Title *</label>
+                            <input type="text" id="OfficeName" name="OfficeName" value="@(Model.GetValueOrDefault("OfficeName", "Office of the Examination Management"))" class="form-control" maxlength="150" required />
                         </div>
                         <div class="col-12">
-                            <label class="form-label small fw-bold">Office Address *</label>
-                            <input type="text" name="UniversityAddress" value="@(Model.GetValueOrDefault("UniversityAddress", "Puspalal Chowk, Biratnagar, Morang, Nepal"))" class="form-control" required />
+                            <label for="UniversityAddress" class="form-label small fw-bold">Office Address *</label>
+                            <input type="text" id="UniversityAddress" name="UniversityAddress" value="@(Model.GetValueOrDefault("UniversityAddress", "Puspalal Chowk, Biratnagar, Morang, Nepal"))" class="form-control" maxlength="250" required />
                         </div>
                     </div>
 
                     <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">2. Official Contact Channels</h6>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">General Support Email</label>
-                            <input type="email" name="ContactEmail" value="@(Model.GetValueOrDefault("ContactEmail", "puoemgt@puexam.edu.np"))" class="form-control" />
+                            <label for="ContactEmail" class="form-label small fw-bold">General Support Email</label>
+                            <input type="email" id="ContactEmail" name="ContactEmail" value="@(Model.GetValueOrDefault("ContactEmail", "puoemgt@puexam.edu.np"))" class="form-control" maxlength="120" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">General Reception Telephone</label>
-                            <input type="text" name="ContactPhone" value="@(Model.GetValueOrDefault("ContactPhone", "+977-21-465240, 590937"))" class="form-control" />
+                            <label for="ContactPhone" class="form-label small fw-bold">General Reception Telephone</label>
+                            <input type="tel" id="ContactPhone" name="ContactPhone" value="@(Model.GetValueOrDefault("ContactPhone", "021465240"))" class="form-control" maxlength="10" inputmode="numeric" placeholder="e.g. 9812345678" />
+                            <div class="form-text">Digits only, up to 10.</div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Examination Office Email *</label>
-                            <input type="email" name="ExamOfficeEmail" value="@(Model.GetValueOrDefault("ExamOfficeEmail", "puoemgt@puexam.edu.np"))" class="form-control" required />
+                            <label for="ExamOfficeEmail" class="form-label small fw-bold">Examination Office Email *</label>
+                            <input type="email" id="ExamOfficeEmail" name="ExamOfficeEmail" value="@(Model.GetValueOrDefault("ExamOfficeEmail", "puoemgt@puexam.edu.np"))" class="form-control" maxlength="120" required />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Examination Controller Direct Telephone *</label>
-                            <input type="text" name="ExamOfficePhone" value="@(Model.GetValueOrDefault("ExamOfficePhone", "+977-21-465240"))" class="form-control" required />
+                            <label for="ExamOfficePhone" class="form-label small fw-bold">Examination Controller Direct Telephone *</label>
+                            <input type="tel" id="ExamOfficePhone" name="ExamOfficePhone" value="@(Model.GetValueOrDefault("ExamOfficePhone", "021465240"))" class="form-control" maxlength="10" inputmode="numeric" placeholder="e.g. 9812345678" required />
+                            <div class="form-text">Digits only, up to 10.</div>
                         </div>
                     </div>
 
                     <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">3. Examination Controller Authority (Printed on Official Documents)</h6>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Controller of Examinations Name *</label>
-                            <input type="text" name="ControllerSignatureName" value="@(Model.GetValueOrDefault("ControllerSignatureName", "Prof. Dr. Suryanath Adhikari"))" class="form-control" required />
+                            <label for="ControllerSignatureName" class="form-label small fw-bold">Controller of Examinations Name *</label>
+                            <input type="text" id="ControllerSignatureName" name="ControllerSignatureName" value="@(Model.GetValueOrDefault("ControllerSignatureName", "Prof. Dr. Suryanath Adhikari"))" class="form-control" maxlength="100" required />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Official Designation *</label>
-                            <input type="text" name="ControllerDesignation" value="@(Model.GetValueOrDefault("ControllerDesignation", "Controller of Examinations"))" class="form-control" required />
+                            <label for="ControllerDesignation" class="form-label small fw-bold">Official Designation *</label>
+                            <input type="text" id="ControllerDesignation" name="ControllerDesignation" value="@(Model.GetValueOrDefault("ControllerDesignation", "Controller of Examinations"))" class="form-control" maxlength="100" required />
                         </div>
                         <div class="col-12">
-                            <label class="form-label small fw-bold">Website Portal URL *</label>
-                            <input type="url" name="WebsiteUrl" value="@(Model.GetValueOrDefault("WebsiteUrl", "https://www.puexam.edu.np"))" class="form-control" required />
+                            <label for="WebsiteUrl" class="form-label small fw-bold">Website Portal URL *</label>
+                            <input type="url" id="WebsiteUrl" name="WebsiteUrl" value="@(Model.GetValueOrDefault("WebsiteUrl", "https://www.puexam.edu.np"))" class="form-control" maxlength="200" required />
                         </div>
                     </div>
 
                     <div class="text-end border-top pt-3">
-                        <button type="submit" class="btn btn-primary fw-bold px-4">
+                        <button type="submit" id="settingsSaveBtn" class="btn btn-primary fw-bold px-4">
                             <i class="fa-solid fa-floppy-disk me-1"></i> Save Configuration Changes
                         </button>
                     </div>
@@ -78,3 +85,200 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+<script>
+(function () {
+    'use strict';
+
+    var form = document.getElementById('settingsForm');
+    if (!form) return;
+
+    var summary = document.getElementById('settingsSummary');
+    var summaryText = document.getElementById('settingsSummaryText');
+    var saveBtn = document.getElementById('settingsSaveBtn');
+    var saveBtnHtml = saveBtn.innerHTML;
+
+    var nameRe    = /^[\p{L}\p{M}][\p{L}\p{M}\s.'’\-]*$/u;
+    var addressRe = /^[\p{L}\p{M}\p{N}\s,.\-\/#()]+$/u;
+
+    /* ---------- Typing ke time galat characters hata do ---------- */
+    var onlyDigits  = function (v) { return v.replace(/\D/g, ''); };
+    // Naam: sirf letters (Nepali/Hindi bhi), space, . ' -   -> digit aur symbol nahi
+    var nameChars   = function (v) { return v.replace(/[^\p{L}\p{M}\s.'’\-]/gu, ''); };
+    // Address: letters + digits + space , . - / # ( )
+    var addressChars = function (v) { return v.replace(/[^\p{L}\p{M}\p{N}\s,.\-\/#()]/gu, ''); };
+    // Email: A-Z a-z 0-9 . _ % + - aur sirf ek 
+    var emailChars  = function (v) {
+        v = v.replace(/[^A-Za-z0-9._%+\-@@]/g, '');
+        var i = v.indexOf('@@');
+        return i === -1 ? v : v.slice(0, i + 1) + v.slice(i + 1).replace(/@@/g, '');
+    };
+    // URL: sirf printable ASCII, space nahi
+    var urlChars    = function (v) { return v.replace(/[^\x21-\x7E]/g, ''); };
+
+    var sanitizers = {
+        UniversityName:          nameChars,
+        OfficeName:              nameChars,
+        UniversityAddress:       addressChars,
+        ContactEmail:            emailChars,
+        ContactPhone:            onlyDigits,
+        ExamOfficeEmail:         emailChars,
+        ExamOfficePhone:         onlyDigits,
+        ControllerSignatureName: nameChars,
+        ControllerDesignation:   nameChars,
+        WebsiteUrl:              urlChars
+    };
+
+    /* ---------- Rules ---------- */
+    var rules = {
+        UniversityName:          { label: 'University legal name',     required: true,  min: 3, type: 'name' },
+        OfficeName:              { label: 'Office / branch title',     required: true,  min: 3, type: 'name' },
+        UniversityAddress:       { label: 'Office address',            required: true,  min: 5, type: 'address' },
+        ContactEmail:            { label: 'Support email',             required: false, type: 'email' },
+        ContactPhone:            { label: 'Reception telephone',       required: false, type: 'phone' },
+        ExamOfficeEmail:         { label: 'Examination office email',  required: true,  type: 'email' },
+        ExamOfficePhone:         { label: 'Controller telephone',      required: true,  type: 'phone' },
+        ControllerSignatureName: { label: 'Controller name',           required: true,  min: 3, type: 'name' },
+        ControllerDesignation:   { label: 'Official designation',      required: true,  min: 3, type: 'name' },
+        WebsiteUrl:              { label: 'Website URL',               required: true,  type: 'url' }
+    };
+
+    function checkEmail(v) {
+        var m = /^([A-Za-z0-9._%+\-]+)@@([A-Za-z0-9.\-]+\.[A-Za-z]{2,})$/.exec(v);
+        if (!m) return 'Enter a valid email address, e.g. name@@puexam.edu.np';
+        var local = m[1], domain = m[2];
+        if (local.charAt(0) === '.' || local.charAt(local.length - 1) === '.' || local.indexOf('..') !== -1 ||
+            domain.charAt(0) === '.' || domain.charAt(0) === '-' || domain.indexOf('..') !== -1) {
+            return 'Enter a valid email address, e.g. name@@puexam.edu.np';
+        }
+        return '';
+    }
+
+    function checkUrl(v) {
+        try {
+            var u = new URL(v);
+            if (u.protocol !== 'http:' && u.protocol !== 'https:') return 'URL must start with http:// or https://';
+            if (u.hostname.indexOf('.') < 1) return 'Enter a full web address, e.g. https://www.puexam.edu.np';
+            return '';
+        } catch (e) {
+            return 'Enter a full web address, e.g. https://www.puexam.edu.np';
+        }
+    }
+
+    function validateValue(name, value) {
+        var r = rules[name];
+        if (!r) return '';
+        var v = (value || '').trim();
+
+        if (!v) return r.required ? r.label + ' is required.' : '';
+        if (r.min && v.length < r.min) return r.label + ' must be at least ' + r.min + ' characters.';
+
+        if (r.type === 'name' && !nameRe.test(v)) return r.label + ' can contain only letters, spaces, dots, apostrophes and hyphens (no numbers or symbols).';
+        if (r.type === 'address' && (!addressRe.test(v) || !/\p{L}/u.test(v))) return r.label + ' can contain only letters, numbers, spaces and , . - / # ( )';
+        if (r.type === 'email') return checkEmail(v);
+        if (r.type === 'phone' && !/^\d{7,10}$/.test(v)) return 'Enter 7 to 10 digits (numbers only).';
+        if (r.type === 'url') return checkUrl(v);
+        return '';
+    }
+
+    /* ---------- UI helpers ---------- */
+    function feedbackFor(input) {
+        var fb = input.parentNode.querySelector('.invalid-feedback');
+        if (!fb) {
+            fb = document.createElement('div');
+            fb.className = 'invalid-feedback';
+            fb.id = input.id + 'Error';
+            input.parentNode.appendChild(fb);
+        }
+        return fb;
+    }
+
+    function setState(input, message) {
+        var fb = feedbackFor(input);
+        if (message) {
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
+            input.setAttribute('aria-invalid', 'true');
+            input.setAttribute('aria-describedby', fb.id);
+            fb.textContent = message;
+        } else {
+            input.classList.remove('is-invalid');
+            input.removeAttribute('aria-invalid');
+            input.removeAttribute('aria-describedby');
+            fb.textContent = '';
+            if (input.value.trim()) input.classList.add('is-valid'); else input.classList.remove('is-valid');
+        }
+        return !message;
+    }
+
+    function validateField(input) {
+        return setState(input, validateValue(input.name, input.value));
+    }
+
+    function fields() {
+        return Array.prototype.filter.call(form.elements, function (el) {
+            return el.name && rules[el.name];
+        });
+    }
+
+    /* ---------- Events ---------- */
+    fields().forEach(function (input) {
+        var clean = sanitizers[input.name];
+
+        input.addEventListener('input', function () {
+            if (clean) {
+                var before = input.value;
+                var pos = input.selectionStart;
+                var after = clean(before);
+                if (after !== before) {
+                    input.value = after;
+                    // caret ko wahi rakho jahan user type kar raha tha
+                    var p = Math.max(0, pos - (before.length - after.length));
+                    try { input.setSelectionRange(p, p); } catch (e) { }
+                }
+            }
+            if (input.classList.contains('is-invalid')) validateField(input);
+        });
+
+        input.addEventListener('blur', function () {
+            input.value = input.value.trim().replace(/\s{2,}/g, ' ');
+            validateField(input);
+        });
+    });
+
+    form.addEventListener('submit', function (e) {
+        var firstBad = null;
+        var badCount = 0;
+
+        fields().forEach(function (input) {
+            input.value = input.value.trim().replace(/\s{2,}/g, ' ');
+            if (!validateField(input)) {
+                badCount++;
+                if (!firstBad) firstBad = input;
+            }
+        });
+
+        if (badCount > 0) {
+            e.preventDefault();
+            summaryText.textContent = badCount === 1
+                ? 'Please fix the 1 highlighted field before saving.'
+                : 'Please fix the ' + badCount + ' highlighted fields before saving.';
+            summary.classList.remove('d-none');
+            summary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstBad.focus({ preventScroll: true });
+            return;
+        }
+
+        summary.classList.add('d-none');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Saving...';
+    });
+
+    window.addEventListener('pageshow', function () {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = saveBtnHtml;
+    });
+})();
+</script>
+}

@@ -8,17 +8,12 @@
     <title>@(ViewData["Title"] ?? "PU | Purbanchal University | Best University | Top University | Education For All")</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
-    <!-- Favicons -->
     <link href="/assets/img/college-logo.png" rel="icon">
     <link href="/assets/img/college-logo.png" rel="apple-touch-icon">
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
-    <!-- Vendor CSS Files -->
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -30,7 +25,6 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
 
-    <!-- Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
     <style>
         label.error {
@@ -77,7 +71,7 @@
 
         #modalNotice .home-popup-slider {
             position: relative;
-            padding-bottom: 35px; /* dots ke liye neeche jagah */
+            padding-bottom: 35px;
         }
 
         #modalNotice .swiper-pagination {
@@ -103,7 +97,6 @@
 </head>
 <body class="@(ViewData["BodyClass"] ?? "")">
 
-    <!-- ======= Header ======= -->
     <header id="header" class="fixed-top @(ViewData["IsInnerPage"] as bool? == true ? "header-inner-pages header-scrolled" : "")">
         <div id="topMenu" class="container d-flex align-items-center justify-content-between">
             <a href="/" class="logo">
@@ -357,11 +350,9 @@
     <script src="/assets/js/nepali.datepicker.v2.min.js"></script>
     <script src="/assets/js/main.js"></script>
 
-    <!-- Global puexam Interactive Handlers -->
     <script>
         $(document).ready(function() {
-            // Mobile Nav
-            // Mobile Nav handled by main.js
+         
             if (false) $(".nav-open").click(function () {
                 $(this).hide();
                 $('#header').removeClass('hide-nav-header');
@@ -377,7 +368,6 @@
                 $('.nav-open').show();
             });
 
-            // Notice PDF Modal Trigger
             $(document).on('click', '[data-href]', function() {
                 var href = $(this).data('href');
                 var title = $(this).data('title');
@@ -392,8 +382,6 @@
                 }
             });
 
-            // Popup Notice Slider
-               // Popup Notice Slider
         if ($('#modalNotice').length && !sessionStorage.getItem('puexam_popup_dismissed')) {
             var modalEl = document.getElementById('modalNotice');
             var noticeSwiper = null;

@@ -1,6 +1,7 @@
 @model StudentRegistrationViewModel
 @{
-    ViewData["Title"] = "P.U | Purbanchal University Student Registration";
+    ViewData["Title"] = "P.U | Purbanchal University Student Registration"; 
+    Layout = "_AdminLayout";
     var faculties = ViewBag.Faculties as List<Faculty> ?? new List<Faculty>();
     var programs = ViewBag.Programs as List<ProgramModel> ?? new List<ProgramModel>();
     var colleges = ViewBag.Colleges as List<College> ?? new List<College>();
@@ -8,36 +9,36 @@
     var semesters = ViewBag.Semesters as List<Semester> ?? new List<Semester>();
 }
 
-<div class="py-4 text-white" style="background: linear-gradient(135deg, #003980 0%, #15222b 100%);">
+@*<div class="py-4 text-white" style="background: linear-gradient(135deg, #003980 0%, #15222b 100%);">
     <div class="container text-center">
         <img src="~/images/pulogo.png" alt="Purbanchal University" style="max-height: 58px;" class="mb-2" />
         <h2 class="fw-bold mb-1">PURBANCHAL UNIVERSITY</h2>
         <p class="mb-0 text-warning">Student Registration Portal &bull; entrance.puexam.edu.np</p>
     </div>
-</div>
+</div>*@
 
-<div class="container py-5">
+<div class="container reg-wrap">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card shadow-sm border rounded-3">
-                <div class="card-header bg-white py-3 border-bottom">
-                    <h5 class="fw-bold text-primary mb-0"><i class="fa-solid fa-clipboard-list me-2"></i> Registration Application Form</h5>
-                    <small class="text-muted">Please fill in accurate details as per your educational transcripts and identity certificates.</small>
+            <div class="reg-card">
+
+                <!-- Header -->
+                <div class="reg-hero">
+                    <h4 class="reg-hero-title"><i class="fa-solid fa-clipboard-list"></i> Registration Application Form</h4>
+                    <p class="reg-hero-sub">Please fill in accurate details as per your educational transcripts and identity certificates.</p>
                 </div>
 
-                <div class="card-body p-4 p-md-5">
+                <div class="reg-body">
                     <form asp-action="Register" method="post" enctype="multipart/form-data">
                         @Html.AntiForgeryToken()
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger small py-2 mb-4"></div>
 
-                        <!-- 1. Personal Information Section -->
-                        <div class="mb-4">
-                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
-                                <i class="fa-solid fa-id-card me-2 text-danger"></i> 1. Personal Information
-                            </h6>
+                        <!-- 1. Personal Information -->
+                        <section class="reg-section">
+                            <h6 class="reg-section-title"><span class="sec-num">1</span> Personal Information</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label asp-for="FullName" class="form-label small fw-bold">Full Name (in BLOCK letters) *</label>
+                                    <label asp-for="FullName" class="reg-label">Full Name (in BLOCK letters) <span class="req">*</span></label>
                                     <input asp-for="FullName" id="fullName" class="form-control text-uppercase"
                                            placeholder="e.g. AARAV SHARMA"
                                            maxlength="60"
@@ -47,12 +48,12 @@
                                     <span asp-validation-for="FullName" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <label asp-for="DateOfBirth" class="form-label small fw-bold">Date of Birth *</label>
+                                    <label asp-for="DateOfBirth" class="reg-label">Date of Birth <span class="req">*</span></label>
                                     <input asp-for="DateOfBirth" type="date" class="form-control" required />
                                     <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-3">
-                                    <label asp-for="Gender" class="form-label small fw-bold">Gender *</label>
+                                    <label asp-for="Gender" class="reg-label">Gender <span class="req">*</span></label>
                                     <select asp-for="Gender" class="form-select" required>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -62,7 +63,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label asp-for="Email" class="form-label small fw-bold">Email Address *</label>
+                                    <label asp-for="Email" class="reg-label">Email Address <span class="req">*</span></label>
                                     <input asp-for="Email" id="email" type="email" class="form-control"
                                            placeholder="e.g. aarav.sharma@gmail.com"
                                            maxlength="100"
@@ -72,32 +73,30 @@
                                     <span asp-validation-for="Email" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label asp-for="MobileNumber" class="form-label small fw-bold">Mobile Number *</label>
+                                    <label asp-for="MobileNumber" class="reg-label">Mobile Number <span class="req">*</span></label>
                                     <input asp-for="MobileNumber" id="mobileNumber" type="tel" class="form-control"
                                            placeholder="e.g. 9846123456"
                                            maxlength="10"
                                            inputmode="numeric"
-                                           pattern="[0-9]{10}"
+                                           pattern="[6-9][0-9]{9}"
                                            title="Enter a valid 10 digit mobile number"
                                            required />
                                     <span asp-validation-for="MobileNumber" class="text-danger small"></span>
                                 </div>
                                 <div class="col-12">
-                                    <label asp-for="Address" class="form-label small fw-bold">Permanent Residential Address *</label>
+                                    <label asp-for="Address" class="reg-label">Permanent Residential Address <span class="req">*</span></label>
                                     <input asp-for="Address" class="form-control" placeholder="Municipality, Ward No, District, Province" required />
                                     <span asp-validation-for="Address" class="text-danger small"></span>
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        <!-- 2. Academic Affiliation Section -->
-                        <div class="mb-4">
-                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
-                                <i class="fa-solid fa-graduation-cap me-2 text-warning"></i> 2. College & Academic Program
-                            </h6>
+                        <!-- 2. College & Academic Program -->
+                        <section class="reg-section">
+                            <h6 class="reg-section-title"><span class="sec-num">2</span> College &amp; Academic Program</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label asp-for="CollegeId" class="form-label small fw-bold">Admitted College / Campus *</label>
+                                    <label asp-for="CollegeId" class="reg-label">Admitted College / Campus <span class="req">*</span></label>
                                     <select asp-for="CollegeId" class="form-select" required>
                                         <option value="">-- Select College --</option>
                                         @foreach (var c in colleges)
@@ -109,7 +108,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label asp-for="FacultyId" class="form-label small fw-bold">Faculty *</label>
+                                    <label asp-for="FacultyId" class="reg-label">Faculty <span class="req">*</span></label>
                                     <select asp-for="FacultyId" class="form-select" id="facultySelect" required>
                                         <option value="">-- Select Faculty --</option>
                                         @foreach (var f in faculties)
@@ -121,7 +120,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label asp-for="ProgramId" class="form-label small fw-bold">Academic Degree Program *</label>
+                                    <label asp-for="ProgramId" class="reg-label">Academic Degree Program <span class="req">*</span></label>
                                     <select asp-for="ProgramId" class="form-select" id="programSelect" required>
                                         <option value="">-- Select Program --</option>
                                         @foreach (var p in programs)
@@ -129,11 +128,12 @@
                                             <option value="@p.ProgramId" data-faculty="@p.FacultyId">@p.ProgramName (@p.ProgramCode)</option>
                                         }
                                     </select>
+                                    <small id="programHint" class="reg-hint">Pehle Faculty select karein.</small>
                                     <span asp-validation-for="ProgramId" class="text-danger small"></span>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label asp-for="AcademicYearId" class="form-label small fw-bold">Academic Session *</label>
+                                    <label asp-for="AcademicYearId" class="reg-label">Academic Session <span class="req">*</span></label>
                                     <select asp-for="AcademicYearId" class="form-select" required>
                                         @foreach (var ay in academicYears)
                                         {
@@ -144,7 +144,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label asp-for="CurrentSemesterId" class="form-label small fw-bold">Semester *</label>
+                                    <label asp-for="CurrentSemesterId" class="reg-label">Semester <span class="req">*</span></label>
                                     <select asp-for="CurrentSemesterId" class="form-select" required>
                                         @foreach (var s in semesters)
                                         {
@@ -155,71 +155,83 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label asp-for="PreviousQualification" class="form-label small fw-bold">Previous Qualification (Degree, Institute, Percentage / CGPA)</label>
+                                    <label asp-for="PreviousQualification" class="reg-label">Previous Qualification <span class="reg-optional">(Degree, Institute, Percentage / CGPA)</span></label>
                                     <input asp-for="PreviousQualification" class="form-control" placeholder="e.g. +2 Science (NEB), 82.5%, ABC Higher Secondary School" />
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        <!-- 3. Document Upload Section -->
-                        <div class="mb-4">
-                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
-                                <i class="fa-solid fa-cloud-arrow-up me-2 text-info"></i> 3. Document Attachments
-                            </h6>
+                        <!-- 3. Document Attachments -->
+                        <section class="reg-section">
+                            <h6 class="reg-section-title"><span class="sec-num">3</span> Document Attachments</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label asp-for="PhotoFile" class="form-label small fw-bold">Passport Size Photograph (JPG/PNG)</label>
-                                    <input asp-for="PhotoFile" type="file" accept="image/*" class="form-control" />
-                                    <small class="text-muted">Clear formal photograph with plain background</small>
+                                    <label asp-for="PhotoFile" class="reg-label">Passport Size Photograph <span class="reg-optional">(JPG/PNG)</span></label>
+                                    <div class="upload-box">
+                                        <img id="photoPreview" class="upload-preview" alt="" style="display:none;" />
+                                        <div class="upload-placeholder" id="photoPlaceholder"><i class="fa-solid fa-image"></i></div>
+                                        <div class="upload-input">
+                                            <input asp-for="PhotoFile" id="photoFile" type="file" accept="image/*" class="form-control" />
+                                            <small class="reg-hint">Clear formal photograph with plain background</small>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label asp-for="IdentityDocumentFile" class="form-label small fw-bold">Citizenship / National ID / Passport (PDF or Image)</label>
-                                    <input asp-for="IdentityDocumentFile" type="file" class="form-control" />
-                                    <small class="text-muted">Proof of citizenship or valid identification document</small>
+                                    <label asp-for="IdentityDocumentFile" class="reg-label">Citizenship / National ID / Passport <span class="reg-optional">(PDF or Image)</span></label>
+                                    <div class="upload-box">
+                                        <div class="upload-placeholder" id="idPlaceholder"><i class="fa-solid fa-file-shield"></i></div>
+                                        <div class="upload-input">
+                                            <input asp-for="IdentityDocumentFile" id="idFile" type="file" accept="image/*,.pdf" class="form-control" />
+                                            <small class="reg-hint">Proof of citizenship or valid identification document</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        <!-- 4. Security Password Section -->
-                        <div class="mb-4">
-                            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">
-                                <i class="fa-solid fa-lock me-2 text-success"></i> 4. Student Portal Password Setup
-                            </h6>
+                        <!-- 4. Password -->
+                        <section class="reg-section">
+                            <h6 class="reg-section-title"><span class="sec-num">4</span> Student Portal Password Setup</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label asp-for="Password" class="form-label small fw-bold">Portal Password (minimum 6 characters) *</label>
+                                    <label asp-for="Password" class="reg-label">Portal Password <span class="reg-optional">(minimum 6 characters)</span> <span class="req">*</span></label>
                                     <div class="input-group">
                                         <input asp-for="Password" id="password" type="password" class="form-control" minlength="6" required />
-                                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="password" tabindex="-1">
+                                        <button type="button" class="btn toggle-password" data-target="password" tabindex="-1">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </div>
-                                    <span asp-validation-for="Password" class="text-danger small"></span>
+                                    <div class="strength-bar"><span id="strengthFill"></span></div>
+                                    <small id="strengthText" class="reg-hint"></small>
+                                    <span asp-validation-for="Password" class="text-danger small d-block"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label asp-for="ConfirmPassword" class="form-label small fw-bold">Confirm Password *</label>
+                                    <label asp-for="ConfirmPassword" class="reg-label">Confirm Password <span class="req">*</span></label>
                                     <div class="input-group">
                                         <input asp-for="ConfirmPassword" id="confirmPassword" type="password" class="form-control" required />
-                                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="confirmPassword" tabindex="-1">
+                                        <button type="button" class="btn toggle-password" data-target="confirmPassword" tabindex="-1">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </div>
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                    <small id="matchText" class="reg-hint"></small>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger small d-block"></span>
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        <div class="form-check mb-4">
+                        <!-- Declaration -->
+                        <div class="reg-declare">
                             <input class="form-check-input" type="checkbox" id="termsCheck" required />
-                            <label class="form-check-label small text-muted" for="termsCheck">
-                                I hereby declare that the particulars furnished above are true and correct to the best of my knowledge. I agree to abide by the rules and regulations of Apex University.
+                            <label class="form-check-label" for="termsCheck">
+                                I hereby declare that the particulars furnished above are true and correct to the best of my knowledge. I agree to abide by the rules and regulations of Purbanchal University.
                             </label>
                         </div>
 
-                        <div class="text-end">
-                            <a asp-action="Login" class="btn btn-outline-secondary px-4 me-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
-                                <i class="fa-solid fa-paper-plane me-1"></i> Submit Registration
+                        <!-- Buttons -->
+                        <div class="reg-actions">
+                            <a asp-action="Login" class="btn-reg-cancel">Cancel</a>
+                            <button type="submit" class="btn-reg-submit">
+                                <i class="fa-solid fa-paper-plane"></i> Submit Registration
                             </button>
                         </div>
                     </form>
@@ -228,10 +240,270 @@
         </div>
     </div>
 </div>
+<style>
+    .reg-wrap {
+        padding-top: 8px;
+        padding-bottom: 40px;
+    }
 
+    .reg-card {
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #e3e8ef;
+        box-shadow: 0 2px 12px rgba(11, 37, 69, .06);
+    }
+    .reg-hero {
+        padding: 22px 28px;
+        color: #fff;
+        background: #1e3c72;
+    }
+
+    .reg-hero-title {
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin: 0 0 4px;
+    }
+
+        .reg-hero-title i {
+            margin-right: 8px;
+            opacity: .85;
+        }
+
+    .reg-hero-sub {
+        margin: 0;
+        font-size: .84rem;
+        opacity: .85;
+    }
+
+    .reg-body {
+        padding: 28px;
+    }
+
+    .reg-section {
+        margin-bottom: 28px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #edf1f6;
+    }
+
+        .reg-section:last-of-type {
+            border-bottom: 0;
+        }
+
+    .reg-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        font-size: .98rem;
+        font-weight: 700;
+        color: #1e3c72;
+    }
+
+    .sec-num {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .8rem;
+        font-weight: 700;
+        color: #1e3c72;
+        background: #e8eefa;
+    }
+
+    .reg-label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: .8rem;
+        font-weight: 600;
+        color: #2b3a4f;
+    }
+
+        .reg-label .req {
+            color: #dc3545;
+        }
+
+    .reg-optional {
+        font-weight: 400;
+        color: #8794a6;
+        font-size: .74rem;
+    }
+
+    .reg-hint {
+        display: block;
+        margin-top: 4px;
+        font-size: .74rem;
+        color: #8794a6;
+    }
+
+    .reg-section .form-control,
+    .reg-section .form-select {
+        border: 1px solid #d5dde8;
+        border-radius: 8px;
+        padding: 9px 12px;
+        font-size: .9rem;
+        transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+        .reg-section .form-control:focus,
+        .reg-section .form-select:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, .12);
+        }
+
+    .upload-box {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px;
+        border: 1px dashed #c5d0de;
+        border-radius: 10px;
+        background: #fafbfd;
+    }
+
+    .upload-placeholder, .upload-preview {
+        flex-shrink: 0;
+        width: 56px;
+        height: 56px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    .upload-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: #6c7a8c;
+        background: #eef2f7;
+    }
+
+    .upload-input {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .toggle-password {
+        border: 1px solid #d5dde8;
+        border-left: 0;
+        background: #fff;
+        color: #6c7a8c;
+        border-radius: 0 8px 8px 0;
+    }
+
+        .toggle-password:hover {
+            background: #f3f6fa;
+            color: #1e3c72;
+        }
+
+    .input-group .form-control {
+        border-radius: 8px 0 0 8px !important;
+    }
+
+    .strength-bar {
+        height: 4px;
+        margin-top: 8px;
+        border-radius: 999px;
+        background: #e9eef5;
+        overflow: hidden;
+    }
+
+        .strength-bar span {
+            display: block;
+            height: 100%;
+            width: 0;
+            border-radius: 999px;
+            transition: width .25s ease, background .25s ease;
+        }
+
+    .reg-declare {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        margin-bottom: 22px;
+        border-radius: 10px;
+        background: #f6f8fb;
+        border: 1px solid #e3e8ef;
+    }
+
+        .reg-declare .form-check-input {
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+            .reg-declare .form-check-input:checked {
+                background-color: #1e3c72;
+                border-color: #1e3c72;
+            }
+
+        .reg-declare label {
+            font-size: .82rem;
+            color: #55657a;
+            line-height: 1.5;
+        }
+
+    .reg-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .btn-reg-cancel {
+        padding: 10px 26px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: .9rem;
+        color: #55657a;
+        text-decoration: none;
+        background: #fff;
+        border: 1px solid #d5dde8;
+    }
+
+        .btn-reg-cancel:hover {
+            background: #f3f6fa;
+            color: #0b2545;
+        }
+
+    .btn-reg-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 30px;
+        border: 0;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: .92rem;
+        color: #fff;
+        background: #1e3c72;
+        transition: background .15s ease;
+    }
+
+        .btn-reg-submit:hover {
+            background: #2a5298;
+        }
+
+    @@media (max-width: 576px) {
+        .reg-body {
+            padding: 16px;
+        }
+
+        .reg-hero {
+            padding: 18px;
+        }
+
+        .reg-actions > * {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+</style>
 @section Scripts {
     <script>
-        // Faculty ke hisab se program filter
         $('#facultySelect').change(function () {
             var selectedFaculty = $(this).val();
             $('#programSelect').val('');
@@ -245,18 +517,15 @@
             });
         });
 
-        // Name: sirf letters aur space
         $('#fullName').on('input', function () {
             this.value = this.value.replace(/[^A-Za-z ]/g, '').replace(/\s{2,}/g, ' ').toUpperCase();
         });
 
-        // Mobile: sirf digits, max 10
         $('#mobileNumber').on('input', function () {
             this.value = this.value.replace(/\D/g, '').slice(0, 10);
             this.setCustomValidity('');
         });
 
-        // Password eye toggle
         $('.toggle-password').on('click', function () {
             var input = document.getElementById($(this).data('target'));
             var icon = $(this).find('i');
@@ -269,7 +538,6 @@
             }
         });
 
-        // Submit se pehle final validation
         $('form').on('submit', function (e) {
             var mobile = $('#mobileNumber')[0];
             var email = $('#email').val();
