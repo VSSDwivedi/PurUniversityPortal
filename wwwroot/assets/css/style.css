@@ -219,7 +219,8 @@ div#heading-all {
 
 .navbar>ul>li {
   white-space: nowrap;
-  padding: 8px 12px;
+  padding: 8px 5px;
+/*  padding: 8px 12px;*/
 }
 
 .navbar a,
@@ -268,7 +269,7 @@ div#heading-all {
 .navbar .active,
 .navbar .active:focus,
 .navbar li:hover>a {
-  color: #fff;
+  color: #fff !important;
 }
 
 .navbar .getstarted,
@@ -326,7 +327,7 @@ div#heading-all {
 .navbar .dropdown ul a:hover,
 .navbar .dropdown ul .active:hover,
 .navbar .dropdown ul li:hover>a {
-  color: #ff4a17;
+  color: #ff4a17 !important;
 }
 
 .navbar .dropdown:hover>ul {
@@ -336,10 +337,11 @@ div#heading-all {
 }
 
 .navbar .dropdown .dropdown ul {
-  top: 0;
+ top: 0;
   left: calc(100% - 30px);
   visibility: hidden;
 }
+
 
 .navbar .dropdown .dropdown:hover>ul {
   opacity: 1;
@@ -457,7 +459,7 @@ ul#myTab {
 
 .show-nav-header{
   display: block;
-  left: -200px;
+/*  left: -200px;*/
    -webkit-animation: slide 0.5s forwards;
     -webkit-animation-delay: 2s;
     animation: slide 0.5s forwards;

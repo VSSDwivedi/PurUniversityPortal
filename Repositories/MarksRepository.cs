@@ -25,12 +25,11 @@ namespace UniversityExamSystem.Repositories
         {
             _db = db;
         }
-
         public async Task<List<Mark>> GetMarksAsync(int examId, int subjectId, int? collegeId = null)
         {
             // Join with ExaminationApplicationSubjects so all students who applied for this subject in this exam appear
             var sql = @"
-                SELECT m.MarkId, @ExamId AS ExaminationId, e.ExamName,
+               SELECT ISNULL(m.MarkId, 0) AS MarkId, @ExamId AS ExaminationId, e.ExamName,
                        s.StudentId, s.FullName AS StudentName, s.RollNumber, s.RegistrationNumber,
                        sub.SubjectId, sub.SubjectCode, sub.SubjectName, sub.CreditHours, sub.FullMarks, sub.PassMarks,
                        ISNULL(m.InternalMarks, 0.00) AS InternalMarks,

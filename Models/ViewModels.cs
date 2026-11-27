@@ -23,6 +23,7 @@ namespace UniversityExamSystem.Models
     {
         [Required(ErrorMessage = "Full Name is required")]
         [Display(Name = "Full Name (as per certificates)")]
+        [RegularExpression(@"^[A-Za-z ]+$", ErrorMessage = "Name can contain only letters and spaces")]
         public string FullName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Date of Birth is required")]
@@ -39,6 +40,7 @@ namespace UniversityExamSystem.Models
 
         [Required(ErrorMessage = "Mobile Number is required")]
         [Phone(ErrorMessage = "Please enter a valid phone number")]
+        [RegularExpression(@"^[6-9][0-9]{9}$", ErrorMessage = "Enter a valid 10 digit mobile number")]
         [Display(Name = "Mobile Number")]
         public string MobileNumber { get; set; } = string.Empty;
 
