@@ -7,7 +7,6 @@
     var activeExams = ViewBag.ActiveExams as List<Examination> ?? new List<Examination>();
 }
 <style>
-    /* ===== KPI Cards ===== */
     .kpi-card {
         --accent: #0d6efd;
         --accent-soft: rgba(13, 110, 253, .12);
@@ -82,7 +81,6 @@
         --accent-soft: rgba(220,53,69,.12);
     }
 
-    /* ===== Quick Module Cards ===== */
     .module-card {
         display: flex;
         flex-direction: column;
@@ -125,7 +123,6 @@
         margin-bottom: 20px;
     }
     
-    /* ===== Applications Table Card ===== */
     .app-card {
         background: #fff;
         border: 1px solid #c9d3e0;
@@ -181,7 +178,6 @@
             font-size: .7rem;
         }
 
-    /* ----- Table ----- */
     .app-table thead th {
         background: #eef3fb;
         color: #334155;
@@ -230,7 +226,6 @@
         font-weight: 600;
     }
 
-    /* ----- Status badge ----- */
     .app-pill {
         display: inline-flex;
         align-items: center;
@@ -261,7 +256,6 @@
         background: #dc3545;
     }
 
-    /* ----- Empty ----- */
     .app-table td.app-empty {
         text-align: center;
         padding: 36px 16px;
@@ -275,7 +269,6 @@
         font-size: 2rem;
         margin-bottom: 8px;
     }</style>
-<!-- College Welcome Header -->
 <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4" style="background: linear-gradient(135deg, #133b5c 0%, #0b2545 100%);">
     <div class="card-body p-4 text-white">
         <div class="row align-items-center">
@@ -299,9 +292,6 @@
         </div>
     </div>
 </div>
-
-<!-- KPI Cards -->
-<!-- KPI Cards -->
 <div class="row g-4 mb-4">
     <div class="col-xl-3 col-sm-6">
         <div class="kpi-card kpi-blue">
@@ -341,8 +331,6 @@
     </div>
 </div>
 
-<!-- College Quick Modules -->
-<!-- College Quick Modules -->
 <div class="row g-4 mb-4">
     <div class="col-md-4">
         <div class="module-card">
@@ -370,8 +358,6 @@
     </div>
 </div>
 
-<!-- Recent Applications Table -->
-<!-- Recent Applications Table -->
 <div class="app-card">
     <div class="app-head">
         <h5 class="app-title"><i class="fa-solid fa-clock-rotate-left"></i> Recent Examination Applications from Your College</h5>

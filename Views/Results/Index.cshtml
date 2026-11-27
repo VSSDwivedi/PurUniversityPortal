@@ -80,7 +80,6 @@
                 color: rgba(255,255,255,.8) !important;
             }
 
-        /* ============ SEARCH CARD ============ */
         .fr .result-form-wrapper {
             position: relative;
             z-index: 2;
@@ -156,7 +155,6 @@
             color: var(--blue);
         }
 
-        /* Registration number block */
         .fr .reg-card {
             background: var(--wash) !important;
             border: 1.5px dashed #c5d1ea !important;
@@ -195,7 +193,6 @@
             background: #fff;
         }
 
-        /* Submit */
         .fr #check_result {
             border: 0;
             border-radius: 13px;
@@ -215,7 +212,6 @@
                 outline-offset: 2px;
             }
 
-        /* ============ GRADE SHEET ============ */
         .fr .gradesheet-container {
             position: relative;
             background: #fff;
@@ -355,7 +351,6 @@
             font-weight: 600;
         }
 
-        /* ============ NOT FOUND ============ */
         .fr .alert-warning {
             background: linear-gradient(180deg, var(--gold-soft), #fff) !important;
             border: 1px solid #ecd9ad !important;
@@ -363,7 +358,6 @@
             color: var(--ink);
         }
 
-    /* ============ RESPONSIVE ============ */
     @@media (max-width: 575.98px) {
         .fr .section-title {
             padding: 1.5rem 1.25rem 4.8rem;
@@ -395,7 +389,6 @@
         }
     }
 
-    /* ============ PRINT ============ */
     @@media print {
         .fr {
             padding: 0;
@@ -422,7 +415,6 @@
     }
 </style>
 
-<!-- Breadcrumb bar -->
 @*
 <div class="bg-light py-2 border-bottom no-print">
     <div class="container d-flex justify-content-between align-items-center">
@@ -441,7 +433,6 @@
 
 <main id="main" class="fr">
     <div class="container">
-        <!-- Section Title -->
         <div class="section-title text-center text-md-start mb-4 no-print">
             <div class="d-flex justify-content-between align-items-center flex-wrap">
                 <div>
@@ -454,7 +445,6 @@
             </div>
         </div>
 
-        <!-- Find Result Form Box (Directly replicating puexam.edu.np/find-results_new) -->
         <div class="result-form-wrapper no-print">
             <div class="form-head">
                 <span class="ico"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
@@ -466,7 +456,6 @@
             <form asp-action="Search" method="post" id="find_result">
                 @Html.AntiForgeryToken()
                 <div class="row g-3">
-                    <!-- Faculty -->
                     <div class="col-lg-6">
                         <div class="form-floating">
                             <select asp-for="FacultyId" class="form-select" id="facultySelect">
@@ -480,7 +469,6 @@
                         </div>
                     </div>
 
-                    <!-- Program -->
                     <div class="col-lg-6">
                         <div class="form-floating">
                             <select asp-for="ProgramId" class="form-select" id="programSelect">
@@ -494,7 +482,6 @@
                         </div>
                     </div>
 
-                    <!-- Exam Type -->
                     <div class="col-lg-6">
                         <div class="form-floating">
                             <select asp-for="ExamType" class="form-select" id="exam_type">
@@ -508,7 +495,6 @@
                         </div>
                     </div>
 
-                    <!-- Exam Year -->
                     <div class="col-lg-6">
                         <div class="form-floating">
                             <select asp-for="ExamYear" class="form-select" id="exam_year">
@@ -526,7 +512,6 @@
                         </div>
                     </div>
 
-                    <!-- Symbol Number -->
                     <div class="col-lg-6">
                         <div class="form-floating">
                             <input asp-for="SymbolNumber" class="form-control" id="symbol_number" placeholder="Enter Symbol Number" />
@@ -534,7 +519,6 @@
                         </div>
                     </div>
 
-                    <!-- Semester / Year -->
                     <div class="col-lg-6">
                         <div class="form-floating">
                             <select asp-for="SemesterYearId" class="form-select" id="semesterYear">
@@ -548,7 +532,6 @@
                         </div>
                     </div>
 
-                    <!-- Registration Number (Formatted puexam Segmented inputs) -->
                     <div class="col-lg-8">
                         <div class="border rounded p-3 bg-light reg-card">
                             <label class="form-label small fw-bold text-uppercase mb-2 text-primary">
@@ -572,7 +555,6 @@
                         </div>
                     </div>
 
-                    <!-- Exam Intake -->
                     <div class="col-lg-4">
                         <div class="form-floating mb-3">
                             <select asp-for="ExamIntake" class="form-select" id="exam_intake">
@@ -593,14 +575,12 @@
             </form>
         </div>
 
-        <!-- Result Display Section -->
         @if (Model.Searched)
         {
             if (Model.Result != null)
             {
                 var r = Model.Result;
                 <div class="gradesheet-container shadow" id="gradeSheetContent">
-                    <!-- Grade Sheet Header -->
                     <div class="gradesheet-header">
                         <img src="~/images/pulogobg.png" alt="Purbanchal University" class="img-fluid" style="max-height:110px;" />
                         <h2>PURBANCHAL UNIVERSITY</h2>
@@ -608,8 +588,6 @@
                         <h4>Biratnagar, Nepal</h4>
                         <div class="gradesheet-title-badge">PROVISIONAL STATEMENT OF MARKS / GRADE SHEET</div>
                     </div>
-
-                    <!-- Candidate Academic Info Table -->
                     <div class="gradesheet-student-info">
                         <table class="table table-borderless table-sm mb-0">
                             <tbody>
@@ -639,7 +617,6 @@
                         </table>
                     </div>
 
-                    <!-- Grades and Marks Table -->
                     <table class="gradesheet-table">
                         <thead>
                             <tr>
@@ -675,7 +652,6 @@
                         </tbody>
                     </table>
 
-                    <!-- Academic Summary Strip -->
                     <div class="gradesheet-summary">
                         <div class="row align-items-center text-center">
                             <div class="col-sm-3 col-6 mb-2 mb-sm-0 border-end">
@@ -699,7 +675,6 @@
                         </div>
                     </div>
 
-                    <!-- Signatures & QR Code Section -->
                     <div class="gradesheet-signatures">
                         <div class="text-center">
                             @if (!string.IsNullOrEmpty(r.GradeSheetQrCodeBase64))
@@ -720,7 +695,6 @@
                         </div>
                     </div>
 
-                    <!-- Actions Strip (No Print) -->
                     <div class="text-end mt-4 pt-3 border-top no-print d-flex justify-content-between align-items-center">
                         <small class="text-muted">Issue Date: @(r.PublishedDate?.ToString("MMMM dd, yyyy") ?? DateTime.Now.ToString("MMMM dd, yyyy"))</small>
                         <div class="d-flex gap-2">
@@ -749,7 +723,6 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
-            // Dynamic filtering of programs based on selected faculty
             $('#facultySelect').on('change', function() {
                 var facultyId = $(this).val();
                 if (facultyId) {

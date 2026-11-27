@@ -5,7 +5,6 @@
 }
 
 <style>
-    /* ========== Tokens (sirf is page ke liye) ========== */
     .pu-exams {
         --pu-navy: #0b2a5b;
         --pu-blue: #003980;
@@ -21,7 +20,6 @@
         font-feature-settings: "tnum" 1;
     }
 
-        /* ========== Card + header ========== */
         .pu-exams.custom-card {
             background: #fff;
             border: 1px solid var(--pu-line);
@@ -89,7 +87,6 @@
             outline-offset: 2px;
         }
 
-        /* ========== Table ========== */
         .pu-exams .pu-table thead th {
             background: var(--pu-paper);
             color: var(--pu-muted);
@@ -143,7 +140,6 @@
             white-space: nowrap;
         }
 
-        /* Application deadline: soft chip */
         .pu-exams .pu-deadline.badge {
             background: #fff6d6 !important;
             color: #6b4a00 !important;
@@ -160,7 +156,6 @@
             white-space: nowrap;
         }
 
-        /* Applicants: plain number, right-aligned feel */
         .pu-exams .pu-count.badge {
             background: var(--pu-paper) !important;
             color: var(--pu-ink) !important;
@@ -171,7 +166,6 @@
             border-radius: 999px;
         }
 
-        /* Status: dot + label */
         .pu-exams .pu-status.badge {
             display: inline-flex;
             align-items: center;
@@ -220,7 +214,6 @@
                 background: var(--pu-ok);
             }
 
-        /* Actions: ek hi line, kabhi wrap/stack nahi hote (desktop) */
         .pu-exams .pu-actions-cell {
             width: 1%;
             white-space: nowrap;
@@ -289,7 +282,6 @@
                     color: #fff;
                 }
 
-    /* Medium desktop (sidebar ke saath jagah kam): sirf icons, hover pe title dikhta hai */
     @@media (min-width: 992px) and (max-width: 1399.98px) {
         .pu-exams .pu-actions .pu-btn-label {
             display: none;
@@ -301,7 +293,6 @@
         }
     }
 
-    /* Empty state */
     .pu-exams .pu-empty {
         text-align: center;
         padding: 3rem 1rem !important;
@@ -321,7 +312,6 @@
             margin-bottom: .2rem;
         }
 
-    /* ========== Mobile: har row ek stacked card ========== */
     @@media (max-width: 991.98px) {
         .pu-exams .pu-table thead {
             display: none;

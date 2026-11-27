@@ -483,10 +483,9 @@ document.addEventListener('DOMContentLoaded', function () {
         input.classList.toggle('is-invalid', show);
     }
 
-    /* ---------- NAME ---------- */
     nameInput.addEventListener('input', function () {
         this.value = this.value
-            .replace(/[^A-Za-z .'\-]/g, '')   // remove digits and symbols
+            .replace(/[^A-Za-z .'\-]/g, '')   
             .replace(/\s{2,}/g, ' ')
             .replace(/^[\s.'\-]+/, '');
         showError(this, nameError, false);
@@ -499,7 +498,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .replace(/(^|[ .'\-])([a-z])/g, function (m, p, c) { return p + c.toUpperCase(); });
     });
 
-    /* ---------- EMAIL ---------- */
     emailInput.addEventListener('input', function () {
         this.value = this.value
             .replace(/\s/g, '')
@@ -515,7 +513,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    /* ---------- SUBMIT ---------- */
     form.addEventListener('submit', function (e) {
         var valid = true;
         var firstBad = null;
@@ -542,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!form.checkValidity()) {   // checks subject and message
+        if (!form.checkValidity()) {   
             e.preventDefault();
             e.stopImmediatePropagation();
             form.reportValidity();
@@ -555,7 +552,6 @@ document.addEventListener('DOMContentLoaded', function () {
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Notice tabs AJAX
             $(document).off('click', '.notice-tab-section');
             $(".notice-tab-section").click(function () {
                 var category = $(this).data('type');
@@ -564,8 +560,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     $('#' + category + '-list').html(response);
                 });
             });
-
-            // Contact Us AJAX
             $("#contactUsForm").on('submit', function (e) {
                 e.preventDefault();
                 var form = $(this);
@@ -587,17 +581,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     </script>
 }
-
-
-                        <style>
-    /* =====================================================================
-       home.css  —  Purbanchal University OEM, public home page polish
-       Path: wwwroot/css/home.css
-       Sirf Home/Index view mein load karo (site.css ke BAAD):
-       <link rel="stylesheet" href="~/css/home.css" asp-append-version="true " />
-    View ka markup/logic/comments kuch nahi badalna padta.
-    ===================================================================== */
-
+ <style>
     :root {
         --hm-navy: #0b2a5b;
         --hm-blue: #003980;
@@ -611,7 +595,6 @@ document.addEventListener('DOMContentLoaded', function () {
         --hm-shadow: 0 1px 2px rgba(11, 42, 91, .06), 0 6px 18px rgba(11, 42, 91, .05);
     }
 
-    /* ---------- Section titles ---------- */
     #main .section-title {
         text-align: center;
         padding-bottom: 1.75rem;
@@ -651,7 +634,6 @@ document.addEventListener('DOMContentLoaded', function () {
             color: #fff;
         }
 
-    /* ---------- Hero ---------- */
     #hero h1 {
         font-size: clamp(2rem, 5vw, 3.4rem);
         font-weight: 800;
@@ -696,7 +678,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 color: var(--hm-navy);
             }
 
-    /* ---------- Notice marquee strips ---------- */
     .notice-slider {
         margin-top: -1px;
     }
@@ -746,7 +727,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     color: var(--hm-navy);
                 }
 
-    /* Button ko cramped col-lg-1 se bahar nikaalo */
     @@media (min-width: 992px) {
         .notice-slider article .row
 
@@ -778,7 +758,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    /* ---------- Notice board tabs + list ---------- */
     .notice-nav.nav-tabs {
         flex-wrap: nowrap;
         overflow-x: auto;
@@ -857,7 +836,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     text-decoration: underline;
                 }
 
-    /* ---------- About ---------- */
     #about .lead {
         font-size: 1.15rem;
         line-height: 1.7;
@@ -888,7 +866,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    /* ---------- Programs (7 faculties) ---------- */
     #services.section-bg {
         background: var(--hm-paper);
     }
@@ -982,7 +959,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 background: var(--hm-gold);
             }
 
-    /* ---------- Testimonials ---------- */
     #testimonials .testimonial-item h3 {
         font-weight: 700;
     }
@@ -999,7 +975,6 @@ document.addEventListener('DOMContentLoaded', function () {
         line-height: 1.7;
     }
 
-    /* ---------- Contact ---------- */
     #contact .info-box {
         background: #fff;
         border: 1px solid var(--hm-line);
@@ -1055,7 +1030,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 color: var(--hm-navy);
             }
 
-    /* ---------- Keyboard focus ---------- */
     #main a:focus-visible,
     #main button:focus-visible,
     .notice-slider a:focus-visible,

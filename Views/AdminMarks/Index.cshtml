@@ -14,7 +14,6 @@
     int? selCol = ViewBag.SelectedCollege;
 }
 
-<!-- Selection Header Card -->
 <div class="custom-card shadow-sm mb-4">
     <div class="card-header-custom">
         <h5><i class="fa-solid fa-marker text-primary"></i> Examination Marks Entry & Assessment</h5>
@@ -31,7 +30,6 @@
         </div>
     </div>
 
-    <!-- Matrix Selector Form -->
     <div class="p-3 bg-light border-bottom">
         <form method="get" class="row g-2 align-items-center">
             <div class="col-md-3">
@@ -225,7 +223,6 @@ else if (selExam.HasValue && selSub.HasValue)
     </div>
 }
 
-<!-- Bulk Import Modal -->
 <div class="modal fade" id="importExcelModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -256,7 +253,6 @@ else if (selExam.HasValue && selSub.HasValue)
 
 @section Scripts {
     <script>
-        // Automatic Dynamic Grade and Total Marks Calculation in Browser
         function calculateGrade(total) {
             if (total >= 90) return { grade: 'A', pt: '4.00' };
             if (total >= 85) return { grade: 'A-', pt: '3.70' };

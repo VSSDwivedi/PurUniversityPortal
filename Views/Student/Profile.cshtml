@@ -25,7 +25,6 @@
         color: var(--ink);
     }
 
-        /* ============ HERO ============ */
         .sp .hero {
             position: relative;
             border-radius: 20px;
@@ -124,7 +123,6 @@
                 border: 1px solid rgba(255,224,138,.35);
             }
 
-        /* ============ STAT STRIP ============ */
         .sp .stats {
             position: relative;
             z-index: 2;
@@ -196,7 +194,6 @@
             line-height: 1.25;
         }
 
-        /* ============ PANELS ============ */
         .sp .panel {
             background: var(--paper);
             border: 1px solid var(--line);
@@ -252,7 +249,6 @@
             padding: 1.5rem;
         }
 
-        /* ---- academic list ---- */
         .sp .acad {
             list-style: none;
             margin: 0;
@@ -294,7 +290,6 @@
                 line-height: 1.35;
             }
 
-        /* ---- form ---- */
         .sp .form-label {
             font-size: .8rem;
             font-weight: 600;
@@ -379,7 +374,6 @@
             color: var(--ink-3);
         }
 
-        /* ---- documents ---- */
         .sp .doc {
             display: flex;
             align-items: center;
@@ -467,7 +461,6 @@
                 opacity: .55;
             }
 
-        /* ---- password toggle ---- */
         .sp .pw {
             position: relative;
         }
@@ -498,7 +491,6 @@
                 outline-offset: -2px;
             }
 
-    /* ---- sticky side ---- */
     @@media (min-width: 992px) {
         .sp .sticky-side {
             position: sticky;
@@ -833,7 +825,6 @@
 
         var valid = /^[6-9][0-9]{9}$/;
 
-        // sirf digits allow, typing aur paste dono par
         mobile.addEventListener('input', function () {
             mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
             if (valid.test(mobile.value) || mobile.value === '') {
@@ -842,7 +833,6 @@
             }
         });
 
-        // field se bahar jaane par validation message
         mobile.addEventListener('blur', function () {
             if (mobile.value !== '' && !valid.test(mobile.value)) {
                 hint.style.display = 'block';

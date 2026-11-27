@@ -315,7 +315,6 @@
     </div>
 
     <div class="container py-4">
-        <!-- Category Filter Tabs -->
         <div class="chips mb-4 border-bottom pb-3">
             <a asp-action="Notices" asp-route-search="@searchTerm" class="btn btn-sm @(!selectedCategory.HasValue ? "btn-primary" : "btn-outline-secondary")">
                 All Categories (@Model.Count)
@@ -329,7 +328,6 @@
             }
         </div>
 
-        <!-- Notices List -->
         <div class="custom-card shadow-sm">
             @if (Model.Any())
             {

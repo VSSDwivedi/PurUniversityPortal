@@ -1,7 +1,7 @@
 @model Result
 @{
     ViewData["Title"] = "Provisional Grade Sheet - " + Model.RollNumber;
-    Layout = null; // Standalone print-ready layout
+    Layout = null; 
     var gradeScales = ViewBag.GradeScales as List<GradeScale> ?? new List<GradeScale>();
 }
 <!DOCTYPE html>
@@ -68,10 +68,8 @@
     </div>
 
     <div class="gradesheet-border shadow">
-        <!-- Security Watermark -->
         <div class="print-watermark">PURBANCHAL UNIVERSITY</div>
 
-        <!-- Header -->
         <div class="text-center border-bottom pb-3 mb-3">
             <img src="~/images/pulogobg.png" alt="Purbanchal University" style="max-height: 110px;" class="mb-2" />
             <div class="gradesheet-title">PURBANCHAL UNIVERSITY</div>
@@ -82,13 +80,11 @@
             </div>
         </div>
 
-        <!-- Grade Sheet Issue Meta -->
         <div class="d-flex justify-content-between align-items-center mb-3 small">
             <div><strong>Grade Sheet No:</strong> @(Model.GradeSheetNumber ?? "PU-GS-2026-" + Model.RollNumber)</div>
             <div><strong>Date of Issue:</strong> @(Model.GradeSheetIssueDate?.ToString("MMMM dd, yyyy") ?? DateTime.Today.ToString("MMMM dd, yyyy"))</div>
         </div>
 
-        <!-- Student Dossier Metadata -->
         <div class="border rounded p-3 mb-3 bg-light">
             <div class="row g-2">
                 <div class="col-7">
@@ -115,7 +111,6 @@
             </div>
         </div>
 
-        <!-- Detailed Marks & Grades Table -->
         <table class="table table-bordered table-sm align-middle text-center mb-3">
             <thead class="table-light border-dark">
                 <tr>
@@ -157,7 +152,6 @@
             </tfoot>
         </table>
 
-        <!-- Summary Performance Box -->
         <div class="border rounded p-3 mb-3 bg-light d-flex justify-content-between align-items-center">
             <div>
                 <span class="me-4"><strong>Semester GPA (SGPA):</strong> <span class="fs-5 text-primary fw-bold">@Model.SGPA.ToString("F2")</span></span>
@@ -168,7 +162,6 @@
             </div>
         </div>
 
-        <!-- Grading Legend -->
         <div class="mb-4">
             <small class="fw-bold text-muted d-block mb-1">PURBANCHAL UNIVERSITY 4.0 GRADING SCALE:</small>
             <div class="d-flex flex-wrap gap-2 small text-muted" style="font-size: 0.75rem;">
@@ -181,7 +174,6 @@
             </div>
         </div>
 
-        <!-- Signatures & QR Code Section -->
         <div class="row align-items-end pt-3">
             <div class="col-4 text-center">
                 @if (!string.IsNullOrEmpty(Model.GradeSheetQrCodeBase64))

@@ -253,8 +253,6 @@
         border: 1px solid #e3e8ef;
         box-shadow: 0 2px 12px rgba(11, 37, 69, .06);
     }
-
-    /* ===== Header: simple, ek hi dark blue ===== */
     .reg-hero {
         padding: 22px 28px;
         color: #fff;
@@ -282,7 +280,6 @@
         padding: 28px;
     }
 
-    /* ===== Sections: plain, divider ke saath ===== */
     .reg-section {
         margin-bottom: 28px;
         padding-bottom: 24px;
@@ -316,7 +313,6 @@
         background: #e8eefa;
     }
 
-    /* ===== Fields ===== */
     .reg-label {
         display: block;
         margin-bottom: 6px;
@@ -357,7 +353,6 @@
             box-shadow: 0 0 0 3px rgba(42, 82, 152, .12);
         }
 
-    /* ===== Upload box ===== */
     .upload-box {
         display: flex;
         align-items: center;
@@ -390,7 +385,6 @@
         min-width: 0;
     }
 
-    /* ===== Password ===== */
     .toggle-password {
         border: 1px solid #d5dde8;
         border-left: 0;
@@ -424,7 +418,6 @@
             transition: width .25s ease, background .25s ease;
         }
 
-    /* ===== Declaration ===== */
     .reg-declare {
         display: flex;
         gap: 12px;
@@ -452,7 +445,6 @@
             line-height: 1.5;
         }
 
-    /* ===== Buttons ===== */
     .reg-actions {
         display: flex;
         justify-content: flex-end;
@@ -512,7 +504,6 @@
 </style>
 @section Scripts {
     <script>
-        // Faculty ke hisab se program filter
         $('#facultySelect').change(function () {
             var selectedFaculty = $(this).val();
             $('#programSelect').val('');
@@ -526,18 +517,15 @@
             });
         });
 
-        // Name: sirf letters aur space
         $('#fullName').on('input', function () {
             this.value = this.value.replace(/[^A-Za-z ]/g, '').replace(/\s{2,}/g, ' ').toUpperCase();
         });
 
-        // Mobile: sirf digits, max 10
         $('#mobileNumber').on('input', function () {
             this.value = this.value.replace(/\D/g, '').slice(0, 10);
             this.setCustomValidity('');
         });
 
-        // Password eye toggle
         $('.toggle-password').on('click', function () {
             var input = document.getElementById($(this).data('target'));
             var icon = $(this).find('i');
@@ -550,7 +538,6 @@
             }
         });
 
-        // Submit se pehle final validation
         $('form').on('submit', function (e) {
             var mobile = $('#mobileNumber')[0];
             var email = $('#email').val();

@@ -2,7 +2,7 @@
 @{
     var exam = ViewBag.Examination as Examination;
     ViewData["Title"] = "Bulk Grade Sheets - " + (exam?.ExamName ?? "Examination");
-    Layout = null; // Print-ready standalone layout
+    Layout = null;
     var gradeScales = ViewBag.GradeScales as List<GradeScale> ?? new List<GradeScale>();
 }
 <!DOCTYPE html>
