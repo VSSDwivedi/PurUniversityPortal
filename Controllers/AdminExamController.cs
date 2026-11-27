@@ -7,7 +7,7 @@ using UniversityExamSystem.Services;
 
 namespace UniversityExamSystem.Controllers
 {
-    [Authorize(Policy = "RequireControllerRole")]
+    //[Authorize(Policy = "RequireControllerRole")]
     public class AdminExamController : Controller
     {
         private readonly IExaminationRepository _examRepo;

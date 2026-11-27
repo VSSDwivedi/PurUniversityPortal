@@ -7,7 +7,7 @@ using UniversityExamSystem.Repositories;
 
 namespace UniversityExamSystem.Controllers
 {
-    [Authorize(Policy = "RequireExaminerRole")]
+    //[Authorize(Policy = "RequireExaminerRole")]
     public class AdminMarksController : Controller
     {
         private readonly IMarksRepository _marksRepo;
