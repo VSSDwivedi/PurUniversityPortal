@@ -3,136 +3,175 @@
     ViewData["Title"] = "Student Dossier - " + Model.FullName;
     Layout = "_AdminLayout";
     var docs = ViewBag.Documents as List<StudentDocument> ?? new List<StudentDocument>();
+
+    string FileIcon(string path)
+    {
+        var ext = System.IO.Path.GetExtension(path ?? "").ToLowerInvariant();
+        if (ext == ".pdf") return "fa-file-pdf";
+        if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".webp") return "fa-file-image";
+        return "fa-file-lines";
+    }
+
+    string StatusClass(string s) => s == "Approved" ? "dos-ok"
+                                  : s == "Pending" ? "dos-wait"
+                                  : s == "CorrectionRequired" ? "dos-note"
+                                  : "dos-bad";
 }
 
 <div class="row g-4">
-    <!-- Student Overview Card Left -->
+    <!-- ============ LEFT COLUMN ============ -->
     <div class="col-lg-4">
-        <div class="card shadow-sm border p-4 text-center mb-4">
-            <div class="mx-auto mb-3" style="width: 140px; height: 140px; border-radius: 50%; overflow: hidden; border: 4px solid #f1f5f9;">
-                @if (!string.IsNullOrEmpty(Model.PhotoUrl))
-                {
-                    <img src="@Model.PhotoUrl" alt="Student Photo" class="w-100 h-100 object-fit-cover" />
-                }
-                else
-                {
-                    <div class="w-100 h-100 bg-secondary text-white d-flex align-items-center justify-content-center fs-1">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                }
-            </div>
 
-            <h4 class="fw-bold text-primary mb-1">@Model.FullName</h4>
-            <div class="text-danger fw-semibold small mb-2">Student ID: @Model.StudentUniqueId</div>
-            <div>
-                <span class="badge @(Model.RegistrationStatus == "Approved" ? "bg-success" : Model.RegistrationStatus == "Pending" ? "bg-warning text-dark" : "bg-danger") px-3 py-2 fs-6">
-                    Registration: @Model.RegistrationStatus
+        <!-- Profile -->
+        <div class="dos-card mb-4">
+            <div class="dos-profile">
+                <div class="dos-avatar">
+                    @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                    {
+                        <img src="@Model.PhotoUrl" alt="Student Photo" />
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-user"></i>
+                    }
+                </div>
+                <h4 class="dos-name">@Model.FullName</h4>
+                <div class="dos-id">Student ID: @Model.StudentUniqueId</div>
+                <span class="dos-pill @StatusClass(Model.RegistrationStatus)">
+                    <span class="dot"></span>@Model.RegistrationStatus
                 </span>
             </div>
 
-            <hr/>
-
-            <div class="text-start small">
-                <div class="mb-2"><strong>Registration Number:</strong> <span class="text-danger fw-bold">@(Model.RegistrationNumber ?? "Pending Approval")</span></div>
-                <div class="mb-2"><strong>Assigned Roll Number:</strong> @(Model.RollNumber ?? "Not Allocated")</div>
-                <div class="mb-2"><strong>Application Number:</strong> @(Model.ApplicationNumber ?? "N/A")</div>
-                <div class="mb-2"><strong>College:</strong> @Model.CollegeName</div>
-                <div class="mb-2"><strong>Program:</strong> @Model.ProgramName</div>
-                <div class="mb-2"><strong>Current Semester:</strong> @Model.CurrentSemester</div>
-                <div><strong>Submission Date:</strong> @Model.CreatedDate.ToString("MMMM dd, yyyy")</div>
+            <div class="dos-info">
+                <div class="dos-info-row">
+                    <span>Registration No.</span>
+                    <strong class="@(Model.RegistrationNumber == null ? "muted" : "")">@(Model.RegistrationNumber ?? "Pending Approval")</strong>
+                </div>
+                <div class="dos-info-row">
+                    <span>Roll Number</span>
+                    <strong class="@(Model.RollNumber == null ? "muted" : "")">@(Model.RollNumber ?? "Not Allocated")</strong>
+                </div>
+                <div class="dos-info-row">
+                    <span>Application No.</span>
+                    <strong class="@(Model.ApplicationNumber == null ? "muted" : "")">@(Model.ApplicationNumber ?? "N/A")</strong>
+                </div>
+                <div class="dos-info-row">
+                    <span>College</span>
+                    <strong>@Model.CollegeName</strong>
+                </div>
+                <div class="dos-info-row">
+                    <span>Program</span>
+                    <strong>@Model.ProgramName</strong>
+                </div>
+                <div class="dos-info-row">
+                    <span>Current Semester</span>
+                    <strong>@Model.CurrentSemester</strong>
+                </div>
+                <div class="dos-info-row">
+                    <span>Submitted On</span>
+                    <strong>@Model.CreatedDate.ToString("MMM dd, yyyy")</strong>
+                </div>
             </div>
         </div>
 
-        <!-- Verification Action Panel -->
-        <div class="card shadow-sm border p-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-shield-halved text-warning me-2"></i> Registration Verification</h5>
+        <!-- Verification -->
+        <div class="dos-card">
+            <div class="dos-head">
+                <h5 class="dos-title"><i class="fa-solid fa-shield-halved"></i> Registration Verification</h5>
+            </div>
+            <div class="dos-body">
+                <form asp-action="Verify" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="studentId" value="@Model.StudentId" />
 
-            <form asp-action="Verify" method="post">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="studentId" value="@Model.StudentId" />
+                    <div class="mb-3">
+                        <label class="dos-label">Verification Decision <span class="req">*</span></label>
+                        <select name="status" class="form-select dos-input" required>
+                            <option value="Approved" selected="@(Model.RegistrationStatus == "Approved")">Approve Registration</option>
+                            <option value="Pending" selected="@(Model.RegistrationStatus == "Pending")">Keep Pending</option>
+                            <option value="CorrectionRequired" selected="@(Model.RegistrationStatus == "CorrectionRequired")">Request Corrections</option>
+                            <option value="Rejected" selected="@(Model.RegistrationStatus == "Rejected")">Reject Registration</option>
+                        </select>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label small fw-bold">Verification Decision *</label>
-                    <select name="status" class="form-select" required>
-                        <option value="Approved" selected="@(Model.RegistrationStatus == "Approved")">Approve Registration</option>
-                        <option value="Pending" selected="@(Model.RegistrationStatus == "Pending")">Keep Pending</option>
-                        <option value="CorrectionRequired" selected="@(Model.RegistrationStatus == "CorrectionRequired")">Request Corrections</option>
-                        <option value="Rejected" selected="@(Model.RegistrationStatus == "Rejected")">Reject Registration</option>
-                    </select>
-                </div>
+                    <div class="mb-3">
+                        <label class="dos-label">Official Remarks / Notes</label>
+                        <textarea name="remarks" rows="3" class="form-control dos-input"
+                                  placeholder="e.g. Verified with original citizenship and academic transcripts.">@Model.VerificationRemarks</textarea>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label small fw-bold">Official Remarks / Notes</label>
-                    <textarea name="remarks" rows="3" class="form-control" placeholder="e.g. Verified with original citizenship and academic transcripts.">@Model.VerificationRemarks</textarea>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">
-                    <i class="fa-solid fa-check-double me-1"></i> Update Verification Status
-                </button>
-            </form>
+                    <button type="submit" class="dos-btn-primary w-100">
+                        <i class="fa-solid fa-check-double"></i> Update Verification Status
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- Student Full Dossier & Credentials Right -->
+    <!-- ============ RIGHT COLUMN ============ -->
     <div class="col-lg-8">
-        <div class="custom-card shadow-sm mb-4">
-            <div class="card-header-custom">
-                <h5><i class="fa-solid fa-id-badge text-primary"></i> Academic & Personal Records</h5>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Back to List</a>
+
+        <!-- Academic & Personal Records -->
+        <div class="dos-card mb-4">
+            <div class="dos-head">
+                <h5 class="dos-title"><i class="fa-solid fa-id-badge"></i> Academic &amp; Personal Records</h5>
+                <a asp-action="Index" class="dos-btn-ghost"><i class="fa-solid fa-arrow-left"></i> Back to List</a>
             </div>
-            <div class="p-4">
-                <div class="row g-3">
+            <div class="dos-body">
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <small class="text-muted d-block fw-bold">FULL NAME</small>
-                        <span class="fs-6 fw-bold text-dark">@Model.FullName</span>
+                        <div class="dos-field-label">Full Name</div>
+                        <div class="dos-field-value strong">@Model.FullName</div>
                     </div>
-                    <div class="col-md-3">
-                        <small class="text-muted d-block fw-bold">DATE OF BIRTH</small>
-                        <span class="text-dark">@Model.DateOfBirth.ToString("yyyy-MM-dd")</span>
+                    <div class="col-md-3 col-6">
+                        <div class="dos-field-label">Date of Birth</div>
+                        <div class="dos-field-value">@Model.DateOfBirth.ToString("yyyy-MM-dd")</div>
                     </div>
-                    <div class="col-md-3">
-                        <small class="text-muted d-block fw-bold">GENDER</small>
-                        <span class="text-dark">@Model.Gender</span>
-                    </div>
-                    <div class="col-md-6">
-                        <small class="text-muted d-block fw-bold">EMAIL ADDRESS</small>
-                        <span class="text-dark">@Model.Email</span>
+                    <div class="col-md-3 col-6">
+                        <div class="dos-field-label">Gender</div>
+                        <div class="dos-field-value">@Model.Gender</div>
                     </div>
                     <div class="col-md-6">
-                        <small class="text-muted d-block fw-bold">MOBILE PHONE</small>
-                        <span class="text-dark">@Model.MobileNumber</span>
+                        <div class="dos-field-label">Email Address</div>
+                        <div class="dos-field-value">@Model.Email</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="dos-field-label">Mobile Phone</div>
+                        <div class="dos-field-value">@Model.MobileNumber</div>
                     </div>
                     <div class="col-12">
-                        <small class="text-muted d-block fw-bold">PERMANENT RESIDENCE</small>
-                        <span class="text-dark">@Model.Address</span>
+                        <div class="dos-field-label">Permanent Residence</div>
+                        <div class="dos-field-value">@Model.Address</div>
                     </div>
-                    <div class="col-12 border-top pt-3">
-                        <small class="text-muted d-block fw-bold">PREVIOUS QUALIFICATION</small>
-                        <span class="text-dark">@(Model.PreviousQualification ?? "Not Specified")</span>
+                    <div class="col-12">
+                        <div class="dos-divider"></div>
+                        <div class="dos-field-label">Previous Qualification</div>
+                        <div class="dos-field-value">@(Model.PreviousQualification ?? "Not Specified")</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Document Attachments Preview -->
-        <div class="custom-card shadow-sm">
-            <div class="card-header-custom">
-                <h5><i class="fa-solid fa-folder-closed text-danger"></i> Attached Documents & Identity Proofs</h5>
+        <!-- Documents -->
+        <div class="dos-card">
+            <div class="dos-head">
+                <h5 class="dos-title"><i class="fa-solid fa-folder-closed"></i> Attached Documents &amp; Identity Proofs</h5>
             </div>
-            <div class="p-4">
+            <div class="dos-body">
                 @if (docs.Any() || !string.IsNullOrEmpty(Model.IdentityDocumentUrl))
                 {
                     <div class="row g-3">
                         @if (!string.IsNullOrEmpty(Model.IdentityDocumentUrl))
                         {
                             <div class="col-md-6">
-                                <div class="border rounded p-3 bg-light d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fa-solid fa-file-pdf fa-2x text-danger me-2"></i>
-                                        <strong>Identity / Citizenship</strong>
+                                <div class="dos-doc">
+                                    <div class="dos-doc-icon"><i class="fa-solid @FileIcon(Model.IdentityDocumentUrl)"></i></div>
+                                    <div class="dos-doc-info">
+                                        <div class="dos-doc-title">Identity / Citizenship</div>
+                                        <div class="dos-doc-sub">Submitted with registration</div>
                                     </div>
-                                    <a href="@Model.IdentityDocumentUrl" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="fa-solid fa-eye me-1"></i> Preview
+                                    <a href="@Model.IdentityDocumentUrl" target="_blank" rel="noopener" class="dos-btn-ghost sm">
+                                        <i class="fa-solid fa-eye"></i> Preview
                                     </a>
                                 </div>
                             </div>
@@ -140,16 +179,14 @@
                         @foreach (var doc in docs)
                         {
                             <div class="col-md-6">
-                                <div class="border rounded p-3 bg-light d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fa-solid fa-file-lines fa-2x text-primary me-2"></i>
-                                        <div>
-                                            <strong>@doc.DocumentType</strong>
-                                            <div class="text-muted small">@doc.DocumentName</div>
-                                        </div>
+                                <div class="dos-doc">
+                                    <div class="dos-doc-icon"><i class="fa-solid @FileIcon(doc.FilePath)"></i></div>
+                                    <div class="dos-doc-info">
+                                        <div class="dos-doc-title">@doc.DocumentType</div>
+                                        <div class="dos-doc-sub" title="@doc.DocumentName">@doc.DocumentName</div>
                                     </div>
-                                    <a href="@doc.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="fa-solid fa-eye me-1"></i> Preview
+                                    <a href="@doc.FilePath" target="_blank" rel="noopener" class="dos-btn-ghost sm">
+                                        <i class="fa-solid fa-eye"></i> Preview
                                     </a>
                                 </div>
                             </div>
@@ -158,9 +195,337 @@
                 }
                 else
                 {
-                    <p class="text-muted small mb-0">No physical documents uploaded for this candidate.</p>
+                    <div class="dos-empty">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <div>No documents uploaded for this candidate.</div>
+                    </div>
                 }
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* ===== Cards: saaf border + solid header ===== */
+    .dos-card {
+        background: #fff;
+        border: 1px solid #c9d3e0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, .10);
+    }
+
+    .dos-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 20px;
+        background: #1e3c72;
+    }
+
+    .dos-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+        .dos-title i {
+            margin-right: 8px;
+            color: #ffc53d;
+        }
+
+    .dos-body {
+        padding: 20px;
+    }
+
+    /* ===== Profile ===== */
+    .dos-profile {
+        text-align: center;
+        padding: 28px 20px 22px;
+        background: #eef3fb;
+        border-bottom: 1px solid #c9d3e0;
+    }
+
+    .dos-avatar {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 14px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #1e3c72;
+        background: #fff;
+        color: #1e3c72;
+        font-size: 2.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .dos-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .dos-name {
+        margin: 0 0 4px;
+        font-weight: 800;
+        font-size: 1.3rem;
+        color: #0f172a;
+    }
+
+    .dos-id {
+        margin-bottom: 12px;
+        font-size: .85rem;
+        font-weight: 700;
+        color: #334155;
+    }
+
+    /* ===== Info rows ===== */
+    .dos-info {
+        padding: 4px 20px 8px;
+    }
+
+    .dos-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        padding: 11px 0;
+        border-bottom: 1px solid #d5dde8;
+        font-size: .88rem;
+    }
+
+        .dos-info-row:last-child {
+            border-bottom: 0;
+        }
+
+        .dos-info-row span {
+            color: #475569;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .dos-info-row strong {
+            color: #0f172a;
+            font-weight: 700;
+            text-align: right;
+        }
+
+            .dos-info-row strong.muted {
+                color: #64748b;
+                font-weight: 600;
+            }
+
+    /* ===== Status badge: solid, clear ===== */
+    .dos-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 16px;
+        border-radius: 999px;
+        font-size: .82rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+        .dos-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+    .dos-ok {
+        background: #198754;
+    }
+
+    .dos-wait {
+        background: #d97706;
+    }
+
+    .dos-note {
+        background: #0d6efd;
+    }
+
+    .dos-bad {
+        background: #dc3545;
+    }
+
+    /* ===== Form ===== */
+    .dos-label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: .85rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+        .dos-label .req {
+            color: #dc3545;
+        }
+
+    .dos-input {
+        border: 1.5px solid #94a3b8;
+        border-radius: 8px;
+        padding: 9px 12px;
+        font-size: .92rem;
+        color: #0f172a;
+    }
+
+        .dos-input:focus {
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, .20);
+        }
+
+    /* ===== Buttons ===== */
+    .dos-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 20px;
+        border: 0;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: .92rem;
+        color: #fff;
+        background: #1e3c72;
+        box-shadow: 0 2px 6px rgba(30, 60, 114, .35);
+        transition: background .15s ease;
+    }
+
+        .dos-btn-primary:hover {
+            background: #162d57;
+        }
+
+    .dos-btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: .82rem;
+        font-weight: 700;
+        color: #1e3c72;
+        text-decoration: none;
+        background: #fff;
+        border: 1.5px solid #1e3c72;
+        white-space: nowrap;
+        transition: background .15s ease, color .15s ease;
+    }
+
+        .dos-btn-ghost:hover {
+            background: #1e3c72;
+            color: #fff;
+        }
+
+        .dos-btn-ghost.sm {
+            padding: 5px 11px;
+            font-size: .78rem;
+        }
+    /* header ke andar wala button (dark background par) */
+    .dos-head .dos-btn-ghost {
+        background: transparent;
+        color: #fff;
+        border-color: rgba(255, 255, 255, .7);
+    }
+
+        .dos-head .dos-btn-ghost:hover {
+            background: #fff;
+            color: #1e3c72;
+        }
+
+    /* ===== Record fields ===== */
+    .dos-field-label {
+        margin-bottom: 4px;
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        color: #475569;
+    }
+
+    .dos-field-value {
+        font-size: .98rem;
+        font-weight: 600;
+        color: #0f172a;
+        word-break: break-word;
+    }
+
+        .dos-field-value.strong {
+            font-weight: 800;
+            font-size: 1.08rem;
+        }
+
+    .dos-divider {
+        height: 1px;
+        background: #d5dde8;
+        margin-bottom: 16px;
+    }
+
+    /* ===== Documents ===== */
+    .dos-doc {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 1.5px solid #c9d3e0;
+        border-radius: 10px;
+        background: #fff;
+        transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+        .dos-doc:hover {
+            border-color: #1e3c72;
+            box-shadow: 0 2px 8px rgba(30, 60, 114, .15);
+        }
+
+    .dos-doc-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #fff;
+        background: #1e3c72;
+    }
+
+    .dos-doc-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .dos-doc-title {
+        font-size: .92rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .dos-doc-sub {
+        font-size: .78rem;
+        color: #475569;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .dos-empty {
+        text-align: center;
+        padding: 28px 10px;
+        color: #64748b;
+        font-size: .92rem;
+        font-weight: 600;
+    }
+
+        .dos-empty i {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+</style>
