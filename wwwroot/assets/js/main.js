@@ -120,6 +120,20 @@
   })
 
   /**
+   * Close mobile nav when clicking backdrop outside menu
+   */
+  on('click', '#navbar', function(e) {
+    if (this.classList.contains('navbar-mobile') && e.target === this) {
+      this.classList.remove('navbar-mobile')
+      let toggle = select('.mobile-nav-toggle')
+      if (toggle) {
+        toggle.classList.add('bi-list')
+        toggle.classList.remove('bi-x')
+      }
+    }
+  })
+
+  /**
    * Mobile nav dropdowns activate
    */
   on('click', '.navbar .dropdown > a', function(e) {

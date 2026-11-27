@@ -104,7 +104,7 @@
 <body class="@(ViewData["BodyClass"] ?? "")">
 
     <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top @(ViewData["IsInnerPage"] as bool? == true ? "header-inner-pages header-scrolled" : "hide-nav-header")">
+    <header id="header" class="fixed-top @(ViewData["IsInnerPage"] as bool? == true ? "header-inner-pages header-scrolled" : "")">
         <div id="topMenu" class="container d-flex align-items-center justify-content-between">
             <a href="/" class="logo">
                 <img src="/assets/img/pulogo.png" alt="Purbanchal University" class="img-fluid">
@@ -121,12 +121,14 @@
                             <li><a href="https://entrance.puexam.edu.np/examregistration/" target="_blank">Exam Form</a></li>
                             <li><a href="https://entrance.puexam.edu.np" target="_blank">Exam Card</a></li>
                         </ul>
+
                     </li>
                     <li class="dropdown"><a href="#"><span>Results</span> <i class="bi bi-chevron-down"></i></a>
                         <ul>
                             <li><a href="/find-results_new">Find Result</a></li>
                             <li><a href="/college-login-new">College Login</a></li>
                         </ul>
+
                     </li>
                     <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
                     <li><a class="nav-link scrollto" href="/#notices">Notice</a></li>
@@ -159,22 +161,28 @@
                                     </form>
                                 </li>
                             </ul>
+
                         </li>
                     }
                     else
                     {
-                        <li class="d-none d-xl-inline-block">
+                        <li class="d-none d-lg-inline-block">
                             <a href="/college-login-new" class="btn btn-sm btn-outline-warning py-1 px-2 text-warning ms-2" style="font-size: 12px; border-radius: 4px;">Login</a>
+                        </li>
+                        <li class="d-lg-none mt-2 px-3">
+                            <a href="/college-login-new" class="btn btn-warning text-dark fw-bold w-100 text-center py-2" style="font-size: 13px; border-radius: 6px;"><i class="fa fa-right-to-bracket me-2"></i> Portal Login</a>
                         </li>
                     }
                 </ul>
+
+                <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
         </div>
     </header><!-- End Header -->
 
     <div class="clearfix"></div>
 
-    <div id="breadcrumb">
+    <div id="breadcrumb" style="display: none !important;">
         <span class="nav-bar-button float-right nav-logo"><img src="/assets/img/pulogo.png" alt="" class="img-fluid"></span>
         <span class="nav-bar-button float-right nav-open"><i class="fa fa-bars" aria-hidden="true"></i></span>
         <span class="nav-bar-button float-right nav-close"><i class="fa fa-times" aria-hidden="true"></i></span>
@@ -220,6 +228,7 @@
                             <li><i class="bx bx-chevron-right"></i><a href="https://entrance.puexam.edu.np" target="_blank">Exam Form</a></li>
                             <li><i class="bx bx-chevron-right"></i><a href="https://entrance.puexam.edu.np" target="_blank">Exam Card</a></li>
                         </ul>
+
                     </div>
 
                     <div class="col-lg-3 col-md-6 footer-links">
@@ -230,6 +239,7 @@
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Bachelor in Cyber Security</a></li>
                             <li><i class="bx bx-chevron-right"></i> <a href="#">Bachelor in IoT</a></li>
                         </ul>
+
                     </div>
 
                     <div class="col-lg-4 col-md-6 footer-newsletter">
@@ -351,8 +361,8 @@
     <script>
         $(document).ready(function() {
             // Mobile Nav
-            $(document).off('click', '.nav-open');
-            $(".nav-open").click(function () {
+            // Mobile Nav handled by main.js
+            if (false) $(".nav-open").click(function () {
                 $(this).hide();
                 $('#header').removeClass('hide-nav-header');
                 $('#header').addClass('show-nav-header');
@@ -360,7 +370,7 @@
             });
 
             $(document).off('click', '.nav-close');
-            $(".nav-close").click(function () {
+            if (false) $(".nav-close").click(function () {
                 $(this).hide();
                 $('#header').removeClass('show-nav-header');
                 $('#header').addClass('hide-nav-header');
