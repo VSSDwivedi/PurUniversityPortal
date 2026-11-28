@@ -75,7 +75,7 @@
         .custom-card .card-header-custom h4,
         .custom-card .card-header-custom h6 {
             margin: 0;
-            color: #fff;
+            color: #fff !important;
             font-size: 1.05rem;
             font-weight: 700;
             display: flex;
@@ -159,7 +159,7 @@
 
 .dashboard-content .form-text,
 .dashboard-content .text-muted {
-    color: var(--ui-muted) !important;
+    color: #f32a3d !important;
 }
 
 /* ---------- Buttons ---------- */
