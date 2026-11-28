@@ -8,7 +8,7 @@ namespace UniversityExamSystem.Repositories
     public interface IExaminationRepository
     {
         // Examinations
-        Task<List<Examination>> GetExaminationsAsync();
+        Task<List<Examination>> GetExaminationsAsync(int? collegeId = null);
         Task<List<Examination>> GetActiveExaminationsAsync();
         Task<Examination?> GetExaminationByIdAsync(int examinationId);
         Task<int> AddExaminationAsync(Examination exam);
@@ -42,26 +42,32 @@ namespace UniversityExamSystem.Repositories
         }
 
         // ======================== EXAMINATIONS ========================
-        public async Task<List<Examination>> GetExaminationsAsync()
+        public async Task<List<Examination>> GetExaminationsAsync(int? collegeId = null)
         {
-            const string sql = @"
-                SELECT e.ExaminationId, e.ExamCode, e.ExamName, e.AcademicYearId, ay.YearName AS AcademicYearName,
-                       e.SemesterId, sem.SemesterName, e.FacultyId, f.FacultyName, e.ProgramId, p.ProgramName,
-                       e.ExamType, e.StartDate, e.EndDate, e.ApplicationDeadline, e.LateFeeDeadline,
-                       e.FeeAmount, e.LateFeeAmount, e.DefaultCenterId, c.CenterName AS DefaultCenterName,
-                       e.Status, e.IsActive,
-                       (SELECT COUNT(*) FROM dbo.ExaminationApplications ea WHERE ea.ExaminationId = e.ExaminationId) AS TotalApplicants
-                FROM dbo.Examinations e
-                JOIN dbo.AcademicYears ay ON e.AcademicYearId = ay.AcademicYearId
-                JOIN dbo.Semesters sem ON e.SemesterId = sem.SemesterId
-                LEFT JOIN dbo.Faculties f ON e.FacultyId = f.FacultyId
-                LEFT JOIN dbo.Programs p ON e.ProgramId = p.ProgramId
-                LEFT JOIN dbo.ExaminationCenters c ON e.DefaultCenterId = c.CenterId
-                ORDER BY e.StartDate DESC";
+            var sql = @"
+        SELECT e.ExaminationId, e.ExamCode, e.ExamName, e.AcademicYearId, ay.YearName AS AcademicYearName,
+               e.SemesterId, sem.SemesterName, e.FacultyId, f.FacultyName, e.ProgramId, p.ProgramName,
+               e.ExamType, e.StartDate, e.EndDate, e.ApplicationDeadline, e.LateFeeDeadline,
+               e.FeeAmount, e.LateFeeAmount, e.DefaultCenterId, c.CenterName AS DefaultCenterName,
+               e.Status, e.IsActive,
+               (SELECT COUNT(*) FROM dbo.ExaminationApplications ea
+                WHERE ea.ExaminationId = e.ExaminationId
+                  AND (@CollegeId IS NULL OR ea.CollegeId = @CollegeId)) AS TotalApplicants
+        FROM dbo.Examinations e
+        JOIN dbo.AcademicYears ay ON e.AcademicYearId = ay.AcademicYearId
+        JOIN dbo.Semesters sem ON e.SemesterId = sem.SemesterId
+        LEFT JOIN dbo.Faculties f ON e.FacultyId = f.FacultyId
+        LEFT JOIN dbo.Programs p ON e.ProgramId = p.ProgramId
+        LEFT JOIN dbo.ExaminationCenters c ON e.DefaultCenterId = c.CenterId
+        ORDER BY e.StartDate DESC";
 
-            return await _db.ExecuteReaderListAsync(sql, MapExamination);
+            var parameters = new[]
+            {
+        new SqlParameter("@CollegeId", (object?)collegeId ?? DBNull.Value)
+    };
+
+            return await _db.ExecuteReaderListAsync(sql, MapExamination, CommandType.Text, parameters);
         }
-
         public async Task<List<Examination>> GetActiveExaminationsAsync()
         {
             const string sql = @"

@@ -127,7 +127,7 @@
                     <li><a class="nav-link scrollto" href="/#notices">Notice</a></li>
                     <li><a class="nav-link scrollto" href="/downloads-new">Downloads</a></li>
                     <li><a class="nav-link scrollto" href="/download/pu_nagarik_wada_1790751488.pdf" target="_blank">Citizen Charter</a></li>
-                    @if (User.Identity?.IsAuthenticated == true)
+                   @*  @if (User.Identity?.IsAuthenticated == true)
                     {
                         <li class="dropdown"><a href="#" class="text-warning"><span><i class="fa fa-user me-1"></i> @User.Identity.Name</span> <i class="bi bi-chevron-down"></i></a>
                             <ul>
@@ -158,14 +158,14 @@
                         </li>
                     }
                     else
-                    {
+                    { *@
                         <li class="d-none d-lg-inline-block">
                             <a href="/college-login-new" class="btn btn-sm btn-outline-warning py-1 px-2 text-warning ms-2" style="font-size: 12px; border-radius: 4px;">Login</a>
                         </li>
-                        <li class="d-lg-none mt-2 px-3">
+                       @*  <li class="d-lg-none mt-2 px-3">
                             <a href="/college-login-new" class="btn btn-warning text-dark fw-bold w-100 text-center py-2" style="font-size: 13px; border-radius: 6px;"><i class="fa fa-right-to-bracket me-2"></i> Portal Login</a>
                         </li>
-                    }
+                    } *@
                 </ul>
 
                 <i class="bi bi-list mobile-nav-toggle"></i>

@@ -195,53 +195,133 @@ namespace UniversityExamSystem.Repositories
             }, CommandType.Text, new[] { new SqlParameter("@Id", collegeId) });
         }
 
+
         public async Task<int> AddCollegeAsync(College college)
         {
             const string sql = @"
-                INSERT INTO dbo.Colleges (CollegeCode, CollegeName, Address, ContactNumber, Email, PrincipalName, AffiliationDate, Website, LogoUrl, IsActive, CreatedDate)
-                VALUES (@Code, @Name, @Address, @Contact, @Email, @Principal, @AffiliationDate, @Website, @LogoUrl, @IsActive, GETDATE());
-                SELECT SCOPE_IDENTITY();";
+        SET XACT_ABORT ON;
 
-            var result = await _db.ExecuteScalarAsync(sql, CommandType.Text, new[]
-            {
-                new SqlParameter("@Code", college.CollegeCode),
-                new SqlParameter("@Name", college.CollegeName),
-                new SqlParameter("@Address", college.Address),
-                new SqlParameter("@Contact", college.ContactNumber),
-                new SqlParameter("@Email", college.Email),
-                new SqlParameter("@Principal", (object?)college.PrincipalName ?? DBNull.Value),
-                new SqlParameter("@AffiliationDate", (object?)college.AffiliationDate ?? DBNull.Value),
-                new SqlParameter("@Website", (object?)college.Website ?? DBNull.Value),
-                new SqlParameter("@LogoUrl", (object?)college.LogoUrl ?? DBNull.Value),
-                new SqlParameter("@IsActive", college.IsActive)
-            });
+        BEGIN TRY
+            BEGIN TRANSACTION;
+
+            INSERT INTO dbo.Colleges
+            (
+                CollegeCode, CollegeName, Address, ContactNumber,
+                Email, PrincipalName, AffiliationDate, Website,
+                LogoUrl, IsActive, CreatedDate
+            )
+            VALUES
+            (
+                @Code, @Name, @Address, @Contact,
+                @Email, @Principal, @AffiliationDate, @Website,
+                @LogoUrl, @IsActive, GETDATE()
+            );
+
+            DECLARE @CollegeId INT = SCOPE_IDENTITY();
+
+            INSERT INTO dbo.Users
+            (
+                Username, Email, PasswordHash, FullName,
+                PhoneNumber, UserType, ReferenceId,
+                IsActive, CreatedDate
+            )
+            VALUES
+            (
+                CONCAT('college_', LOWER(@Code)),
+                @Email,
+                @PasswordHash,
+                COALESCE(NULLIF(@Principal, ''), @Name),
+                @Contact,
+                'CollegeAdmin',
+                @CollegeId,
+                @IsActive,
+                GETDATE()
+            );
+
+            COMMIT TRANSACTION;
+
+            SELECT @CollegeId;
+
+        END TRY
+        BEGIN CATCH
+
+            IF @@TRANCOUNT > 0
+                ROLLBACK TRANSACTION;
+
+            THROW;
+
+        END CATCH;
+    ";
+
+            string passwordHash =
+                BCrypt.Net.BCrypt.HashPassword(college.Password);
+
+            var result = await _db.ExecuteScalarAsync(
+                sql,
+                CommandType.Text,
+                new[]
+                {
+            new SqlParameter("@Code", college.CollegeCode),
+            new SqlParameter("@Name", college.CollegeName),
+            new SqlParameter("@Address", college.Address),
+            new SqlParameter("@Contact", college.ContactNumber),
+            new SqlParameter("@Email", college.Email),
+
+            new SqlParameter("@Principal",
+                (object?)college.PrincipalName ?? DBNull.Value),
+
+            new SqlParameter("@AffiliationDate",
+                (object?)college.AffiliationDate ?? DBNull.Value),
+
+            new SqlParameter("@Website",
+                (object?)college.Website ?? DBNull.Value),
+
+            new SqlParameter("@LogoUrl",
+                (object?)college.LogoUrl ?? DBNull.Value),
+
+            new SqlParameter("@IsActive", college.IsActive),
+
+            new SqlParameter("@PasswordHash", passwordHash)
+                });
+
             return Convert.ToInt32(result);
         }
 
         public async Task<bool> UpdateCollegeAsync(College college)
         {
             const string sql = @"
-                UPDATE dbo.Colleges
-                SET CollegeCode = @Code, CollegeName = @Name, Address = @Address,
-                    ContactNumber = @Contact, Email = @Email, PrincipalName = @Principal,
-                    AffiliationDate = @AffiliationDate, Website = @Website, LogoUrl = @LogoUrl,
-                    IsActive = @IsActive, UpdatedDate = GETDATE()
-                WHERE CollegeId = @Id";
+        UPDATE dbo.Colleges
+        SET CollegeCode = @Code,
+            CollegeName = @Name,
+            Address = @Address,
+            ContactNumber = @Contact,
+            Email = @Email,
+            PrincipalName = @Principal,
+            AffiliationDate = @AffiliationDate,
+            Website = @Website,
+            LogoUrl = @LogoUrl,
+            IsActive = @IsActive,
+            UpdatedDate = GETDATE()
+        WHERE CollegeId = @Id";
 
-            var rows = await _db.ExecuteNonQueryAsync(sql, CommandType.Text, new[]
-            {
-                new SqlParameter("@Code", college.CollegeCode),
-                new SqlParameter("@Name", college.CollegeName),
-                new SqlParameter("@Address", college.Address),
-                new SqlParameter("@Contact", college.ContactNumber),
-                new SqlParameter("@Email", college.Email),
-                new SqlParameter("@Principal", (object?)college.PrincipalName ?? DBNull.Value),
-                new SqlParameter("@AffiliationDate", (object?)college.AffiliationDate ?? DBNull.Value),
-                new SqlParameter("@Website", (object?)college.Website ?? DBNull.Value),
-                new SqlParameter("@LogoUrl", (object?)college.LogoUrl ?? DBNull.Value),
-                new SqlParameter("@IsActive", college.IsActive),
-                new SqlParameter("@Id", college.CollegeId)
-            });
+            var rows = await _db.ExecuteNonQueryAsync(
+                sql,
+                CommandType.Text,
+                new[]
+                {
+            new SqlParameter("@Code", college.CollegeCode),
+            new SqlParameter("@Name", college.CollegeName),
+            new SqlParameter("@Address", college.Address),
+            new SqlParameter("@Contact", college.ContactNumber),
+            new SqlParameter("@Email", college.Email),
+            new SqlParameter("@Principal", (object?)college.PrincipalName ?? DBNull.Value),
+            new SqlParameter("@AffiliationDate", (object?)college.AffiliationDate ?? DBNull.Value),
+            new SqlParameter("@Website", (object?)college.Website ?? DBNull.Value),
+            new SqlParameter("@LogoUrl", (object?)college.LogoUrl ?? DBNull.Value),
+            new SqlParameter("@IsActive", college.IsActive),
+            new SqlParameter("@Id", college.CollegeId)
+                });
+
             return rows > 0;
         }
 

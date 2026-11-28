@@ -26,7 +26,21 @@ namespace UniversityExamSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var exams = await _examRepo.GetExaminationsAsync();
+            int? collegeId = null;
+            var userType = User.FindFirst("UserType")?.Value;
+            bool isCollegeAdmin = string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase);
+
+            if (isCollegeAdmin)
+            {
+                if (!int.TryParse(User.FindFirst("CollegeId")?.Value, out var myCollegeId))
+                    return Forbid();
+
+                collegeId = myCollegeId;
+            }
+
+            ViewBag.IsCollegeAdmin = isCollegeAdmin;
+
+            var exams = await _examRepo.GetExaminationsAsync(collegeId);
             return View(exams);
         }
 
@@ -76,6 +90,19 @@ namespace UniversityExamSystem.Controllers
 
         public async Task<IActionResult> Applications(int? examId, int? collegeId, string? status)
         {
+            var userType = User.FindFirst("UserType")?.Value;
+            bool isCollegeAdmin = string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase);
+
+            if (isCollegeAdmin)
+            {
+                if (!int.TryParse(User.FindFirst("CollegeId")?.Value, out var myCollegeId))
+                    return Forbid();
+
+                collegeId = myCollegeId;
+            }
+
+            ViewBag.IsCollegeAdmin = isCollegeAdmin;
+
             ViewBag.Examinations = await _examRepo.GetExaminationsAsync();
             ViewBag.Colleges = await _academicRepo.GetCollegesAsync();
             ViewBag.Centers = await _academicRepo.GetCentersAsync();

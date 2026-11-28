@@ -1,71 +1,197 @@
 @model List<Student>
+
 @{
     ViewData["Title"] = "Student Records Master";
     Layout = "_AdminLayout";
-    var colleges = ViewBag.Colleges as List<College> ?? new List<College>();
-    var programs = ViewBag.Programs as List<ProgramModel> ?? new List<ProgramModel>();
-    var semesters = ViewBag.Semesters as List<Semester> ?? new List<Semester>();
+
+    var colleges = ViewBag.Colleges as List<College>
+                   ?? new List<College>();
+
+    var programs = ViewBag.Programs as List<ProgramModel>
+                   ?? new List<ProgramModel>();
+
+    var semesters = ViewBag.Semesters as List<Semester>
+                    ?? new List<Semester>();
+
     int? selCol = ViewBag.SelectedCollege;
     int? selProg = ViewBag.SelectedProgram;
     int? selSem = ViewBag.SelectedSemester;
+
     string? selStatus = ViewBag.SelectedStatus;
     string? search = ViewBag.Search;
+
+    bool isCollegeAdmin = ViewBag.IsCollegeAdmin ?? false;
 }
 
 <div class="custom-card shadow-sm mb-4">
+
     <div class="card-header-custom">
-        <h5><i class="fa-solid fa-user-graduate text-primary"></i> University Student Directory</h5>
+
+        <h5>
+            <i class="fa-solid fa-user-graduate text-primary"></i>
+
+            @if (isCollegeAdmin)
+            {
+                <span>College Student Directory</span>
+            }
+            else
+            {
+                <span>University Student Directory</span>
+            }
+        </h5>
+
         <div class="d-flex gap-2">
-            <a asp-action="Export" asp-route-collegeId="@selCol" asp-route-programId="@selProg" class="btn btn-success btn-sm fw-bold">
-                <i class="fa-solid fa-file-excel me-1"></i> Export to Excel
+
+            <a asp-action="Export"
+               asp-route-collegeId="@selCol"
+               asp-route-programId="@selProg"
+               asp-route-semesterId="@selSem"
+               asp-route-status="@selStatus"
+               asp-route-search="@search"
+               class="btn btn-success btn-sm fw-bold">
+
+                <i class="fa-solid fa-file-excel me-1"></i>
+                Export to Excel
             </a>
-            <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-sm fw-bold">
-                <i class="fa-solid fa-user-plus me-1"></i> Register Student
+
+            <a asp-controller="Account"
+               asp-action="Register"
+               class="btn btn-primary btn-sm fw-bold">
+
+                <i class="fa-solid fa-user-plus me-1"></i>
+                Register Student
             </a>
+
         </div>
     </div>
 
     <div class="p-3 bg-light border-bottom">
+
         <form method="get" class="row g-2 align-items-center">
+
             <div class="col-md-3">
-                <input type="text" name="search" value="@search" class="form-control form-control-sm" placeholder="Search by name, ID, or Reg No..." />
+
+                <input type="text"
+                       name="search"
+                       value="@search"
+                       class="form-control form-control-sm"
+                       placeholder="Search by name, ID, or Reg No..." />
+
             </div>
+
             <div class="col-md-3">
-                <select name="collegeId" class="form-select form-select-sm">
-                    <option value="">-- All Colleges --</option>
-                    @foreach (var c in colleges)
-                    {
-                        <option value="@c.CollegeId" selected="@(selCol == c.CollegeId)">@c.CollegeName</option>
-                    }
-                </select>
+
+                @if (isCollegeAdmin)
+                {
+                    <select class="form-select form-select-sm"
+                            disabled>
+
+                        @foreach (var c in colleges)
+                        {
+                            <option value="@c.CollegeId"
+                                    selected="@(selCol == c.CollegeId)">
+                                @c.CollegeName
+                            </option>
+                        }
+
+                    </select>
+
+                    <input type="hidden"
+                           name="collegeId"
+                           value="@selCol" />
+                }
+                else
+                {
+                    <select name="collegeId"
+                            class="form-select form-select-sm">
+
+                        <option value="">-- All Colleges --</option>
+
+                        @foreach (var c in colleges)
+                        {
+                            <option value="@c.CollegeId"
+                                    selected="@(selCol == c.CollegeId)">
+                                @c.CollegeName
+                            </option>
+                        }
+
+                    </select>
+                }
+
             </div>
             <div class="col-md-2">
-                <select name="programId" class="form-select form-select-sm">
+
+                <select name="programId"
+                        class="form-select form-select-sm">
+
                     <option value="">-- All Programs --</option>
+
                     @foreach (var p in programs)
                     {
-                        <option value="@p.ProgramId" selected="@(selProg == p.ProgramId)">@p.ProgramName</option>
+                        <option value="@p.ProgramId"
+                                selected="@(selProg == p.ProgramId)">
+                            @p.ProgramName
+                        </option>
                     }
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select name="status" class="form-select form-select-sm">
-                    <option value="">-- All Statuses --</option>
-                    <option value="Approved" selected="@(selStatus == "Approved")">Approved</option>
-                    <option value="Pending" selected="@(selStatus == "Pending")">Pending</option>
-                    <option value="Rejected" selected="@(selStatus == "Rejected")">Rejected</option>
-                </select>
-            </div>
-            <div class="col-md-2 d-flex gap-2">
-                <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold"><i class="fa-solid fa-filter me-1"></i> Filter</button>
-                <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-rotate-left"></i></a>
-            </div>
-        </form>
-    </div>
 
+                </select>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <select name="status"
+                        class="form-select form-select-sm">
+
+                    <option value="">-- All Statuses --</option>
+
+                    <option value="Approved"
+                            selected="@(selStatus == "Approved")">
+                        Approved
+                    </option>
+
+                    <option value="Pending"
+                            selected="@(selStatus == "Pending")">
+                        Pending
+                    </option>
+
+                    <option value="Rejected"
+                            selected="@(selStatus == "Rejected")">
+                        Rejected
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-2 d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary btn-sm w-100 fw-bold">
+
+                    <i class="fa-solid fa-filter me-1"></i>
+                    Filter
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary btn-sm">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
     <div class="table-responsive">
+
         <table class="table table-hover align-middle mb-0">
+
             <thead class="table-light">
+
                 <tr>
                     <th>Student ID</th>
                     <th>Candidate Name</th>
@@ -76,60 +202,124 @@
                     <th>Status</th>
                     <th class="text-end">Actions</th>
                 </tr>
+
             </thead>
+
             <tbody>
-                @if (Model.Any())
+
+                @if (Model != null && Model.Any())
                 {
                     foreach (var s in Model)
                     {
                         <tr>
-                            <td><strong class="text-primary">@s.StudentUniqueId</strong></td>
+
                             <td>
-                                <div class="fw-bold text-dark">@s.FullName</div>
-                                <small class="text-muted">@s.Email</small>
+                                <strong class="text-primary">
+                                    @s.StudentUniqueId
+                                </strong>
                             </td>
+
                             <td>
+
+                                <div class="fw-bold text-dark">
+                                    @s.FullName
+                                </div>
+
+                                <small class="text-muted">
+                                    @s.Email
+                                </small>
+
+                            </td>
+
+                            <td>
+
                                 @if (!string.IsNullOrEmpty(s.RegistrationNumber))
                                 {
-                                    <span class="badge bg-secondary">@s.RegistrationNumber</span>
+                                    <span class="badge bg-secondary">
+                                        @s.RegistrationNumber
+                                    </span>
                                 }
                                 else
                                 {
-                                    <span class="text-warning fw-bold small"><i class="fa-solid fa-hourglass-start me-1"></i> Pending Verification</span>
+                                    <span class="text-warning fw-bold small">
+                                        <i class="fa-solid fa-hourglass-start me-1"></i>
+                                        Pending Verification
+                                    </span>
                                 }
+
                             </td>
-                            <td>@s.CollegeName</td>
-                            <td>@s.ProgramName &bull; @s.CurrentSemester</td>
-                            <td>@s.MobileNumber</td>
+
                             <td>
+                                @s.CollegeName
+                            </td>
+
+                            <td>
+                                @s.ProgramName &bull; @s.CurrentSemester
+                            </td>
+
+                            <td>
+                                @s.MobileNumber
+                            </td>
+
+                            <td>
+
                                 @if (s.RegistrationStatus == "Approved")
                                 {
-                                    <span class="badge bg-success px-2 py-1"><i class="fa-solid fa-check me-1"></i> Approved</span>
+                                    <span class="badge bg-success px-2 py-1">
+                                        <i class="fa-solid fa-check me-1"></i>
+                                        Approved
+                                    </span>
                                 }
                                 else if (s.RegistrationStatus == "Pending")
                                 {
-                                    <span class="badge bg-warning text-dark px-2 py-1"><i class="fa-solid fa-clock me-1"></i> Pending</span>
+                                    <span class="badge bg-warning text-dark px-2 py-1">
+                                        <i class="fa-solid fa-clock me-1"></i>
+                                        Pending
+                                    </span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger px-2 py-1">@s.RegistrationStatus</span>
+                                    <span class="badge bg-danger px-2 py-1">
+                                        @s.RegistrationStatus
+                                    </span>
                                 }
+
                             </td>
+
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@s.StudentId" class="btn btn-sm btn-outline-primary fw-bold">
-                                    <i class="fa-solid fa-id-card-clip me-1"></i> Review Dossier
+
+                                <a asp-action="Details"
+                                   asp-route-id="@s.StudentId"
+                                   class="btn btn-sm btn-outline-primary fw-bold">
+
+                                    <i class="fa-solid fa-id-card-clip me-1"></i>
+                                    Review Dossier
+
                                 </a>
+
                             </td>
+
                         </tr>
                     }
                 }
                 else
                 {
                     <tr>
-                        <td colspan="8" class="text-center py-5 text-muted">No student records found matching the filter criteria.</td>
+
+                        <td colspan="8"
+                            class="text-center py-5 text-muted">
+
+                            No student records found matching the filter criteria.
+
+                        </td>
+
                     </tr>
                 }
+
             </tbody>
+
         </table>
+
     </div>
+
 </div>

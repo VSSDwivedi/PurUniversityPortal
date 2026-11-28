@@ -2,11 +2,15 @@
 @{
     ViewData["Title"] = "Result Processing & Publication";
     Layout = "_AdminLayout";
+    bool isCollegeAdmin = ViewBag.IsCollegeAdmin ?? false;
 }
 
 <div class="custom-card shadow-sm mb-4">
     <div class="card-header-custom">
-        <h5><i class="fa-solid fa-square-poll-vertical text-primary"></i> University Examination Result Processing</h5>
+        <h5>
+            <i class="fa-solid fa-square-poll-vertical text-primary"></i>
+            @(isCollegeAdmin ? "College Examination Results" : "University Examination Result Processing")
+        </h5>
     </div>
 
     <div class="p-3 bg-light border-bottom small text-muted">
@@ -21,7 +25,7 @@
                     <th>Exam Code</th>
                     <th>Examination Title</th>
                     <th>Academic Session</th>
-                    <th>Examinees</th>
+                    <th>@(isCollegeAdmin ? "My College Examinees" : "Examinees")</th>
                     <th>Processing State</th>
                     <th>Publication State</th>
                     <th class="text-end">Actions</th>
@@ -54,17 +58,25 @@
                             }
                         </td>
                         <td class="text-end">
-                            <form asp-action="Process" method="post" class="d-inline" onsubmit="return confirm('Calculate weighted grade points, SGPA, CGPA, and pass/fail status for all examinees in this session?');">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="examId" value="@ex.ExaminationId" />
-                                <button type="submit" class="btn btn-sm btn-primary fw-bold me-1">
-                                    <i class="fa-solid fa-calculator me-1"></i> Process Results
-                                </button>
-                            </form>
+                            
+                                <form asp-action="Process" method="post" class="d-inline" onsubmit="return confirm('Calculate weighted grade points, SGPA, CGPA, and pass/fail status for all examinees in this session?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="examId" value="@ex.ExaminationId" />
+                                    <button type="submit" class="btn btn-sm btn-primary fw-bold me-1">
+                                        <i class="fa-solid fa-calculator me-1"></i> Process Results
+                                    </button>
+                                </form>
+                            
                             <a asp-action="ViewLedger" asp-route-examId="@ex.ExaminationId" class="btn btn-sm btn-outline-success fw-bold">
                                 <i class="fa-solid fa-table me-1"></i> View Ledger
                             </a>
                         </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">No examination sessions found.</td>
                     </tr>
                 }
             </tbody>

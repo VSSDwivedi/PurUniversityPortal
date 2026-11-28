@@ -1,4 +1,5 @@
 @model StudentRegistrationViewModel
+
 @{
     ViewData["Title"] = "P.U | Purbanchal University Student Registration"; 
     Layout = "_AdminLayout";
@@ -7,8 +8,15 @@
     var colleges = ViewBag.Colleges as List<College> ?? new List<College>();
     var academicYears = ViewBag.AcademicYears as List<AcademicYear> ?? new List<AcademicYear>();
     var semesters = ViewBag.Semesters as List<Semester> ?? new List<Semester>();
+    var isCollegeLocked = ViewBag.IsCollegeLocked as bool? ?? false;
 }
-
+<style>
+    .reg-section .form-select:disabled {
+        background-color: #eef2f7;
+        color: #2b3a4f;
+        cursor: not-allowed;
+    }
+    </style>
 @*<div class="py-4 text-white" style="background: linear-gradient(135deg, #003980 0%, #15222b 100%);">
     <div class="container text-center">
         <img src="~/images/pulogo.png" alt="Purbanchal University" style="max-height: 58px;" class="mb-2" />
@@ -97,13 +105,28 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label asp-for="CollegeId" class="reg-label">Admitted College / Campus <span class="req">*</span></label>
-                                    <select asp-for="CollegeId" class="form-select" required>
-                                        <option value="">-- Select College --</option>
-                                        @foreach (var c in colleges)
-                                        {
-                                            <option value="@c.CollegeId">@c.CollegeName (@c.CollegeCode)</option>
-                                        }
-                                    </select>
+
+                                    @if (isCollegeLocked)
+                                    {
+                                        <select class="form-select" disabled>
+                                            @foreach (var c in colleges)
+                                            {
+                                                <option value="@c.CollegeId" selected="@(c.CollegeId == Model.CollegeId)">@c.CollegeName (@c.CollegeCode)</option>
+                                            }
+                                        </select>
+                                        <input type="hidden" asp-for="CollegeId" />
+                                        <small class="reg-hint"><i class="fa-solid fa-lock"></i> College aapke CollegeAdmin account se linked hai.</small>
+                                    }
+                                    else
+                                    {
+                                        <select asp-for="CollegeId" class="form-select" required>
+                                            <option value="">-- Select College --</option>
+                                            @foreach (var c in colleges)
+                                            {
+                                                <option value="@c.CollegeId">@c.CollegeName (@c.CollegeCode)</option>
+                                            }
+                                        </select>
+                                    }
                                     <span asp-validation-for="CollegeId" class="text-danger small"></span>
                                 </div>
 

@@ -26,6 +26,19 @@ namespace UniversityExamSystem.Controllers
 
         public async Task<IActionResult> Index(int? examId, int? programId, int? semesterId, int? subjectId, int? collegeId)
         {
+            var userType = User.FindFirst("UserType")?.Value;
+            bool isCollegeAdmin = string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase);
+
+            if (isCollegeAdmin)
+            {
+                if (!int.TryParse(User.FindFirst("CollegeId")?.Value, out var myCollegeId))
+                    return Forbid();
+
+                collegeId = myCollegeId;
+            }
+
+            ViewBag.IsCollegeAdmin = isCollegeAdmin;
+
             ViewBag.Examinations = await _examRepo.GetExaminationsAsync();
             ViewBag.Programs = await _academicRepo.GetProgramsAsync();
             ViewBag.Semesters = await _academicRepo.GetSemestersAsync();
@@ -77,11 +90,22 @@ namespace UniversityExamSystem.Controllers
 
             return View(new MarksEntryViewModel());
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Save(MarksEntryViewModel model, string actionType)
         {
+            var userType = User.FindFirst("UserType")?.Value;
+            if (string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!int.TryParse(User.FindFirst("CollegeId")?.Value, out var myCollegeId))
+                    return Forbid();
+
+                model.CollegeId = myCollegeId;
+                var allowed = await _marksRepo.GetMarksAsync(model.ExaminationId, model.SubjectId, myCollegeId);
+                var allowedIds = allowed.Select(m => m.StudentId).ToHashSet();
+
+                model.Rows = model.Rows.Where(r => allowedIds.Contains(r.StudentId)).ToList();
+            }
             if (model.Rows == null || !model.Rows.Any())
             {
                 TempData["ErrorMessage"] = "No students or marks found to save.";

@@ -30,7 +30,21 @@ namespace UniversityExamSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var exams = await _examRepo.GetExaminationsAsync();
+            int? collegeId = null;
+            var userType = User.FindFirst("UserType")?.Value;
+            bool isCollegeAdmin = string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase);
+
+            if (isCollegeAdmin)
+            {
+                if (!int.TryParse(User.FindFirst("CollegeId")?.Value, out var myCollegeId))
+                    return Forbid();
+
+                collegeId = myCollegeId;
+            }
+
+            ViewBag.IsCollegeAdmin = isCollegeAdmin;
+
+            var exams = await _examRepo.GetExaminationsAsync(collegeId);
             return View(exams);
         }
 
@@ -38,6 +52,10 @@ namespace UniversityExamSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Process(int examId)
         {
+            var userType = User.FindFirst("UserType")?.Value;
+            if (string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase))
+                return Forbid();
+
             try
             {
                 int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int processedBy);
@@ -54,6 +72,19 @@ namespace UniversityExamSystem.Controllers
 
         public async Task<IActionResult> ViewLedger(int examId, int? collegeId, int? programId)
         {
+            var userType = User.FindFirst("UserType")?.Value;
+            bool isCollegeAdmin = string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase);
+
+            if (isCollegeAdmin)
+            {
+                if (!int.TryParse(User.FindFirst("CollegeId")?.Value, out var myCollegeId))
+                    return Forbid();
+
+                collegeId = myCollegeId;
+            }
+
+            ViewBag.IsCollegeAdmin = isCollegeAdmin;
+
             var exam = await _examRepo.GetExaminationByIdAsync(examId);
             if (exam == null) return NotFound();
 

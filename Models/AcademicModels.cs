@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace UniversityExamSystem.Models
 {
     public class Faculty
@@ -15,9 +17,15 @@ namespace UniversityExamSystem.Models
     {
         public int CollegeId { get; set; }
         public string CollegeCode { get; set; } = string.Empty;
+        [Required(ErrorMessage = "College name is required")]
+        [RegularExpression(@"^[A-Za-z][A-Za-z\s&().'-]*$",ErrorMessage = "College name cannot contain numbers or invalid characters")]
         public string CollegeName { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Contact number is required")]
+        [RegularExpression(@"^[0-9]{10}$",ErrorMessage = "Mobile number must contain exactly 10 digits")]
         public string ContactNumber { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
         public string Email { get; set; } = string.Empty;
         public string? PrincipalName { get; set; }
         public DateTime? AffiliationDate { get; set; }
@@ -25,6 +33,13 @@ namespace UniversityExamSystem.Models
         public string? LogoUrl { get; set; }
         public bool IsActive { get; set; } = true;
         public int StudentCount { get; set; }
+        [Required]
+        [MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
+        public string Password { get; set; }
+
+        [Required]
+        [Compare("Password", ErrorMessage = "Password and Confirm Password do not match.")]
+        public string ConfirmPassword { get; set; }
     }
 
     public class ProgramModel

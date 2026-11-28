@@ -7,7 +7,8 @@
     var programs = ViewBag.Programs as List<ProgramModel> ?? new List<ProgramModel>();
     int? selCol = ViewBag.SelectedCollege;
     int? selProg = ViewBag.SelectedProgram;
-    bool isPublished = Model.Any(r => r.IsPublished);
+    bool isPublished = Model.Any(r => r.IsPublished); bool isCollegeAdmin = ViewBag.IsCollegeAdmin ?? false;
+ 
 }
 
 <div class="custom-card shadow-sm mb-4">
@@ -53,13 +54,26 @@
         <form method="get" class="row g-2 align-items-center">
             <input type="hidden" name="examId" value="@(exam?.ExaminationId ?? 0)" />
             <div class="col-md-5">
-                <select name="collegeId" class="form-select form-select-sm" onchange="this.form.submit()">
-                    <option value="">-- All Colleges --</option>
-                    @foreach (var c in colleges)
-                    {
-                        <option value="@c.CollegeId" selected="@(selCol == c.CollegeId)">@c.CollegeName</option>
-                    }
-                </select>
+                @if (isCollegeAdmin)
+                {
+                    <select class="form-select form-select-sm" disabled>
+                        @foreach (var c in colleges)
+                        {
+                            <option value="@c.CollegeId" selected="@(selCol == c.CollegeId)">@c.CollegeName</option>
+                        }
+                    </select>
+                    <input type="hidden" name="collegeId" value="@selCol" />
+                }
+                else
+                {
+                    <select name="collegeId" class="form-select form-select-sm">
+                        <option value="">-- All Colleges --</option>
+                        @foreach (var c in colleges)
+                        {
+                            <option value="@c.CollegeId" selected="@(selCol == c.CollegeId)">@c.CollegeName</option>
+                        }
+                    </select>
+                }
             </div>
             <div class="col-md-5">
                 <select name="programId" class="form-select form-select-sm" onchange="this.form.submit()">

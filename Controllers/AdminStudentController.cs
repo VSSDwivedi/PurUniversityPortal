@@ -21,6 +21,19 @@ namespace UniversityExamSystem.Controllers
 
         public async Task<IActionResult> Index(int? collegeId, int? programId, int? semesterId, string? status, string? search)
         {
+            var userType = User.FindFirst("UserType")?.Value;
+            var collegeIdClaim = User.FindFirst("CollegeId")?.Value;
+            bool isCollegeAdmin = false;
+
+            if (string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(collegeIdClaim, out var myCollegeId))
+            {
+                collegeId = myCollegeId;
+                isCollegeAdmin = true;
+            }
+
+            ViewBag.IsCollegeAdmin = isCollegeAdmin;
+
             ViewBag.Colleges = await _academicRepo.GetCollegesAsync();
             ViewBag.Programs = await _academicRepo.GetProgramsAsync();
             ViewBag.Semesters = await _academicRepo.GetSemestersAsync();

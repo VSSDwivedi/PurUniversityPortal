@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Examination Sessions";
     Layout = "_AdminLayout";
+    bool isCollegeAdmin = ViewBag.IsCollegeAdmin ?? false;
 }
 
 <style>
@@ -385,15 +386,22 @@
 
 <div class="custom-card shadow-sm mb-4 pu-exams">
     <div class="card-header-custom">
-        <h5><i class="fa-solid fa-calendar-check text-primary"></i> University Examination Sessions</h5>
-        <div class="d-flex flex-wrap gap-2">
-            <a asp-action="Centers" class="btn btn-outline-secondary btn-sm fw-bold">
-                <i class="fa-solid fa-building-flag me-1"></i> Exam Centers
-            </a>
-            <a asp-action="Create" class="btn btn-primary btn-sm fw-bold">
-                <i class="fa-solid fa-plus me-1"></i> Create Examination Session
-            </a>
-        </div>
+        <h5>
+            <i class="fa-solid fa-calendar-check text-primary"></i>
+            @(isCollegeAdmin ? "Examination Sessions (My College)" : "University Examination Sessions")
+        </h5>
+
+        @if (!isCollegeAdmin)
+        {
+            <div class="d-flex flex-wrap gap-2">
+                <a asp-action="Centers" class="btn btn-outline-secondary btn-sm fw-bold">
+                    <i class="fa-solid fa-building-flag me-1"></i> Exam Centers
+                </a>
+                <a asp-action="Create" class="btn btn-primary btn-sm fw-bold">
+                    <i class="fa-solid fa-plus me-1"></i> Create Examination Session
+                </a>
+            </div>
+        }
     </div>
 
     <div class="table-responsive">
@@ -406,7 +414,7 @@
                     <th>Exam Period</th>
                     <th>Application Deadline</th>
                     <th>Fee</th>
-                    <th>Applicants</th>
+                    <th>@(isCollegeAdmin ? "My College Applicants" : "Applicants")</th>
                     <th>Status</th>
                     <th class="text-end">Actions</th>
                 </tr>
@@ -457,7 +465,10 @@
                         <td colspan="9" class="pu-empty">
                             <i class="fa-regular fa-calendar-xmark"></i>
                             <strong>No examination sessions yet</strong>
-                            Use "Create Examination Session" to add the first one.
+                            @if (!isCollegeAdmin)
+                            {
+                                <span>Use "Create Examination Session" to add the first one.</span>
+                            }
                         </td>
                     </tr>
                 }

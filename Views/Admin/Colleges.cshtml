@@ -68,7 +68,14 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label small fw-bold">College Name *</label>
-                                            <input type="text" name="CollegeName" value="@c.CollegeName" class="form-control" required />
+                                            <input type="text"
+                                                   name="CollegeName"
+                                                   value="@c.CollegeName"
+                                                   class="form-control"
+                                                   maxlength="200"
+                                                   pattern="[A-Za-z][A-Za-z\s&().'-]*"
+                                                   title="Numbers are not allowed"
+                                                   required />
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label small fw-bold">Address *</label>
@@ -77,11 +84,25 @@
                                         <div class="row g-2 mb-3">
                                             <div class="col-6">
                                                 <label class="form-label small fw-bold">Contact Phone *</label>
-                                                <input type="text" name="ContactNumber" value="@c.ContactNumber" class="form-control" required />
+                                                <input type="tel"
+                                                       name="ContactNumber"
+                                                       value="@c.ContactNumber"
+                                                       class="form-control"
+                                                       maxlength="10"
+                                                       minlength="10"
+                                                       pattern="[0-9]{10}"
+                                                       inputmode="numeric"
+                                                       title="Enter exactly 10 digits"
+                                                       required />
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label small fw-bold">Official Email *</label>
-                                                <input type="email" name="Email" value="@c.Email" class="form-control" required />
+                                                <input type="email"
+                                                       name="Email"
+                                                       value="@c.Email"
+                                                       class="form-control"
+                                                       maxlength="150"
+                                                       required />
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -124,7 +145,14 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">College Name *</label>
-                        <input type="text" name="CollegeName" class="form-control" placeholder="e.g. Apex Engineering College" required />
+                        <input type="text"
+                               name="CollegeName"
+                               class="form-control"
+                               placeholder="Enter College Name"
+                               maxlength="200"
+                               onkeydown="return /^[a-zA-Z ]$/.test(event.key) || ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)"
+                               onpaste="return false"
+                               required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Address *</label>
@@ -133,17 +161,63 @@
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <label class="form-label small fw-bold">Contact Phone *</label>
-                            <input type="text" name="ContactNumber" class="form-control" placeholder="+977-61-560123" required />
+                            <input type="tel"
+                                   name="ContactNumber"
+                                   id="collegeContact"
+                                   class="form-control"
+                                   placeholder="Enter 10 digit number"
+                                   maxlength="10"
+                                   minlength="10"
+                                   pattern="[0-9]{10}"
+                                   inputmode="numeric"
+                                   title="Enter exactly 10 digits"
+                                   required />
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-bold">Official Email *</label>
-                            <input type="email" name="Email" class="form-control" placeholder="info@college.edu.np" required />
+                            <input type="email"
+                                   name="Email"
+                                   class="form-control"
+                                   placeholder="info@college.edu.np"
+                                   maxlength="150"
+                                   required />
                         </div>
                     </div>
+                     <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Password *</label>
+                            <div class="input-group">
+                                <input type="password" name="Password"
+                                       id="collegePassword" class="form-control"
+                                       minlength="8" required />
+                                <button type="button" class="btn btn-outline-secondary"
+                                        onclick="toggleCollegePassword('collegePassword','eyePassword')">
+                                    <i class="fa-solid fa-eye" id="eyePassword"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold">Confirm Password *</label>
+                            <div class="input-group">
+                                <input type="password" name="ConfirmPassword"
+                                       id="collegeConfirmPassword" class="form-control"
+                                       minlength="8" required />
+                                <button type="button" class="btn btn-outline-secondary"
+                                        onclick="toggleCollegePassword('collegeConfirmPassword','eyeConfirmPassword')">
+                                    <i class="fa-solid fa-eye" id="eyeConfirmPassword"></i>
+                                </button>
+                            </div>
+                            <small id="passwordMatchMessage"></small>
+                        </div>
+                    </div>
+
+
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Principal / Campus Chief</label>
                         <input type="text" name="PrincipalName" class="form-control" placeholder="Er. / Dr. Principal Name" />
                     </div>
+
+
                     <input type="hidden" name="IsActive" value="true" />
                 </div>
                 <div class="modal-footer">
@@ -154,3 +228,59 @@
         </div>
     </div>
 </div>
+<script>
+    document.querySelectorAll('input[name="ContactNumber"]').forEach(input => {
+
+        input.addEventListener("input", function () {
+
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+
+        });
+
+    });
+    document.querySelectorAll('input[name="CollegeName"]').forEach(input => {
+
+        input.addEventListener("input", function () {
+
+            this.setCustomValidity("");
+
+            if (/[0-9]/.test(this.value)) {
+                this.setCustomValidity("Numbers are not allowed in college name.");
+            }
+
+        });
+
+    });
+
+    function toggleCollegePassword(inputId, iconId) {
+        var input = document.getElementById(inputId);
+        var icon = document.getElementById(iconId);
+
+        input.type = input.type === "password" ? "text" : "password";
+
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+    }
+
+    const cp = document.getElementById("collegePassword");
+    const ccp = document.getElementById("collegeConfirmPassword");
+
+    function validateCollegePassword() {
+        const msg = document.getElementById("passwordMatchMessage");
+
+        if (!ccp.value) {
+            msg.textContent = "";
+            return;
+        }
+
+        msg.textContent = cp.value === ccp.value
+            ? "Password matched!"
+            : "Password does not match!";
+
+        msg.style.color = cp.value === ccp.value ? "green" : "red";
+    }
+
+    cp.addEventListener("input", validateCollegePassword);
+    ccp.addEventListener("input", validateCollegePassword);
+
+</script>

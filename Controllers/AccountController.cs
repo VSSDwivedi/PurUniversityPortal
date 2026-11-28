@@ -55,84 +55,123 @@ namespace UniversityExamSystem.Controllers
         [Route("college-auth-new")]
         [Route("studentlogin/authenticate")]
         [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, [FromForm] string? loginId, [FromForm] string? loginPwd)
+        public async Task<IActionResult> Login(
+    LoginViewModel model,
+    [FromForm] string? loginId,
+    [FromForm] string? loginPwd)
         {
-            if (string.IsNullOrEmpty(model.LoginIdentifier) && !string.IsNullOrEmpty(loginId))
+            if (string.IsNullOrEmpty(model.LoginIdentifier) &&
+                !string.IsNullOrEmpty(loginId))
             {
                 model.LoginIdentifier = loginId;
             }
-            if (string.IsNullOrEmpty(model.Password) && !string.IsNullOrEmpty(loginPwd))
+
+            if (string.IsNullOrEmpty(model.Password) &&
+                !string.IsNullOrEmpty(loginPwd))
             {
                 model.Password = loginPwd;
             }
-           /* if (!ModelState.IsValid)
-            {
-                return View(model);
-            }*/
-
             var user = await _userRepo.AuthenticateAsync(model.LoginIdentifier);
 
-            if (user == null || !_authService.VerifyPassword(model.Password, user.PasswordHash))
+            if (user == null ||
+                !_authService.VerifyPassword(model.Password, user.PasswordHash))
             {
-                ModelState.AddModelError(string.Empty, "Invalid login credentials. Please check your Student ID / Registration No / Email and password.");
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Invalid login credentials. Please check your Student ID / Registration No / Email and password."
+                );
+
                 return View(model);
             }
 
             if (!user.IsActive)
             {
-                ModelState.AddModelError(string.Empty, "Your account has been deactivated. Please contact the Examination Controller Office.");
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Your account has been deactivated. Please contact the Examination Controller Office."
+                );
+
                 return View(model);
             }
 
-            // Create claims
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.FullName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.RoleName),
-                new Claim("UserType", user.UserType),
-                new Claim("Username", user.Username)
-            };
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+        new Claim(ClaimTypes.Name, user.FullName),
+        new Claim(ClaimTypes.Email, user.Email),
+        new Claim(ClaimTypes.Role, user.RoleName),
+        new Claim("UserType", user.UserType),
+        new Claim("Username", user.Username)
+    };
 
             if (user.ReferenceId.HasValue)
             {
-                claims.Add(new Claim("ReferenceId", user.ReferenceId.Value.ToString()));
-            }
-            if (!string.IsNullOrEmpty(user.RegistrationNumber))
-            {
-                claims.Add(new Claim("RegistrationNumber", user.RegistrationNumber));
-            }
-            if (!string.IsNullOrEmpty(user.StudentUniqueId))
-            {
-                claims.Add(new Claim("StudentUniqueId", user.StudentUniqueId));
+                claims.Add(new Claim(
+                    "ReferenceId",
+                    user.ReferenceId.Value.ToString()
+                ));
+                if (user.UserType.Equals(
+                    "CollegeAdmin",
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    claims.Add(new Claim(
+                        "CollegeId",
+                        user.ReferenceId.Value.ToString()
+                    ));
+                }
             }
 
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            if (!string.IsNullOrEmpty(user.RegistrationNumber))
+            {
+                claims.Add(new Claim(
+                    "RegistrationNumber",
+                    user.RegistrationNumber
+                ));
+            }
+
+            if (!string.IsNullOrEmpty(user.StudentUniqueId))
+            {
+                claims.Add(new Claim(
+                    "StudentUniqueId",
+                    user.StudentUniqueId
+                ));
+            }
+
+            var identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+
             var principal = new ClaimsPrincipal(identity);
 
             var authProps = new AuthenticationProperties
             {
                 IsPersistent = model.RememberMe,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(model.RememberMe ? 72 : 8)
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(
+                    model.RememberMe ? 72 : 8
+                )
             };
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProps);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                authProps
+            );
+
             await _userRepo.UpdateLastLoginAsync(user.UserId);
 
-            // Store in session
             HttpContext.Session.SetString("UserId", user.UserId.ToString());
             HttpContext.Session.SetString("FullName", user.FullName);
             HttpContext.Session.SetString("Role", user.RoleName);
 
-            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+            if (!string.IsNullOrEmpty(model.ReturnUrl) &&
+                Url.IsLocalUrl(model.ReturnUrl))
             {
                 return Redirect(model.ReturnUrl);
             }
 
             return RedirectByUserRole(user.RoleName, user.UserType);
         }
-
         [HttpGet]
         [Route("Account/Register")]
         [Route("studentlogin/register")]
@@ -140,12 +179,23 @@ namespace UniversityExamSystem.Controllers
         public async Task<IActionResult> Register()
         {
             await PopulateRegistrationDropdowns();
-            return View(new StudentRegistrationViewModel
+
+            var model = new StudentRegistrationViewModel
             {
                 DateOfBirth = DateTime.Today.AddYears(-19)
-            });
-        }
+            };
+            var userType = User.FindFirst("UserType")?.Value;
+            var collegeIdClaim = User.FindFirst("CollegeId")?.Value;
 
+            if (string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(collegeIdClaim, out var collegeId))
+            {
+                model.CollegeId = collegeId;
+                ViewBag.IsCollegeLocked = true;
+            }
+
+            return View(model);
+        }
         [HttpPost]
         [Route("Account/Register")]
         [Route("studentlogin/register")]
@@ -153,6 +203,17 @@ namespace UniversityExamSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(StudentRegistrationViewModel model)
         {
+            var userType = User.FindFirst("UserType")?.Value;
+            var collegeIdClaim = User.FindFirst("CollegeId")?.Value;
+
+            if (string.Equals(userType, "CollegeAdmin", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(collegeIdClaim, out var lockedCollegeId))
+            {
+                model.CollegeId = lockedCollegeId;
+                ModelState.Remove(nameof(model.CollegeId));
+                ViewBag.IsCollegeLocked = true;
+            }
+
             if (!ModelState.IsValid)
             {
                 await PopulateRegistrationDropdowns();
@@ -195,7 +256,6 @@ namespace UniversityExamSystem.Controllers
 
                 var (studentId, uniqueId, appNumber) = await _studentRepo.RegisterStudentAsync(student, passwordHash);
 
-                // Add documents if uploaded
                 if (!string.IsNullOrEmpty(docUrl))
                 {
                     await _studentRepo.AddStudentDocumentAsync(new StudentDocument

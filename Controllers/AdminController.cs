@@ -126,18 +126,76 @@ namespace UniversityExamSystem.Controllers
             return View(colleges);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCollege(College college)
         {
-            if (string.IsNullOrWhiteSpace(college.CollegeName) || string.IsNullOrWhiteSpace(college.CollegeCode))
+            // Required fields validation
+            if (string.IsNullOrWhiteSpace(college.CollegeCode) ||
+                string.IsNullOrWhiteSpace(college.CollegeName) ||
+                string.IsNullOrWhiteSpace(college.Address) ||
+                string.IsNullOrWhiteSpace(college.ContactNumber) ||
+                string.IsNullOrWhiteSpace(college.Email))
             {
-                TempData["ErrorMessage"] = "College Code and Name are required.";
+                TempData["ErrorMessage"] = "Please fill all required college details.";
+                return RedirectToAction(nameof(Colleges));
+            }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                college.CollegeName.Trim(),
+                @"^[A-Za-z][A-Za-z\s&().'-]*$"))
+            {
+                TempData["ErrorMessage"] =
+                    "College name must contain letters only. Numbers are not allowed.";
+                return RedirectToAction(nameof(Colleges));
+            }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                college.ContactNumber.Trim(),
+                @"^[0-9]{10}$"))
+            {
+                TempData["ErrorMessage"] =
+                    "Mobile number must contain exactly 10 digits.";
+                return RedirectToAction(nameof(Colleges));
+            }
+            if (!new System.ComponentModel.DataAnnotations.EmailAddressAttribute()
+                .IsValid(college.Email))
+            {
+                TempData["ErrorMessage"] = "Please enter a valid email address.";
+                return RedirectToAction(nameof(Colleges));
+            }
+            if (string.IsNullOrWhiteSpace(college.Password) ||
+                college.Password.Length < 8)
+            {
+                TempData["ErrorMessage"] =
+                    "Password must contain at least 8 characters.";
+                return RedirectToAction(nameof(Colleges));
+            }
+            if (college.Password != college.ConfirmPassword)
+            {
+                TempData["ErrorMessage"] =
+                    "Password and Confirm Password do not match.";
                 return RedirectToAction(nameof(Colleges));
             }
 
-            await _academicRepo.AddCollegeAsync(college);
-            TempData["SuccessMessage"] = $"College '{college.CollegeName}' added successfully.";
+            try
+            {
+                college.CollegeName = college.CollegeName.Trim();
+                college.ContactNumber = college.ContactNumber.Trim();
+                college.Email = college.Email.Trim();
+
+                college.IsActive = true;
+
+                await _academicRepo.AddCollegeAsync(college);
+
+                TempData["SuccessMessage"] =
+                    $"College '{college.CollegeName}' and its login account created successfully.";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] =
+                    "Unable to add college. College Code, Email or Username may already exist.";
+            }
+
             return RedirectToAction(nameof(Colleges));
         }
 
@@ -145,11 +203,57 @@ namespace UniversityExamSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCollege(College college)
         {
-            await _academicRepo.UpdateCollegeAsync(college);
-            TempData["SuccessMessage"] = "College updated successfully.";
+            if (string.IsNullOrWhiteSpace(college.CollegeCode) ||
+                string.IsNullOrWhiteSpace(college.CollegeName) ||
+                string.IsNullOrWhiteSpace(college.Address) ||
+                string.IsNullOrWhiteSpace(college.ContactNumber) ||
+                string.IsNullOrWhiteSpace(college.Email))
+            {
+                TempData["ErrorMessage"] = "Please fill all required college details.";
+                return RedirectToAction(nameof(Colleges));
+            }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                college.CollegeName.Trim(),
+                @"^[A-Za-z][A-Za-z\s&().'-]*$"))
+            {
+                TempData["ErrorMessage"] =
+                    "College name must contain letters only. Numbers are not allowed.";
+                return RedirectToAction(nameof(Colleges));
+            }
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                college.ContactNumber.Trim(),
+                @"^[0-9]{10}$"))
+            {
+                TempData["ErrorMessage"] =
+                    "Mobile number must contain exactly 10 digits.";
+                return RedirectToAction(nameof(Colleges));
+            }
+
+            if (!new System.ComponentModel.DataAnnotations.EmailAddressAttribute()
+                .IsValid(college.Email))
+            {
+                TempData["ErrorMessage"] = "Please enter a valid email address.";
+                return RedirectToAction(nameof(Colleges));
+            }
+
+            college.CollegeName = college.CollegeName.Trim();
+            college.ContactNumber = college.ContactNumber.Trim();
+            college.Email = college.Email.Trim();
+
+            try
+            {
+                await _academicRepo.UpdateCollegeAsync(college);
+
+                TempData["SuccessMessage"] = "College updated successfully.";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "Unable to update college. Please try again.";
+            }
+
             return RedirectToAction(nameof(Colleges));
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteCollege(int collegeId)
